@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layouts/Navbar/Navbar";
-import Sidebar from "@/components/layouts/Sidebar/Sidebar";
+import Sidebar from "@/components/layouts/LeftSidebar/LeftSidebar";
+import LeftSidebar from "@/components/layouts/LeftSidebar/LeftSidebar";
+import RightSidebar from "@/components/layouts/RightSidebar/RightSidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,9 +35,9 @@ export default function RootLayout({
           <Navbar />
         </nav>
         <main className="flex relative">
-        <aside className="h-screen bg-background w-[300px] left-0 p-10 fixed"><Sidebar /></aside>
+        <aside className="h-screen bg-background w-[300px] left-0 p-10 fixed"><LeftSidebar /></aside>
         <section className="mx-[300px] p-10 w-full ">{children}</section>
-        <aside className="w-[300px] h-screen fixed bg-background right-0">aside</aside>
+        <aside className="w-[300px] h-screen fixed right-0"><RightSidebar/></aside>
         </main>
         <footer></footer>
       </body>

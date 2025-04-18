@@ -16,7 +16,7 @@ import { HiUserCircle } from "react-icons/hi2";
 
 export default function Navbar() {
   return (
-    <div className='flex items-center justify-between px-10 py-7 bg-background'>
+    <div className='flex items-center justify-between px-10 py-7 bg-background w-full'>
       {/* Logo  */}
       <Logo />
 
