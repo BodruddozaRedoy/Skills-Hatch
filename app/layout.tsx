@@ -32,8 +32,11 @@ export default function RootLayout({
         <nav>
           <Navbar />
         </nav>
-        <aside className="h-screen bg-background w-[300px] fixed"><Sidebar /></aside>
-        <main className="ml-[300px] p-10">{children}</main>
+        <main className="flex relative">
+        <aside className="h-screen bg-background w-[300px] left-0 p-10 fixed"><Sidebar /></aside>
+        <section className="mx-[300px] p-10 w-full ">{children}</section>
+        <aside className="w-[300px] h-screen fixed bg-background right-0">aside</aside>
+        </main>
         <footer></footer>
       </body>
     </html>

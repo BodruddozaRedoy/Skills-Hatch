@@ -26,10 +26,10 @@ const sidebarLinks = [
 export default function Sidebar() {
     const pathname = usePathname()
     return (
-        <div className=' flex flex-col gap-5 p-10'>
+        <div className=' flex flex-col gap-5 '>
             {
                 sidebarLinks?.map((link, index) => (
-                    <Link href={link.link}>
+                    <Link key={index} href={link.link}>
                         <div className={`flex items-center gap-4  px-5 py-4 rounded-lg font-bold text-xl ${pathname === link.link && 'bg-primary text-white'}`}>
                             <link.icon />
                             <p>{link.title}</p>
