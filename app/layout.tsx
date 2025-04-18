@@ -5,6 +5,7 @@ import Navbar from "@/components/layouts/Navbar/Navbar";
 import Sidebar from "@/components/layouts/LeftSidebar/LeftSidebar";
 import LeftSidebar from "@/components/layouts/LeftSidebar/LeftSidebar";
 import RightSidebar from "@/components/layouts/RightSidebar/RightSidebar";
+import ContextProvider from "@/providers/ContextProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,11 +35,9 @@ export default function RootLayout({
         <nav>
           <Navbar />
         </nav>
-        <main className="flex relative">
-        <aside className="h-screen bg-background w-[300px] left-0 p-10 fixed"><LeftSidebar /></aside>
-        <section className="mx-[300px] p-10 w-full ">{children}</section>
-        <aside className="w-[300px] h-screen fixed right-0"><RightSidebar/></aside>
-        </main>
+        <ContextProvider>
+          {children}
+        </ContextProvider>
         <footer></footer>
       </body>
     </html>
