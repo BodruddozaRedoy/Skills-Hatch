@@ -1,10 +1,7 @@
 import { Button } from '@/components/ui/button'
+import { redirect } from 'next/navigation'
 import React from 'react'
 
 export default function Home() {
-  return (
-    <div>
-      <Button className='bg-secondary'>Hello</Button>
-    </div>
-  )
+  return redirect("/dashboard/student")
 }

@@ -16,13 +16,13 @@ import { HiUserCircle } from "react-icons/hi2";
 
 export default function Navbar() {
   return (
-    <div className='flex items-center justify-between px-10 py-7'>
+    <div className='flex items-center justify-between px-10 py-7 bg-background'>
       {/* Logo  */}
       <Logo />
 
       {/* search bar  */}
       <div className='relative'>
-        <input className='bg-muted py-3 rounded-lg px-5 pl-12' type="text" name="" id="" placeholder='Search here...' />
+        <input className='bg-muted py-3 rounded-lg px-5 pl-12 w-[450px]' type="text" name="" id="" placeholder='Search here...' />
         <Search className='text-primary absolute top-1/2 -translate-y-1/2 left-4' />
       </div>
       {/* navbar end  */}
@@ -33,7 +33,7 @@ export default function Navbar() {
             <SelectValue placeholder="Eng (US)" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Eng(US)">Eng(US)</SelectItem>
+            <SelectItem value="Eng(US)"><img className='w-8 h-8 object-cover' src="./us.png" alt="" /> Eng(US)</SelectItem>
             <SelectItem value="Bengali">Bengali</SelectItem>
           </SelectContent>
         </Select>
@@ -46,7 +46,7 @@ export default function Navbar() {
         </div>
 
         {/* avatar  */}
-        <div className='w-12 h-12 rounded-full border-3 flex items-center justify-center border-primary'>
+        <div className='w-16 h-16 rounded-full border-3 flex items-center justify-center border-primary'>
           <img src="" alt="" />
           <HiUserCircle className='text-6xl text-gray-400 w-full'/>
         </div>
