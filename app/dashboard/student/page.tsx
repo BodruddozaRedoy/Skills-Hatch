@@ -1,7 +1,9 @@
+
 import Banner from '@/components/Banner/Banner'
 import LearningActivity from '@/components/LearningActivity'
 import Progress from '@/components/Progress/Progress'
 import ProgressSection from '@/components/ProgressSection'
+import ScoreActivity from '@/components/ScoreActivity'
 import React from 'react'
 
 export default function Student() {
@@ -17,6 +19,11 @@ export default function Student() {
         <section className='flex h-[500px] gap-10'>
         <LearningActivity/>
         <ProgressSection/>
+        </section>
+
+        {/* score activity */}
+        <section>
+          <ScoreActivity/>
         </section>
     </div>
   )

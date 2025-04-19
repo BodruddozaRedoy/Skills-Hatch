@@ -32,7 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-muted`}
       >
-        <nav>
+        <nav className="fixed w-full z-[99999]">
           <Navbar />
         </nav>
         <ContextProvider>

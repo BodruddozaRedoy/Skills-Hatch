@@ -26,14 +26,14 @@ export default function Navbar() {
         <Search className='text-primary absolute top-1/2 -translate-y-1/2 left-4' />
       </div>
       {/* navbar end  */}
-      <div className='flex items-center gap-6'>
+      <div className='flex items-center gap-6 z-40'>
         {/* language bar  */}
         <Select>
           <SelectTrigger className="w-[130px]">
             <SelectValue placeholder="Eng (US)" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Eng(US)"><img className='w-8 h-8 object-cover' src="./us.png" alt="" /> Eng(US)</SelectItem>
+            <SelectItem value="Eng(US)"><img className='w-8 h-8 object-cover z-30' src="./us.png" alt="" /> Eng(US)</SelectItem>
             <SelectItem value="Bengali">Bengali</SelectItem>
           </SelectContent>
         </Select>

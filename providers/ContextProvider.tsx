@@ -11,12 +11,12 @@ export default function ContextProvider({ children }: any) {
   return (
     <Provider>
       <main className="flex relative">
-        <aside className='relative'>
+        <aside className='relative mt-[120px]'>
         <div className={`h-full bg-background left-0 p-10 fixed ${sidebarOpen ? 'hidden':'w-[300px]'}`}><LeftSidebar /></div>
         <div onClick={() =>setSidebarOpen(!sidebarOpen)}><SidebarButton sidebarOpen={sidebarOpen}/></div>
         </aside>
-        <section className="mx-[300px] p-10 w-full ">{children}</section>
-        <aside className="w-[300px] h-screen fixed right-0"><RightSidebar /></aside>
+        <section className="mx-[300px] p-10 w-full mt-[120px]">{children}</section>
+        <aside className="w-[300px] h-screen fixed right-0 mt-[120px]"><RightSidebar /></aside>
       </main>
     </Provider>
   )
