@@ -31,6 +31,7 @@ export default function LeftSidebar() {
 
     return (
         <div className=' flex flex-col gap-5 relative'>
+            <div className='flex flex-col gap-5 relative flex-1'>
             {
                 sidebarLinks?.map((link, index) => (
                     <Link key={index} href={link.link}>
@@ -41,7 +42,8 @@ export default function LeftSidebar() {
                     </Link>
                 ))
             }
-            
+            </div>
+            <div className='bg-primary py-3 px-5 w-full text-background rounded-lg d font-extrabold'>Upgrade to Pro</div>
         </div>
     )
 }
