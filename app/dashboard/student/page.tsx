@@ -9,22 +9,22 @@ import React from 'react'
 export default function Student() {
   return (
     <div className='space-y-10'>
-        {/* banner section */}
-        <Banner/>
+      {/* banner section */}
+      <Banner />
 
-        {/* progress section  */}
-        <section className='mt-10'><Progress/></section>
+      {/* progress section  */}
+      <section className='mt-10'><Progress /></section>
 
-        {/* learning activity  */}
-        <section className='flex h-[500px] gap-10'>
-        <LearningActivity/>
-        <ProgressSection/>
-        </section>
-
-        {/* score activity */}
-        <section>
-          <ScoreActivity/>
-        </section>
+      {/* learning activity  */}
+      <section className='flex h-[500px] gap-10'>
+        <LearningActivity />
+        <ProgressSection />
+      </section>
+      
+      {/* score activity */}
+      <section>
+        <ScoreActivity />
+      </section>
     </div>
   )
 }
