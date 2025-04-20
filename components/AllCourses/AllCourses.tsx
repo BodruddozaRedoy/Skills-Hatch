@@ -47,7 +47,7 @@ export default function AllCourses() {
         <div>
             <div className='flex items-center justify-between'>
                 <h1 className='text-2xl font-extrabold mb-5'>Courses</h1>
-                <div className='flex items-center gap-2 cursor-pointer select-none'>
+            <div className='flex items-center gap-2 cursor-pointer select-none'>
                     <p className='text-primary font-semibold text-sm'>View all</p>
                     <IoIosArrowForward className='font-bold text-primary' />
                 </div>
