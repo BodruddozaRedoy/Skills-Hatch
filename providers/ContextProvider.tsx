@@ -14,7 +14,7 @@ export default function ContextProvider({ children }: any) {
     <Provider>
       <main className="flex relative">
         <aside className='relative mt-[120px]'>
-        <div className={`h-full bg-background left-0 z-[999] p-10 fixed ${!sidebarOpen ? 'hidden':'w-[300px]'}`}><LeftSidebar /></div>
+        <div className={`h-full bg-background left-0 z-[999] p-10 top-20 lg:hidden fixed ${!sidebarOpen ? 'hidden':'w-[300px]'}`}><LeftSidebar /></div>
         <div className={`hidden lg:flex h-full bg-background left-0 z-[999] p-10 fixed ${!sidebarOpen ? 'hidden':'w-[300px]'}`}><LeftSidebar /></div>
         <div className='flex lg:hidden z-[999]' onClick={() =>setSidebarOpen(!sidebarOpen)}><SidebarButton sidebarOpen={sidebarOpen}/></div>
         </aside>

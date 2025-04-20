@@ -43,7 +43,7 @@ export default function LeftSidebar() {
                 ))
             }
             </div>
-            <div className='bg-primary py-3 px-5 w-full text-background rounded-lg d font-extrabold'>Upgrade to Pro</div>
+            <div className='bg-primary py-3 px-5 w-full text-background rounded-lg font-extrabold'>Upgrade to Pro</div>
         </div>
     )
 }

@@ -72,7 +72,7 @@ export default function Navbar() {
       {
         menu && <div className='flex items-center flex-col lg:hidden w-66 h-screen p-5 absolute  top-0 right-0 z-[999] bg-muted overflow-y-auto'>
           <div className='relative w-full'>
-            <div className='inline-flex justify-between rounded-lg bg-background fixed top-0 right-0 p-3 mr-3 mt-3'>
+            <div className='inline-flex justify-between items-center gap-10 rounded-lg bg-background fixed top-0 right-0 p-3 mr-3 mt-3'>
               <div>
                 {/* icons  */}
                 <div className='flex w-full gap-5 lg:hidden'>
@@ -84,7 +84,7 @@ export default function Navbar() {
               <ImCross onClick={() => setMenu(!menu)} className='text-foreground text-2xl' />
             </div>
 
-            <aside className=""><RightSidebar /></aside>
+            <aside className="mt-12"><RightSidebar /></aside>
           </div>
         </div>
       }

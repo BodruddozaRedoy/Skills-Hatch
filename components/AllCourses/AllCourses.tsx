@@ -45,15 +45,15 @@ const courses = [
 export default function AllCourses() {
     return (
         <div>
-            <div className='flex items-center justify-between'>
-                <h1 className='text-2xl font-extrabold mb-5'>Courses</h1>
+            <div className='flex items-center justify-between mb-5'>
+                <h1 className='text-2xl font-extrabold '>Courses</h1>
             <div className='flex items-center gap-2 cursor-pointer select-none'>
                     <p className='text-primary font-semibold text-sm'>View all</p>
                     <IoIosArrowForward className='font-bold text-primary' />
                 </div>
             </div>
 
-            <div className='grid grid-cols-3 justify-between gap-5'>
+            <div className='grid grid-cols-1 lg:grid-cols-3 justify-between gap-5'>
                 {
                     courses?.map((course, i) => (
                         <CourseCard key={i} course={course}/>
