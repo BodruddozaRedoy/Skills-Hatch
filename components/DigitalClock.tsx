@@ -23,7 +23,7 @@ export default function DigitalClock() {
   }, []);
 
   return (
-    <div className="text-2xl font-extrabold text-primary bg-background p-5 rounded-lg">
+    <div className="text-xl lg:text-2xl font-extrabold text-primary bg-background p-5 rounded-lg">
       {time}
     </div>
   );

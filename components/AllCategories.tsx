@@ -34,14 +34,16 @@ export default function AllCategories() {
                     <IoIosArrowForward className='font-bold text-primary' />
                 </div>
             </div>
-            <div className='flex items-start justify-baseline gap-5'>
+            <div className='flex items-start justify-between gap-5'>
                 {
                     categories?.map((cat, i) => (
-                        <div className='flex items-center bg-background rounded-lg py-3 px-5 gap-4'>
+                        <div className='flex items-center bg-background rounded-lg py-3 px-5 w-full justify-between cursor-pointer select-none'>
+                            <div className='flex items-center gap-4'>
                             <img className='w-18' src={cat.icon} alt="" />
                             <div>
                                 <h1 className='font-bold'>{cat.title}</h1>
                                 <p className='text-muted-foreground text-xs '>{cat.desc}</p>
+                            </div>
                             </div>
                             <IoIosArrowForward className='font-bold text-primary' />
                         </div>

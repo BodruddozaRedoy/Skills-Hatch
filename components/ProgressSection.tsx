@@ -9,7 +9,7 @@ export default function ProgressSection() {
     const circumference = 2 * Math.PI * normalizedRadius;
     const strokeDashoffset = circumference - (percentage / 100) * circumference;
     return (
-        <div className='bg-background rounded-lg p-10 w-[30%] flex flex-col items-center'>
+        <div className='bg-background rounded-lg p-10 w-full flex flex-col items-center'>
             <div className="w-[200px] h-[200px] flex items-center justify-center relative">
                 <svg height="100%" width="100%" className="transform -rotate-90">
                     {/* Background Circle */}

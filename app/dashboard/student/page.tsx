@@ -16,9 +16,13 @@ export default function Student() {
       <section className='mt-10'><Progress /></section>
 
       {/* learning activity  */}
-      <section className='flex h-[500px] gap-10'>
+      <section className='grid grid-cols-1 lg:grid-cols-6 lg:h-[500px] gap-10 w-full'>
+        <div className='col-span-4 w-full'>
         <LearningActivity />
+        </div>
+        <div className='col-span-2 w-full'>
         <ProgressSection />
+        </div>
       </section>
       
       {/* score activity */}

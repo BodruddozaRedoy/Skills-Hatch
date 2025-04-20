@@ -7,7 +7,7 @@ import { IoIosTimer } from "react-icons/io";
 
 export default function Progress() {
   return (
-    <div className='flex items-center justify-between'>
+    <div className='grid grid-cols-1 lg:grid-cols-4 gap-5 items-center justify-between'>
         <div className='bg-primary p-8 rounded-lg pr-44 relative overflow-hidden'>
             <div className='bg-background inline-flex p-3 text-primary rounded-lg text-4xl mb-8'>
             <TbCopyCheckFilled/>

@@ -107,9 +107,9 @@ const data = [
 
 export default function ScoreActivity() {
     return (
-        <div className='h-[500px] bg-background p-10 rounded-lg'>
-            <div className='flex items-center justify-between mb-5'>
-                <h1 className='text-2xl font-extrabold'>Score Activity</h1>
+        <div className='h-[500px] bg-background p-5 lg:p-10 rounded-lg'>
+            <div className='flex flex-col gap-5 items-center justify-between mb-5'>
+                <h1 className='text-lg lg:text-2xl font-extrabold'>Score Activity</h1>
                 <div className='flex items-center gap-2'>
                     <div className='flex items-center gap-2'>
                         <RiStopCircleFill className='text-secondary' />

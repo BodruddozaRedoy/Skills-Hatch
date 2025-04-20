@@ -7,7 +7,7 @@ import { BsThreeDots, BsThreeDotsVertical } from 'react-icons/bs'
 
 export default function RightSidebar() {
   return (
-    <div className='pt-5 pr-5 space-y-5'>
+    <div className='pt-5 lg:pr-5 lg:space-y-5 space-y-3 bg-muted lg:bg-transparent'>
         {/* calender  */}
         {/* <Calendar/> */}
         <DigitalClock/>

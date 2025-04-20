@@ -78,9 +78,9 @@ const data = [
 
 export default function LearningActivity() {
     return (
-        <div className='bg-background rounded-lg p-10 w-[70%]'>
-            <div className='flex items-center justify-between mb-5'>
-                <h1 className='text-2xl font-extrabold'>Learning Activity</h1>
+        <div className='bg-background rounded-lg p-10 w-full'>
+            <div className='flex flex-col gap-5 items-center justify-between mb-5'>
+                <h1 className='text-lg lg:text-2xl font-extrabold'>Learning Activity</h1>
                 <div className='flex items-center gap-2'>
                     <div className='flex items-center gap-2'>
                         <RiStopCircleFill className='text-secondary' />
