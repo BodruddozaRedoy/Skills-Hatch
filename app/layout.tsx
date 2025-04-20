@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layouts/Navbar/Navbar";
-import Sidebar from "@/components/layouts/LeftSidebar/LeftSidebar";
-import LeftSidebar from "@/components/layouts/LeftSidebar/LeftSidebar";
-import RightSidebar from "@/components/layouts/RightSidebar/RightSidebar";
 import ContextProvider from "@/providers/ContextProvider";
+import KindeProviders from "@/providers/KindeProviders";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -33,6 +31,7 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${geistMono.variable} antialiased bg-muted`}
       >
+        <KindeProviders>
         <nav className="fixed w-full z-[99999]">
           <Navbar />
         </nav>
@@ -40,6 +39,7 @@ export default function RootLayout({
           {children}
         </ContextProvider>
         <footer></footer>
+        </KindeProviders>
       </body>
     </html>
   );

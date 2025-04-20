@@ -1,6 +1,8 @@
 import React from 'react'
 import { IoIosArrowForward } from 'react-icons/io'
 import CourseCard from './CourseCard'
+import useUser from '@/hooks/useUser'
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 
 const courses = [
@@ -42,7 +44,12 @@ const courses = [
     },
 ]
 
-export default function AllCourses() {
+export default async function AllCourses() {
+//   const user = useUser()
+// const {getUser, getAccessToken} = getKindeServerSession()
+// const user = await getUser()
+// const token = await getAccessToken()
+// console.log(token)
     return (
         <div>
             <div className='flex items-center justify-between mb-5'>

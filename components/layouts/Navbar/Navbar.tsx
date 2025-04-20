@@ -17,12 +17,27 @@ import { FaBarsStaggered } from "react-icons/fa6";
 import { ImCross } from "react-icons/im";
 import { useState } from 'react';
 import RightSidebar from '../RightSidebar/RightSidebar';
-
-
+import { DropdownMenuCheckboxItemProps, DropdownMenuItem } from "@radix-ui/react-dropdown-menu"
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from '@/components/ui/button';
+import { RegisterLink, useKindeAuth, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+import useUser from '@/hooks/useUser';
 
 
 export default function Navbar() {
   const [menu, setMenu] = useState(false)
+  // const {user} = useKindeBrowserClient()
+  // const{user} = useKindeAuth()
+  const { user, isAuthenticated, isLoading, getAccessToken, getIdToken } = useKindeAuth();
+
+  console.log(user)
   return (
     <div className='flex items-center justify-between px-5 lg:px-10 py-7 bg-background w-full relative'>
       {/* Logo  */}
@@ -41,7 +56,7 @@ export default function Navbar() {
             <SelectTrigger className="w-[130px]">
               <SelectValue placeholder="Eng (US)" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='z-[99999] p-3'>
               <SelectItem value="Eng(US)"><img className='w-8 h-8 object-cover z-30' src="./us.png" alt="" /> Eng(US)</SelectItem>
               <SelectItem value="Bengali">Bengali</SelectItem>
             </SelectContent>
@@ -56,10 +71,23 @@ export default function Navbar() {
         </div>
 
         {/* avatar  */}
-        <div className='w-12 h-12 lg:w-16 lg:h-16 rounded-full border-3 flex items-center justify-center border-primary'>
-          <img src="" alt="" />
-          <HiUserCircle className='text-6xl text-gray-400 w-full' />
+        
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+          <div className='w-12 h-12 lg:w-16 lg:h-16 rounded-full overflow-hidden border-3 flex items-center justify-center border-primary cursor-pointer'>
+          {
+            user ? <img src={user?.picture || ""} alt="" /> : <HiUserCircle className='text-6xl text-gray-400 w-full' />
+          }
+          
         </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent  className="w-56 z-[999999] p-5">
+            <DropdownMenuLabel>{user?.given_name} {user?.family_name}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <Button className='w-full mt-5'><RegisterLink>Register</RegisterLink></Button>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <div onClick={() => setMenu(!menu)} className='flex lg:hidden'>
           <FaBarsStaggered className='text-gray-400 text-2xl' />
