@@ -1,35 +1,25 @@
+"use client"
 import React from 'react'
 import { IoIosArrowForward } from 'react-icons/io'
 import CourseCard from './CourseCard'
 import useUser from '@/hooks/useUser'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
+import { useAllCourses } from '@/hooks/useAllCourses'
 
 
-const courses = [
-    {
-        _id: 1,
-        title: "Web Development",
-        thumbnail: "./web-development.png",
-        ratings: 4.5,
-        price: 0,
-        contentCount: 10,
-        instructorId: 1,
-        instructor: "Bodruddoza Redoy",
-        category: "web-development",
-        level: "beginner",
-        language: "English",
-        status: "published",
-        review: 5.0
-    },
-    
-]
 
-export default async function AllCourses() {
+
+export default function AllCourses() {
 //   const user = useUser()
 // const {getUser, getAccessToken} = getKindeServerSession()
 // const user = await getUser()
 // const token = await getAccessToken()
 // console.log(token)
+
+
+const {courses} = useAllCourses()
     return (
         <div>
             <div className='flex items-center justify-between mb-5'>
@@ -42,7 +32,7 @@ export default async function AllCourses() {
 
             <div className='grid grid-cols-1 lg:grid-cols-3 justify-between gap-5'>
                 {
-                    courses?.map((course, i) => (
+                    courses?.map((course:any, i:number) => (
                         <CourseCard key={i} course={course}/>
                     ))
                 }
