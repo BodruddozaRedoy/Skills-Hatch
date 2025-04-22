@@ -30,7 +30,7 @@ export default function LeftSidebar() {
     
 
     return (
-        <div className=' flex flex-col gap-5 relative'>
+        <div className=' flex flex-col gap-5 relative w-full'>
             <div className='flex flex-col gap-5 relative flex-1'>
             {
                 sidebarLinks?.map((link, index) => (

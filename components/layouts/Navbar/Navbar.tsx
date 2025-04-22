@@ -17,7 +17,6 @@ import { FaBarsStaggered } from "react-icons/fa6";
 import { ImCross } from "react-icons/im";
 import { useState } from 'react';
 import RightSidebar from '../RightSidebar/RightSidebar';
-import { DropdownMenuCheckboxItemProps, DropdownMenuItem } from "@radix-ui/react-dropdown-menu"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,

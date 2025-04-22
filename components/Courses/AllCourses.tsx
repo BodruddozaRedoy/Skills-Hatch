@@ -7,41 +7,21 @@ import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 const courses = [
     {
+        _id: 1,
         title: "Web Development",
-        img: "./web-development.png",
+        thumbnail: "./web-development.png",
         ratings: 4.5,
         price: 0,
         contentCount: 10,
+        instructorId: 1,
         instructor: "Bodruddoza Redoy",
-        category: "web-development"
+        category: "web-development",
+        level: "beginner",
+        language: "English",
+        status: "published",
+        review: 5.0
     },
-    {
-        title: "English Grammar",
-        img: "./web-development.png",
-        ratings: 4.5,
-        price: 0,
-        contentCount: 10,
-        instructor: "Bodruddoza Redoy",
-        category: "web-development"
-    },
-    {
-        title: "Graphic Design",
-        img: "./web-development.png",
-        ratings: 4.5,
-        price: 10,
-        contentCount: 10,
-        instructor: "Bodruddoza Redoy",
-        category: "web-development"
-    },
-    {
-        title: "Graphic Design",
-        img: "./web-development.png",
-        ratings: 4.5,
-        price: 10,
-        contentCount: 10,
-        instructor: "Bodruddoza Redoy",
-        category: "web-development"
-    },
+    
 ]
 
 export default async function AllCourses() {
