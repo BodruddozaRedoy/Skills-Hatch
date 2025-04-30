@@ -27,16 +27,17 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button';
 import { RegisterLink, useKindeAuth, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
-import useUser from '@/hooks/useUser';
+import { useUser } from '@/hooks/useUser';
 
 
 export default function Navbar() {
   const [menu, setMenu] = useState(false)
   // const {user} = useKindeBrowserClient()
   // const{user} = useKindeAuth()
-  const { user, isAuthenticated, isLoading, getAccessToken, getIdToken } = useKindeAuth();
+  // const { user, isAuthenticated, isLoading, getAccessToken, getIdToken } = useKindeAuth();
+  const {user} = useUser()
 
-  console.log(user)
+  // console.log(user)
   return (
     <div className='flex items-center justify-between px-5 lg:px-10 py-7 bg-background w-full relative'>
       {/* Logo  */}
