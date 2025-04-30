@@ -1,11 +1,17 @@
 import { useKindeAuth } from '@kinde-oss/kinde-auth-nextjs';
 
-
 export function useUser() {
   const { user, isAuthenticated, isLoading } = useKindeAuth();
-    console.log(user)
+
+  const fullName =
+    user?.given_name && user?.family_name
+      ? `${user.given_name} ${user.family_name}`
+      : user?.given_name || user?.family_name || "";
+
+  const enhancedUser = user ? { ...user, fullName } : undefined;
+
   return {
-    user,
+    user: enhancedUser,
     isAuthenticated,
     isLoading,
   };

@@ -5,6 +5,9 @@ import { IoIosArrowForward } from "react-icons/io";
 import Link from "next/link";
 import LearningActivity from "@/components/LearningActivity";
 import ProgressActivity from "@/components/ProgressActivity";
+import CustomLineChart from "@/components/CustomLineChart";
+import BarChart from "@/components/CustomLineChart";
+import LineChart from "@/components/CustomLineChart";
 
 export default function page() {
   const percentage = 70;
@@ -14,6 +17,16 @@ export default function page() {
   const circumference = 2 * Math.PI * normalizedRadius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
   const { user } = useKindeAuth();
+
+
+
+  const chartData = [
+    { label: 'Jan', value: 30 },
+    { label: 'Feb', value: 80 },
+    { label: 'Mar', value: 45 },
+    { label: 'Apr', value: 60 },
+    { label: 'May', value: 20 },
+  ];
 
   return (
     <div className="grid grid-cols-6 gap-10">
@@ -49,11 +62,13 @@ export default function page() {
           <h1 className="text-2xl font-black">Achievements</h1>
           <div>icons</div>
           <h1 className="text-2xl font-black">Bio</h1>
+          <div className="bg-muted p-5 rounded-lg"> 
           <p className="text-muted-foreground">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore
             dolorem tempore suscipit consectetur fugit culpa vel quisquam
             provident omnis commodi.
           </p>
+          </div>
         </div>
       </div>
 

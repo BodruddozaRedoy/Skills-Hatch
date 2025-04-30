@@ -32,12 +32,9 @@ import { useUser } from '@/hooks/useUser';
 
 export default function Navbar() {
   const [menu, setMenu] = useState(false)
-  // const {user} = useKindeBrowserClient()
-  // const{user} = useKindeAuth()
-  // const { user, isAuthenticated, isLoading, getAccessToken, getIdToken } = useKindeAuth();
   const {user} = useUser()
+  console.log(user)
 
-  // console.log(user)
   return (
     <div className='flex items-center justify-between px-5 lg:px-10 py-7 bg-background w-full relative'>
       {/* Logo  */}
