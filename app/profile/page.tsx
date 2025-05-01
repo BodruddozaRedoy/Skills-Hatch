@@ -8,6 +8,7 @@ import ProgressActivity from "@/components/ProgressActivity";
 import CustomLineChart from "@/components/CustomLineChart";
 import BarChart from "@/components/CustomLineChart";
 import LineChart from "@/components/CustomLineChart";
+import useDbUser from "@/hooks/useDbUser";
 
 export default function page() {
   const percentage = 70;
@@ -17,6 +18,8 @@ export default function page() {
   const circumference = 2 * Math.PI * normalizedRadius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
   const { user } = useKindeAuth();
+  const { dbUser } = useDbUser()
+  // console.log(dbUser?.fullName)
 
 
 
@@ -36,17 +39,17 @@ export default function page() {
           <img
             className="w-full"
             src={
-              user?.picture ||
+              dbUser?.picture ||
               "https://img.icons8.com/?size=100&id=98957&format=png&color=000000"
             }
             alt=""
           />
         </div>
         <h1 className="text-2xl font-black">
-          {user?.given_name} {user?.family_name}
+          {dbUser?.fullName}
         </h1>
         <p className="text-muted-foreground font-semibold">
-          Member Since 2025
+          Member Since {new Date(dbUser?.createdAt).getFullYear()}
         </p>
         <div className="flex gap-5 items-center w-full">
           <div className="bg-muted rounded-lg p-5 flex flex-col items-center justify-center w-full">

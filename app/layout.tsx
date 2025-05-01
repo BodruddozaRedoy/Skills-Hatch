@@ -32,13 +32,10 @@ export default function RootLayout({
         className={`${poppins.variable} ${geistMono.variable} antialiased bg-muted`}
       >
         <KindeProviders>
-        <nav className="fixed w-full z-[99999]">
-          <Navbar />
-        </nav>
         <ContextProvider>
+
           {children}
-        </ContextProvider>
-        <footer></footer>
+          </ContextProvider>
         </KindeProviders>
       </body>
     </html>

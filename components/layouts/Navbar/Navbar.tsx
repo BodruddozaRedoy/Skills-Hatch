@@ -15,7 +15,7 @@ import { RiSettings5Fill } from "react-icons/ri";
 import { HiUserCircle } from "react-icons/hi2";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { ImCross } from "react-icons/im";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RightSidebar from '../RightSidebar/RightSidebar';
 import {
   DropdownMenu,
@@ -26,15 +26,31 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button';
-import { RegisterLink, useKindeAuth, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
-import { useUser } from '@/hooks/useUser';
+import { RegisterLink, useKindeAuth, useKindeBrowserClient, LogoutLink } from '@kinde-oss/kinde-auth-nextjs';
+import { useKindeUser } from '@/hooks/useKindeUser';
+import { axiosPublic } from '@/lib/axiosPublic';
+import toast from 'react-hot-toast';
 
 
 export default function Navbar() {
   const [menu, setMenu] = useState(false)
-  const {user} = useUser()
-  console.log(user)
-
+  const { user } = useKindeUser()
+  useEffect(() => {
+    const isUserFetched = localStorage.getItem("user-status")
+    if (!isUserFetched) {
+      if (user) {
+        const fetchUser = async () => {
+          const res = await axiosPublic.post("/api/user", user)
+          if (res.data) {
+            toast.success("Logged In")
+            localStorage.setItem("user-status", "fetched")
+          }
+          console.log("User fetched", res.data)
+        }
+        fetchUser()
+      }
+    }
+  }, [user])
   return (
     <div className='flex items-center justify-between px-5 lg:px-10 py-7 bg-background w-full relative'>
       {/* Logo  */}
@@ -68,30 +84,26 @@ export default function Navbar() {
         </div>
 
         {/* avatar  */}
-        
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-          <div className='w-12 h-12 lg:w-16 lg:h-16 rounded-full overflow-hidden border-3 flex items-center justify-center border-primary cursor-pointer'>
-          {
-            user ? <img src={user?.picture || ""} alt="" /> : <HiUserCircle className='text-6xl text-gray-400 w-full' />
-          }
-          
-        </div>
+            <div className='w-12 h-12 lg:w-16 lg:h-16 rounded-full overflow-hidden border-3 flex items-center justify-center border-primary cursor-pointer'>
+              {
+                user ? <img src={user?.picture || ""} alt="" /> : <HiUserCircle className='text-6xl text-gray-400 w-full' />
+              }
+            </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent  className="w-56 z-[999999] p-5">
-            <DropdownMenuLabel>{user?.given_name} {user?.family_name}</DropdownMenuLabel>
+          <DropdownMenuContent className="w-56 z-[999999] p-5">
+            <DropdownMenuLabel>{user?.given_name || "No"} {user?.family_name || "User"}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <Button className='w-full mt-5'><RegisterLink>Register</RegisterLink></Button>
+            {
+              !user ? (<Button className='w-full mt-5'><RegisterLink>Register</RegisterLink></Button>) : (<Button onClick={() => { localStorage.removeItem("user-status") }} className='w-full mt-5'><LogoutLink>Log Out</LogoutLink></Button>)
+            }
           </DropdownMenuContent>
         </DropdownMenu>
-
         <div onClick={() => setMenu(!menu)} className='flex lg:hidden'>
           <FaBarsStaggered className='text-gray-400 text-2xl' />
         </div>
       </div>
-
-
 
       {/* mobile menu  */}
       {
