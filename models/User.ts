@@ -2,53 +2,57 @@ import mongoose, { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema(
   {
-    fullName: String,
-    kindeId: String,
-    email: { type: String, unique: true },
-    picture: String,
-    role: String,
-    bio: String,
-    socialLinks: Object,
-    points: Number,
-    badges: Array,
-    completedCourses: Array,
-    currentCourses: Array,
+    fullName: { type: String, required: true },
+    kindeId: { type: String, required: true },
+    email: { type: String, unique: true, required: true },
+    picture: { type: String },
+    role: {
+      type: String,
+      enum: ["admin", "student", "instructor"],
+      default: "student",
+    },
+    bio: { type: String, default: "" },
+    socialLinks: { type: [Object], default: [] },
+    points: { type: Number, default: 0, required: true },
+    badges: { type: [String], default: [] },
+    completedCourses: { type: [String], default: [] },
+    currentCourses: { type: [String], default: [] },
     progress: [
       {
-        courseId: String,
-        completedLessons: Array,
-        completionPercent: Number,
+        courseId: { type: String },
+        completedLessons: { type: [String], default: [] },
+        completionPercent: { type: Number, default: 0 },
       },
     ],
     quizResults: [
       {
-        quizId: String,
-        score: Number,
-        takenAt: String,
+        quizId: { type: String },
+        score: { type: Number },
+        takenAt: { type: Date },
       },
     ],
     assignments: [
       {
-        assignmentId: String,
-        submittedAt: String,
-        grade: String,
+        assignmentId: { type: String },
+        submittedAt: { type: Date },
+        grade: { type: String },
       },
     ],
     notifications: [
       {
-        message: String,
-        read: Boolean,
-        sentAt: String,
+        message: { type: String },
+        read: { type: Boolean, default: false },
+        sentAt: { type: Date },
       },
     ],
     activityLog: [
       {
-        type: String, //(login, course_completed, quiz_taken)
-        details: Object,
-        timestamp: String,
+        type: { type: String }, // e.g., login, course_completed, quiz_taken
+        details: { type: Object },
+        timestamp: { type: Date },
       },
     ],
-    comments: Array,
+    comments: { type: [String], default: [] },
   },
   { timestamps: true }
 );

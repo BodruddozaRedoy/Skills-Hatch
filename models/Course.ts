@@ -1,22 +1,26 @@
 import mongoose, { Schema, model, models } from 'mongoose';
 
-const CourseSchema = new Schema({
-  title: String,
-  thumbnail: String,
-  ratings: Number,
-  price: Number,
-  contentCount: Number,
-  instructorId: Number,
-  instructor: String,
-  category: String,
-  level: String,
-  language: String,
-  status: String,
-  review: String,
-  students: Array
-});
+const CourseSchema = new Schema(
+  {
+    title: { type: String, required: true },
+    thumbnail: { type: String, required: true },
+    ratings: { type: Number, default: 0 },
+    price: { type: Number, default: 0 },
+    level: { type: String, default: "" },
+    language: { type: String, default: "English" },
+    status: { type: String, default: "" },
+    description: String,
+    instructor: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    categories: [String],
+    lessons: [{ type: Schema.Types.ObjectId, ref: "Lesson" }],
+    studentsEnrolled: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+  },
+  { timestamps: true }
+);
 
-export const Course = models.Course || model('Course', CourseSchema);
+export default models.Course || model("Course", CourseSchema);
+
 
 
 // {
