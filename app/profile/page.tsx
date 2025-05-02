@@ -1,14 +1,30 @@
 "use client";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-nextjs";
-import React from "react";
+import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import Link from "next/link";
-import LearningActivity from "@/components/LearningActivity";
 import ProgressActivity from "@/components/ProgressActivity";
-import CustomLineChart from "@/components/CustomLineChart";
-import BarChart from "@/components/CustomLineChart";
-import LineChart from "@/components/CustomLineChart";
 import useDbUser from "@/hooks/useDbUser";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button";
+import { axiosPublic } from "@/lib/axiosPublic";
+import toast from "react-hot-toast";
+import StateLoading from "@/components/StateLoading";
+
+const chartData = [
+  { label: 'Jan', value: 30 },
+  { label: 'Feb', value: 80 },
+  { label: 'Mar', value: 45 },
+  { label: 'Apr', value: 60 },
+  { label: 'May', value: 20 },
+];
 
 export default function page() {
   const percentage = 70;
@@ -17,24 +33,56 @@ export default function page() {
   const normalizedRadius = radius - stroke / 2;
   const circumference = 2 * Math.PI * normalizedRadius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
-  const { user } = useKindeAuth();
-  const { dbUser } = useDbUser()
-  // console.log(dbUser?.fullName)
+  const { dbUser, refetch } = useDbUser()
+  const [updatedBio, setUpdatedBio] = useState()
+  const [updatedSocials, setUpdatedSocials] = useState({
+    title: "",
+    link: ""
+  })
+  const [bioLoading, setBioLoading] = useState(false)
+  const [socialLoading, setSocialLoading] = useState(false)
+  const [inputDisable, setInputDisable] = useState("")
+  console.log(updatedSocials)
+  // handle update bio
+  const handleUpdateBio = async (kindeId: any) => {
+    setBioLoading(true)
+    try {
+      const res = await axiosPublic.patch(`/api/user?id=${kindeId}`, { bio: updatedBio })
+      if (res.data.status === 200) {
+        toast.success("User Updated")
+        refetch()
+        setBioLoading(false)
+      }
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setBioLoading(false)
+    }
+  }
 
-
-
-  const chartData = [
-    { label: 'Jan', value: 30 },
-    { label: 'Feb', value: 80 },
-    { label: 'Mar', value: 45 },
-    { label: 'Apr', value: 60 },
-    { label: 'May', value: 20 },
-  ];
+  // handle update social links 
+  const handleUpdateSocial = async (kindeId: any) => {
+    setSocialLoading(true)
+    try {
+      const res = await axiosPublic.patch(`/api/user?id=${kindeId}`, { title: updatedBio })
+      if (res.data.status === 200) {
+        toast.success("User Updated")
+        refetch()
+        setSocialLoading(false)
+      }
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setSocialLoading(false)
+    }
+  }
 
   return (
     <div className="grid grid-cols-6 gap-10">
       {/* Profile Section */}
-      <div className="col-span-2 bg-background p-10 rounded-lg flex items-center justify-center flex-col gap-5">
+      <div className="col-span-2 bg-background p-10 rounded-lg flex items-center justify-center flex-col gap-5 w-full">
         <div className="w-60 h-60 rounded-full border-4 overflow-hidden object-cover object-center border-primary">
           <img
             className="w-full"
@@ -53,25 +101,75 @@ export default function page() {
         </p>
         <div className="flex gap-5 items-center w-full">
           <div className="bg-muted rounded-lg p-5 flex flex-col items-center justify-center w-full">
-            <p className="text-2xl font-black">10</p>
+            <p className="text-2xl font-black">{dbUser?.points}</p>
             <p className="text-muted-foreground font-semibold">Points</p>
           </div>
           <div className="bg-muted rounded-lg p-5 flex flex-col items-center justify-center w-full">
-            <p className="text-2xl font-black">10</p>
+            <p className="text-2xl font-black">{dbUser?.completedCourses.length}</p>
             <p className="text-muted-foreground font-semibold">Certificates</p>
           </div>
         </div>
-        <div className="space-y-5">
+        <div className="space-y-5 flex flex-col items-start w-full">
           <h1 className="text-2xl font-black">Achievements</h1>
           <div>icons</div>
           <h1 className="text-2xl font-black">Bio</h1>
-          <div className="bg-muted p-5 rounded-lg"> 
-          <p className="text-muted-foreground">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore
-            dolorem tempore suscipit consectetur fugit culpa vel quisquam
-            provident omnis commodi.
-          </p>
+          <div className="bg-muted p-5 rounded-lg">
+            <p className="text-muted-foreground">
+              {dbUser?.bio}
+            </p>
           </div>
+        </div>
+
+        <div className="w-full flex flex-col items-start">
+          <h1 className="text-2xl font-black">Social Links</h1>
+          <div className="flex gap-3 mt-3">
+            <Link href={""} className="w-12"><img src={"https://img.icons8.com/?size=100&id=uLWV5A9vXIPu&format=png&color=000000"} /></Link>
+            <Link href={""} className="w-12"><img className="w-full" src="https://img.icons8.com/?size=100&id=119026&format=png&color=000000" alt="" /></Link>
+            <Link href={""} className="w-12"><img className="w-full" src="https://img.icons8.com/?size=100&id=AZOZNnY73haj&format=png&color=000000" alt="" /></Link>
+            <Link href={""} className="w-12"><img className="w-full" src="https://img.icons8.com/?size=100&id=fJp7hepMryiw&format=png&color=000000" alt="" /></Link>
+          </div>
+          <Dialog>
+            <DialogTrigger className="w-full"><Button className="mt-5 w-full">Update Profile</Button></DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="mb-3 font-black text-2xl">Update Profile</DialogTitle>
+                <DialogDescription>
+                  <div className="space-y-3">
+                    {/* bio */}
+                    <div>
+                      <h1 className="font-bold text-xl text-foreground">Bio</h1>
+                      <hr className="w-full my-2" />
+                      <textarea onChange={(e: any) => setUpdatedBio(e.target.value)} name="" cols={50} className="w-full py-2 px-5 bg-muted rounded-lg shadow-md" placeholder="Type here" id=""></textarea>
+                      <Button onClick={() => handleUpdateBio(dbUser?.kindeId)} className="w-full mt-5">{bioLoading ? <StateLoading /> : "Update Bio"}</Button>
+                    </div>
+                    {/* social links  */}
+                    <div className="flex flex-col gap-3">
+                      <h1 className="font-bold text-xl text-blue-500">Social Links</h1>
+                      <hr className="w-full my-1" />
+
+                      <div className="flex items-center">
+                        <h1 className="font-semibold col-span-1 text-foreground text-lg px-5 py-1 rounded-l-lg shadow-md bg-muted">Facebook</h1>
+                        <input readOnly={inputDisable !== "facebook"} onChange={(e: any) => setUpdatedSocials({ ...updatedSocials, title: "Facebook", [e.target.name]: e.target.value })} type="url" placeholder="Type here" className="py-2 px-5 bg-muted col-span-3  border-none shadow-md rounded-r-lg w-full" name="link" id="" />
+                        {/* <Button onClick={() => setInputDisable("facebook")} className="ml-2 col-span-1">{inputDisable === "facebook" ? "Save" : "Edit"}</Button> */}
+                        {
+                          inputDisable === "facebook" ? <Button className="ml-2 col-span-1" onClick={() => handleUpdateSocial(dbUser?.kindeId)}>Save</Button> : <Button onClick={() => setInputDisable("facebook")} className="ml-2 col-span-1">Edit</Button>
+                        }
+                      </div>
+                      <div className="flex items-center">
+                        <h1 className="font-semibold col-span-1 text-foreground text-lg px-5 py-1 rounded-l-lg shadow-md bg-muted">Instagram</h1>
+                        <input readOnly={inputDisable !== "instagram"} onChange={(e: any) => setUpdatedSocials({ ...updatedSocials, title: "Facebook", [e.target.name]: e.target.value })} type="url" placeholder="Type here" className="py-2 px-5 bg-muted col-span-3  border-none shadow-md rounded-r-lg w-full" name="link" id="" />
+                        <Button onClick={() => setInputDisable("instagram")} className="ml-2 col-span-1">{inputDisable === "instagram" ? "Save" : "Edit"}</Button>
+                      </div>
+
+
+
+                    </div>
+                  </div>
+                  <Button onClick={() => handleUpdateSocial(dbUser?.kindeId)} className="w-full mt-5">{socialLoading ? <StateLoading /> : "Update Social Links"}</Button>
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
@@ -86,7 +184,7 @@ export default function page() {
                 alt=""
               />
               <div className="ml-5">
-                <h1 className="text-3xl font-black">100</h1>
+                <h1 className="text-3xl font-black">{dbUser?.completedCourses.length}</h1>
                 <p className="text-muted-foreground font-semibold">
                   Courses Completed
                 </p>
@@ -103,7 +201,7 @@ export default function page() {
                 alt=""
               />
               <div className="ml-5">
-                <h1 className="text-3xl font-black">100</h1>
+                <h1 className="text-3xl font-black">{dbUser?.currentCourses.length}</h1>
                 <p className="text-muted-foreground font-semibold">
                   Courses In Progress
                 </p>

@@ -13,7 +13,7 @@ export default function useDbUser() {
   //     fetchUser();
   //   }
 
-  const { data: dbUser } = useQuery({
+  const { data: dbUser, refetch } = useQuery({
     queryKey: ["dbUser"],
     queryFn: async () => {
       const res = await axiosPublic.get(`/api/user?id=${user?.id}`);
@@ -22,5 +22,5 @@ export default function useDbUser() {
     },
   });
 
-  return { dbUser };
+  return { dbUser, refetch };
 }

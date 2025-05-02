@@ -3,7 +3,17 @@ import { User } from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  const { email, fullName, id: kindeId, picture, role } = await request.json();
+  const {
+    email,
+    fullName,
+    id: kindeId,
+    picture,
+    role,
+    bio,
+    socialLinks,
+    points,
+    comments,
+  } = await request.json();
   await connectToDatabase();
   try {
     console.log(email, fullName, kindeId, picture, role);
@@ -25,6 +35,10 @@ export async function POST(request: NextRequest) {
       kindeId,
       picture,
       role: "student",
+      bio,
+      socialLinks,
+      points,
+      comments,
     });
     return NextResponse.json(
       { message: "User created", user },
@@ -63,6 +77,30 @@ export async function GET(req: NextRequest) {
     console.error(error);
     return NextResponse.json(
       { message: "Error getting user", error },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  const { bio } = await req.json();
+  console.log("patch data", bio);
+  try {
+    const { searchParams } = new URL(req.url);
+    const kindeId = searchParams.get("id");
+    const updatedData = await User.findOneAndUpdate(
+      { kindeId },
+      { bio },
+      { new: true }
+    );
+    return NextResponse.json(
+      { message: "User Updated", status: 200, updatedData },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Error updating user data", error },
       { status: 500 }
     );
   }

@@ -12,7 +12,12 @@ const UserSchema = new Schema(
       default: "student",
     },
     bio: { type: String, default: "" },
-    socialLinks: { type: [Object], default: [] },
+    socialLinks: [
+      {
+        title: String,
+        link: String,
+      },
+    ],
     points: { type: Number, default: 0, required: true },
     badges: { type: [String], default: [] },
     completedCourses: { type: [String], default: [] },
@@ -53,6 +58,7 @@ const UserSchema = new Schema(
       },
     ],
     comments: { type: [String], default: [] },
+    achievements: { type: [String], default: [] },
   },
   { timestamps: true }
 );
