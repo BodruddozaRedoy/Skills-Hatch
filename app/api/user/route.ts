@@ -83,20 +83,52 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const { bio } = await req.json();
-  console.log("patch data", bio);
+  const { bio, newTitle, newLink } = await req.json();
+  console.log("patch data", bio, newTitle, newLink);
   try {
     const { searchParams } = new URL(req.url);
     const kindeId = searchParams.get("id");
-    const updatedData = await User.findOneAndUpdate(
-      { kindeId },
-      { bio },
-      { new: true }
-    );
-    return NextResponse.json(
-      { message: "User Updated", status: 200, updatedData },
-      { status: 200 }
-    );
+
+    const user = await User.findOne({ kindeId });
+    // console.log(user);
+    if (bio) {
+      const updatedData = await User.findOneAndUpdate(
+        { kindeId },
+        { bio },
+        { new: true }
+      );
+      return NextResponse.json(
+        { message: "User Updated", status: 200, updatedData },
+        { status: 200 }
+      );
+    }
+    if (newTitle && newLink) {
+      const existingTitle = user.socialLinks.find(
+        (link: any) => link.title === newTitle
+      );
+      if (existingTitle) {
+        // update the user
+        await User.findOneAndUpdate(
+          { kindeId, "socialLinks.title": newTitle },
+          { $set: { "socialLinks.$.link": newLink } },
+          { new: true }
+        );
+        return NextResponse.json(
+          { message: "Social Updated", status: 200 },
+          { status: 200 }
+        );
+      } else {
+        // push new
+        await User.findOneAndUpdate(
+          { kindeId },
+          { $push: { socialLinks: { title: newTitle, link: newLink } } }
+        );
+        return NextResponse.json(
+          { message: "Social Added", status: 200 },
+          { status: 200 }
+        );
+      }
+    }
   } catch (error) {
     console.error(error);
     return NextResponse.json(

@@ -40,9 +40,9 @@ export default function page() {
     link: ""
   })
   const [bioLoading, setBioLoading] = useState(false)
-  const [socialLoading, setSocialLoading] = useState(false)
+  const [socialLoading, setSocialLoading] = useState("")
   const [inputDisable, setInputDisable] = useState("")
-  console.log(updatedSocials)
+  // console.log(updatedSocials)
   // handle update bio
   const handleUpdateBio = async (kindeId: any) => {
     setBioLoading(true)
@@ -63,27 +63,36 @@ export default function page() {
 
   // handle update social links 
   const handleUpdateSocial = async (kindeId: any) => {
-    setSocialLoading(true)
+    setSocialLoading(inputDisable)
     try {
-      const res = await axiosPublic.patch(`/api/user?id=${kindeId}`, { title: updatedBio })
+      const res = await axiosPublic.patch(`/api/user?id=${kindeId}`, { newTitle: updatedSocials.title, newLink: updatedSocials.link })
       if (res.data.status === 200) {
         toast.success("User Updated")
         refetch()
-        setSocialLoading(false)
+        setSocialLoading("")
+        setInputDisable("")
       }
       console.log(res.data)
     } catch (error) {
       console.log(error)
     } finally {
-      setSocialLoading(false)
+      setSocialLoading("")
     }
   }
+
+
+  // social links data 
+  const facebook = dbUser?.socialLinks?.find((link: any) => link.title === "Facebook") || "";
+  const instagram = dbUser?.socialLinks?.find((link: any) => link.title === "Instagram") || "";
+  const x = dbUser?.socialLinks?.find((link: any) => link.title === "X") || "";
+  const github = dbUser?.socialLinks?.find((link: any) => link.title === "GitHub") || "";
+
 
   return (
     <div className="grid grid-cols-6 gap-10">
       {/* Profile Section */}
       <div className="col-span-2 bg-background p-10 rounded-lg flex items-center justify-center flex-col gap-5 w-full">
-        <div className="w-60 h-60 rounded-full border-4 overflow-hidden object-cover object-center border-primary">
+        <div className="w-50 h-50 rounded-full border-4 overflow-hidden object-cover object-center border-primary">
           <img
             className="w-full"
             src={
@@ -123,10 +132,11 @@ export default function page() {
         <div className="w-full flex flex-col items-start">
           <h1 className="text-2xl font-black">Social Links</h1>
           <div className="flex gap-3 mt-3">
-            <Link href={""} className="w-12"><img src={"https://img.icons8.com/?size=100&id=uLWV5A9vXIPu&format=png&color=000000"} /></Link>
-            <Link href={""} className="w-12"><img className="w-full" src="https://img.icons8.com/?size=100&id=119026&format=png&color=000000" alt="" /></Link>
-            <Link href={""} className="w-12"><img className="w-full" src="https://img.icons8.com/?size=100&id=AZOZNnY73haj&format=png&color=000000" alt="" /></Link>
-            <Link href={""} className="w-12"><img className="w-full" src="https://img.icons8.com/?size=100&id=fJp7hepMryiw&format=png&color=000000" alt="" /></Link>
+            {!dbUser?.socialLinks && <p className="text-muted-foreground">No social links added</p>}
+            {facebook && <a href={facebook?.link} className="w-12" target="_blank"><img src={"https://img.icons8.com/?size=100&id=uLWV5A9vXIPu&format=png&color=000000"} /></a>}
+            {instagram && <a href={instagram.link} className="w-12" target="_blank"><img className="w-full" src="https://img.icons8.com/?size=100&id=119026&format=png&color=000000" alt="" /></a>}
+            {x && <a href={x.link} className="w-12" target="_blank"><img className="w-full" src="https://img.icons8.com/?size=100&id=fJp7hepMryiw&format=png&color=000000" alt="" /></a>}
+            {github && <a href={github.link} className="w-12" target="_blank"><img className="w-full" src="https://img.icons8.com/?size=100&id=AZOZNnY73haj&format=png&color=000000" alt="" /></a>}
           </div>
           <Dialog>
             <DialogTrigger className="w-full"><Button className="mt-5 w-full">Update Profile</Button></DialogTrigger>
@@ -139,33 +149,49 @@ export default function page() {
                     <div>
                       <h1 className="font-bold text-xl text-foreground">Bio</h1>
                       <hr className="w-full my-2" />
-                      <textarea onChange={(e: any) => setUpdatedBio(e.target.value)} name="" cols={50} className="w-full py-2 px-5 bg-muted rounded-lg shadow-md" placeholder="Type here" id=""></textarea>
+                      <textarea defaultValue={dbUser?.bio} onChange={(e: any) => setUpdatedBio(e.target.value)} name="" cols={70} className="w-full h-40 py-2 px-5 bg-muted rounded-lg shadow-md" placeholder="Type here" id=""></textarea>
                       <Button onClick={() => handleUpdateBio(dbUser?.kindeId)} className="w-full mt-5">{bioLoading ? <StateLoading /> : "Update Bio"}</Button>
                     </div>
                     {/* social links  */}
                     <div className="flex flex-col gap-3">
                       <h1 className="font-bold text-xl text-blue-500">Social Links</h1>
                       <hr className="w-full my-1" />
-
+                      {/* facebook  */}
                       <div className="flex items-center">
-                        <h1 className="font-semibold col-span-1 text-foreground text-lg px-5 py-1 rounded-l-lg shadow-md bg-muted">Facebook</h1>
-                        <input readOnly={inputDisable !== "facebook"} onChange={(e: any) => setUpdatedSocials({ ...updatedSocials, title: "Facebook", [e.target.name]: e.target.value })} type="url" placeholder="Type here" className="py-2 px-5 bg-muted col-span-3  border-none shadow-md rounded-r-lg w-full" name="link" id="" />
-                        {/* <Button onClick={() => setInputDisable("facebook")} className="ml-2 col-span-1">{inputDisable === "facebook" ? "Save" : "Edit"}</Button> */}
+                        <h1 className="w-46 font-semibold col-span-1 text-foreground text-lg pl-5 py-1 rounded-l-lg shadow-md bg-muted">Facebook</h1>
+                        <input defaultValue={facebook?.link} readOnly={inputDisable !== "facebook"} onChange={(e: any) => setUpdatedSocials({ ...updatedSocials, title: "Facebook", [e.target.name]: e.target.value })} type="url" placeholder="Type here" className="py-2 px-5 bg-muted col-span-3  border-none shadow-md rounded-r-lg w-full" name="link" id="" />
                         {
-                          inputDisable === "facebook" ? <Button className="ml-2 col-span-1" onClick={() => handleUpdateSocial(dbUser?.kindeId)}>Save</Button> : <Button onClick={() => setInputDisable("facebook")} className="ml-2 col-span-1">Edit</Button>
+                          inputDisable === "facebook" ? <Button className="ml-2 col-span-1" onClick={() => handleUpdateSocial(dbUser?.kindeId)}>{socialLoading === "facebook" ? <StateLoading /> : "Save"}</Button> : <Button onClick={() => setInputDisable("facebook")} className="ml-2 col-span-1">Edit</Button>
                         }
                       </div>
+                      {/* instagram  */}
                       <div className="flex items-center">
-                        <h1 className="font-semibold col-span-1 text-foreground text-lg px-5 py-1 rounded-l-lg shadow-md bg-muted">Instagram</h1>
-                        <input readOnly={inputDisable !== "instagram"} onChange={(e: any) => setUpdatedSocials({ ...updatedSocials, title: "Facebook", [e.target.name]: e.target.value })} type="url" placeholder="Type here" className="py-2 px-5 bg-muted col-span-3  border-none shadow-md rounded-r-lg w-full" name="link" id="" />
-                        <Button onClick={() => setInputDisable("instagram")} className="ml-2 col-span-1">{inputDisable === "instagram" ? "Save" : "Edit"}</Button>
+                        <h1 className="w-46 font-semibold col-span-1 text-foreground text-lg pl-5 py-1 rounded-l-lg shadow-md bg-muted">Instagram</h1>
+                        <input defaultValue={instagram?.link} readOnly={inputDisable !== "instagram"} onChange={(e: any) => setUpdatedSocials({ ...updatedSocials, title: "Instagram", [e.target.name]: e.target.value })} type="url" placeholder="Type here" className="py-2 px-5 bg-muted col-span-3  border-none shadow-md rounded-r-lg w-full" name="link" id="" />
+                        {
+                          inputDisable === "instagram" ? <Button className="ml-2 col-span-1" onClick={() => handleUpdateSocial(dbUser?.kindeId)}>{socialLoading === "instagram" ? <StateLoading /> : "Save"}</Button> : <Button onClick={() => setInputDisable("instagram")} className="ml-2 col-span-1">Edit</Button>
+                        }
                       </div>
-
-
+                      {/* X */}
+                      <div className="flex items-center">
+                        <h1 className="w-46 font-semibold col-span-1 text-foreground text-lg pl-5 py-1 rounded-l-lg shadow-md bg-muted">X</h1>
+                        <input defaultValue={x?.link} readOnly={inputDisable !== "x"} onChange={(e: any) => setUpdatedSocials({ ...updatedSocials, title: "X", [e.target.name]: e.target.value })} type="url" placeholder="Type here" className="py-2 px-5 bg-muted col-span-3  border-none shadow-md rounded-r-lg w-full" name="link" id="" />
+                        {
+                          inputDisable === "x" ? <Button className="ml-2 col-span-1" onClick={() => handleUpdateSocial(dbUser?.kindeId)}>{socialLoading === "x" ? <StateLoading /> : "Save"}</Button> : <Button onClick={() => setInputDisable("x")} className="ml-2 col-span-1">Edit</Button>
+                        }
+                      </div>
+                      {/* Github */}
+                      <div className="flex items-center">
+                        <h1 className="w-46 font-semibold col-span-1 text-foreground text-lg pl-5 py-1 rounded-l-lg shadow-md bg-muted">GitHub</h1>
+                        <input defaultValue={github?.link} readOnly={inputDisable !== "github"} onChange={(e: any) => setUpdatedSocials({ ...updatedSocials, title: "GitHub", [e.target.name]: e.target.value })} type="url" placeholder="Type here" className="py-2 px-5 bg-muted col-span-3  border-none shadow-md rounded-r-lg w-full" name="link" id="" />
+                        {
+                          inputDisable === "github" ? <Button className="ml-2 col-span-1" onClick={() => handleUpdateSocial(dbUser?.kindeId)}>{socialLoading === "github" ? <StateLoading /> : "Save"}</Button> : <Button onClick={() => setInputDisable("github")} className="ml-2 col-span-1">Edit</Button>
+                        }
+                      </div>
 
                     </div>
                   </div>
-                  <Button onClick={() => handleUpdateSocial(dbUser?.kindeId)} className="w-full mt-5">{socialLoading ? <StateLoading /> : "Update Social Links"}</Button>
+                  {/* <Button onClick={() => handleUpdateSocial(dbUser?.kindeId)} className="w-full mt-5">{socialLoading ? <StateLoading /> : "Update Social Links"}</Button> */}
                 </DialogDescription>
               </DialogHeader>
             </DialogContent>
