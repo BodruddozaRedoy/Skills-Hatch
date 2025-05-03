@@ -9,6 +9,7 @@ import { useParams, usePathname } from 'next/navigation';
 import { IoIosArrowBack } from "react-icons/io";
 import { GeneralContext } from '@/context/useContext';
 import { FiUser } from "react-icons/fi";
+import { IoIosAddCircleOutline } from "react-icons/io";
 
 
 
@@ -28,6 +29,11 @@ const sidebarLinks = [
         title: "Profile",
         icon: FiUser,
         link: "/profile"
+    },
+    {
+        title: "My Courses",
+        icon: IoBookSharp,
+        link: "/my-courses"
     },
 
 
