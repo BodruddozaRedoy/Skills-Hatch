@@ -58,7 +58,6 @@ const UserSchema = new Schema(
       },
     ],
     comments: { type: [String], default: [] },
-    achievements: { type: [String], default: [] },
   },
   { timestamps: true }
 );

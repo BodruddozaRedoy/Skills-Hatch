@@ -89,7 +89,7 @@ export default function page() {
 
 
   return (
-    <div className="grid grid-cols-6 gap-10">
+    <div className="grid items-center grid-cols-6 gap-10">
       {/* Profile Section */}
       <div className="col-span-2 bg-background p-10 rounded-lg flex items-center justify-center flex-col gap-5 w-full">
         <div className="w-50 h-50 rounded-full border-4 overflow-hidden object-cover object-center border-primary">
@@ -120,7 +120,35 @@ export default function page() {
         </div>
         <div className="space-y-5 flex flex-col items-start w-full">
           <h1 className="text-2xl font-black">Achievements</h1>
-          <div>icons</div>
+          <div className="w-full flex justify-between gap-3">
+            <div className={` flex flex-col items-center shadow-md p-2 rounded-lg ${dbUser?.points >= 0 ? "" : "bg-muted opacity-50"}`}>
+              <div className="w-18 h-18 object-cover ">
+                <img className="w-full" src="https://img.icons8.com/?size=100&id=Yt084riMRP1m&format=png&color=000000" alt="" />
+              </div>
+              <p className="font-bold text-muted-foreground">Newbie</p>
+            </div>
+
+            <div className={` flex flex-col items-center shadow-md p-2 rounded-lg ${dbUser?.points >= 1000 ? "" : "bg-muted opacity-50"}`}>
+              <div className="w-18 h-18 object-cover ">
+                <img className="w-full" src="https://img.icons8.com/?size=100&id=kPENNmiEJv3b&format=png&color=000000" alt="" />
+              </div>
+              <p className="font-bold text-muted-foreground">Apprentice </p>
+            </div>
+
+            <div className={` flex flex-col items-center shadow-md p-2 rounded-lg ${dbUser?.points >= 3000 ? "" : "bg-muted opacity-50"}`}>
+              <div className="w-18 h-18 object-cover">
+                <img className="w-full" src="https://img.icons8.com/?size=100&id=bAfOJAIUNSPM&format=png&color=000000" alt="" />
+              </div>
+              <p className="font-bold text-muted-foreground">Pro</p>
+            </div>
+
+            <div className={` flex flex-col items-center shadow-md p-2 rounded-lg ${dbUser?.points >= 5000 ? "" : "bg-muted opacity-50"}`}>
+              <div className="w-18 h-18 object-cover">
+                <img className="w-full" src="https://img.icons8.com/?size=100&id=12197&format=png&color=000000" alt="" />
+              </div>
+              <p className="font-bold text-muted-foreground">Expert</p>
+            </div>
+          </div>
           <h1 className="text-2xl font-black">Bio</h1>
           <div className="bg-muted p-5 rounded-lg">
             <p className="text-muted-foreground">
