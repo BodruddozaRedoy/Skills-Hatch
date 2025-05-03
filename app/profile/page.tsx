@@ -160,7 +160,7 @@ export default function page() {
         <div className="w-full flex flex-col items-start">
           <h1 className="text-2xl font-black">Social Links</h1>
           <div className="flex gap-3 mt-3">
-            {!dbUser?.socialLinks && <p className="text-muted-foreground">No social links added</p>}
+            {!dbUser?.socialLinks.length && <p className="text-muted-foreground">No social links added</p>}
             {facebook && <a href={facebook?.link} className="w-12" target="_blank"><img src={"https://img.icons8.com/?size=100&id=uLWV5A9vXIPu&format=png&color=000000"} /></a>}
             {instagram && <a href={instagram.link} className="w-12" target="_blank"><img className="w-full" src="https://img.icons8.com/?size=100&id=119026&format=png&color=000000" alt="" /></a>}
             {x && <a href={x.link} className="w-12" target="_blank"><img className="w-full" src="https://img.icons8.com/?size=100&id=fJp7hepMryiw&format=png&color=000000" alt="" /></a>}

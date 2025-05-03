@@ -15,7 +15,7 @@ import { RiSettings5Fill } from "react-icons/ri";
 import { HiUserCircle } from "react-icons/hi2";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { ImCross } from "react-icons/im";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import RightSidebar from '../RightSidebar/RightSidebar';
 import {
   DropdownMenu,
@@ -35,7 +35,9 @@ import toast from 'react-hot-toast';
 export default function Navbar() {
   const [menu, setMenu] = useState(false)
   const [searchContent, setSearchContent] = useState(false)
+  const wrapperRef = useRef(null)
   const { user } = useKindeUser()
+  // conditionally user created or fatched at db
   useEffect(() => {
     const isUserFetched = localStorage.getItem("user-status")
     if (!isUserFetched) {
@@ -52,6 +54,19 @@ export default function Navbar() {
       }
     }
   }, [user])
+
+  // search outside click close 
+  useEffect(() => {
+    const handleClickOutside = (e: any) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setSearchContent(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
   return (
     <div className='flex items-center justify-between px-5 lg:px-10 py-7 bg-background w-full relative'>
       {/* Logo  */}
@@ -63,7 +78,7 @@ export default function Navbar() {
         <Search className='text-primary absolute top-1/2 -translate-y-1/2 left-4' />
         {/* search content  */}
         {
-          searchContent && <div className={`w-[450px] rounded-b-lg bg-muted h-[400px] absolute top-12 border-b border-x border-primary`}></div>
+          searchContent && <div ref={wrapperRef} className={`w-[450px] rounded-b-lg bg-muted h-[400px] absolute top-12 border-b border-x border-primary`}></div>
         }
       </div>
       {/* navbar end  */}
