@@ -34,6 +34,7 @@ import toast from 'react-hot-toast';
 
 export default function Navbar() {
   const [menu, setMenu] = useState(false)
+  const [searchContent, setSearchContent] = useState(false)
   const { user } = useKindeUser()
   useEffect(() => {
     const isUserFetched = localStorage.getItem("user-status")
@@ -58,8 +59,12 @@ export default function Navbar() {
 
       {/* search bar  */}
       <div className='relative hidden lg:flex'>
-        <input className='bg-muted py-3 rounded-lg px-5 pl-12 w-[450px]' type="text" name="" id="" placeholder='Search here...' />
+        <input onClick={() => setSearchContent(!searchContent)} className={`bg-muted py-3 ${searchContent ? 'rounded-t-lg border border-primary' : 'rounded-lg'} px-5 pl-12 w-[450px] focus:outline-none`} type="text" name="" id="" placeholder='Search here...' />
         <Search className='text-primary absolute top-1/2 -translate-y-1/2 left-4' />
+        {/* search content  */}
+        {
+          searchContent && <div className={`w-[450px] rounded-b-lg bg-muted h-[400px] absolute top-12 border-b border-x border-primary`}></div>
+        }
       </div>
       {/* navbar end  */}
       <div className='flex items-center gap-6 z-40'>
