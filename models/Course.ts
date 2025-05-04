@@ -12,9 +12,10 @@ const CourseSchema = new Schema(
     description: String,
     instructor: { type: {}, required: true },
     category: String,
-    lessons: [{ type: Schema.Types.ObjectId, ref: "Lesson" }],
+    chapters: [{ type: {}, default: {} }],
     studentsEnrolled: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+    reviews: [{ type: {}, default: {} }],
+    progress: [{ type: {}, default: {} }],
   },
   { timestamps: true }
 );
