@@ -74,6 +74,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
 import content from "@/components/tiptap-templates/simple/data/content.json"
+import { json } from "stream/consumers"
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -211,6 +212,9 @@ export function SimpleEditor() {
     }
   }, [])
 
+  const savedContent = localStorage.getItem('TextEditorContent')
+  const html = savedContent ? JSON.parse(savedContent) : 'Write here...'
+  console.log(html)
   const   editor = useEditor({
     immediatelyRender: false,
     editorProps: {
@@ -244,10 +248,30 @@ export function SimpleEditor() {
       TrailingNode,
       Link.configure({ openOnClick: false }),
     ],
-    content: "Write here...",
+    content: html || "Write here...",
   })
 
+  // console.log(editor?.getHTML())
   React.useEffect(() => {
+    if (!editor) {
+      return localStorage.setItem("TextEditorContent", JSON.stringify("Write here..."))
+    }
+
+    const saveContent = () => {
+      const html = editor.getHTML()
+      localStorage.setItem("TextEditorContent", JSON.stringify(html))
+    }
+
+    editor.on('update', saveContent)
+
+    return () => {
+      editor.off('update', saveContent)
+    }
+  }, [editor])
+
+
+  React.useEffect(() => {
+
     const checkCursorVisibility = () => {
       if (!editor || !toolbarRef.current) return
 
@@ -290,7 +314,7 @@ export function SimpleEditor() {
     <EditorContext.Provider value={{ editor }}>
       <Toolbar
         ref={toolbarRef}
-        className="shadow-md rounded-t-lg"
+        className="shadow-md rounded-t-lg mt-5"
         style={
           isMobile
             ? {
