@@ -139,7 +139,7 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <ImageUploadButton text="Add" />
+        {/* <ImageUploadButton text="Add" /> */}
       </ToolbarGroup>
 
       <Spacer />
@@ -147,7 +147,7 @@ const MainToolbarContent = ({
       {isMobile && <ToolbarSeparator />}
 
       <ToolbarGroup>
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
       </ToolbarGroup>
     </>
   )
@@ -213,8 +213,10 @@ export function SimpleEditor() {
   }, [])
 
   const savedContent = localStorage.getItem('TextEditorContent')
-  const html = savedContent ? JSON.parse(savedContent) : 'Write here...'
+  const _html = savedContent && JSON.parse(savedContent)
+  const html = _html === "<p></p>" ? "Write here..." : _html
   console.log(html)
+
   const   editor = useEditor({
     immediatelyRender: false,
     editorProps: {
@@ -254,7 +256,7 @@ export function SimpleEditor() {
   // console.log(editor?.getHTML())
   React.useEffect(() => {
     if (!editor) {
-      return localStorage.setItem("TextEditorContent", JSON.stringify("Write here..."))
+      return 
     }
 
     const saveContent = () => {
@@ -311,10 +313,11 @@ export function SimpleEditor() {
   }, [isMobile, mobileView])
 
   return (
-    <EditorContext.Provider value={{ editor }}>
+    <div className="relative">
+      <EditorContext.Provider value={{ editor }}>
       <Toolbar
         ref={toolbarRef}
-        className="shadow-md rounded-t-lg mt-5"
+          className="shadow-md rounded-t-lg mt-5 w-full sticky top-0 "
         style={
           isMobile
             ? {
@@ -345,5 +348,6 @@ export function SimpleEditor() {
         />
       </div>
     </EditorContext.Provider>
+    </div>
   )
 }

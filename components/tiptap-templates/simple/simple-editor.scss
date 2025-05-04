@@ -27,7 +27,7 @@ body,
 }
 
 body {
-  overflow: hidden;
+  overflow: auto;
 }
 
 .tiptap.ProseMirror {
@@ -58,7 +58,7 @@ body {
 }
 
 .simple-editor-content {
-  max-width: 640px;
+  max-width: 100%;
   // margin: 10px;
   width: 100%;
   overflow-x: hidden;
