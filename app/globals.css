@@ -89,6 +89,7 @@ body {
   --primary: rgb(144, 198, 124);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: rgb(245, 196, 94);
+  /* --secondary: #f5c55e86; */
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: #99a1af;
