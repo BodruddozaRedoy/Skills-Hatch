@@ -19,9 +19,9 @@ import useDbUser from '@/hooks/useDbUser'
 export default function CourseDetails({ course, setCourse }: any) {
     const { dbUser } = useDbUser()
     return (
-        <div className='grid grid-cols-2 items-start w-full gap-5'>
+        <div className='grid grid-cols-3 items-start w-full gap-5'>
             {/* details  */}
-            <div className='space-y-4'>
+            <div className='space-y-4 col-span-2 w-full'>
                 {/* title  */}
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="title">Title</Label>
@@ -90,7 +90,7 @@ export default function CourseDetails({ course, setCourse }: any) {
                 </div>
             </div>
             {/* preview  */}
-            <div>
+            <div className='w-full col-span-1'>
                 <h1 className='font-bold text-xl mb-3'>Preview</h1>
                 <div className='w-[450px] shadow-md bg-background p-5 rounded-lg '>
                     <div className='h-[250px] object-contain object-center w-full rounded-lg overflow-hidden mb-5'>
