@@ -116,7 +116,7 @@ export default function MyCourseCard({ course, refetch }: any) {
                     {/* edit  */}
                 </div>
                 {/* status change  */}
-                <Link href={"/my-courses/update-course"} className="w-full"><Button className="w-full"><FiEdit /> Edit</Button></Link>
+                <Link href={`/my-courses/update-course/${_id}?tab=courseDetails`} className="w-full"><Button className="w-full"><FiEdit /> Edit</Button></Link>
                 {/* add content  */}
                 <Button className="w-full"><MdAddCircle /> Add Content</Button>
                 <div className="flex items-center gap-3 w-full">
