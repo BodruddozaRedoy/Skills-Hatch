@@ -27,12 +27,22 @@ export default function MyCourses() {
     const { coursesByInstructor, refetch, isLoading } = useGetCoursesByInstructor()
     console.log(searchedText)
 
-    useEffect(() => {
-        const filtered_Courses = coursesByInstructor?.filter((course: any) =>
-            course.title.toLowerCase().includes(searchedText.toLowerCase())
-        );
-        setFilteredCourses(filtered_Courses)
-    }, [])
+    // useEffect(() => {
+    //     if (!coursesByInstructor) return;
+
+    //     if (searchedText === "") {
+    //         setFilteredCourses(coursesByInstructor);
+    //         return;
+    //     }
+
+    //     const filtered_Courses = coursesByInstructor.filter((course: any) =>
+    //         course.title.toLowerCase().includes(searchedText.toLowerCase())
+    //     );
+    //     setFilteredCourses(filtered_Courses);
+    // }, [searchedText, coursesByInstructor]); // ✅ include coursesByInstructor
+
+
+
 
 
 
@@ -71,10 +81,11 @@ export default function MyCourses() {
                         isLoading && <MyCourseCardSkeleton />
                     }
                     {
-                        (coursesByInstructor)?.map((course: any, i: number) => (
+                        (filteredCourses || coursesByInstructor)?.map((course: any, i: number) => (
                             <MyCourseCard course={course} key={i} refetch={refetch} />
                         ))
                     }
+
                 </div>
             </div>
         </div>

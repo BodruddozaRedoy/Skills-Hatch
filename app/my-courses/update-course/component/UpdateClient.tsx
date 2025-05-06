@@ -1,5 +1,3 @@
-// app/my-courses/update/[courseId]/UpdateClient.tsx
-
 "use client"
 import { Button } from '@/components/ui/button'
 import useDbUser from '@/hooks/useDbUser'
@@ -13,10 +11,10 @@ import Swal from 'sweetalert2'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CourseContent from '../../add-course/components/CourseContent'
 import CourseDetails from '../../add-course/components/CourseDetails'
-import { MdPublish } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
 
-export default function UpdateClient({ _id }: { _id: string }) {
+
+export default function UpdateCourse({ _id }: { _id: string }) {
     const searchParams = useSearchParams()
     const router = useRouter()
     const { dbUser } = useDbUser()
@@ -61,20 +59,17 @@ export default function UpdateClient({ _id }: { _id: string }) {
         }
     }, [singleCourse]);
 
-    const handlePublish = async () => {
+    const handleUpdate = async () => {
         try {
-            const res = await axiosPublic.post("/api/course", course)
-            if (res.data.status === 201) {
+            const res = await axiosPublic.patch(`/api/course?kindeId=${dbUser?.kindeId}&courseId=${_id}`, course)
+            if (res.data.status === 200) {
                 Swal.fire({
-                    title: "Do you want to save the changes?",
-                    showCancelButton: true,
-                    confirmButtonText: "Go to courses",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        router.push("/my-courses/add-course")
-                    }
-                });
+                    title: "Changes Saved!",
+                    icon: "success"
+                })
+                refetch()
             }
+            console.log(res.data)
         } catch (error) {
             console.log("Error at handlePublish", error)
         }
@@ -85,8 +80,7 @@ export default function UpdateClient({ _id }: { _id: string }) {
             <div className='flex items-center justify-between'>
                 <Link href={"/my-courses"} className='font-semibold  gap-2 items-center inline-flex'><IoIosArrowBack /> Back</Link>
                 <div>
-                    <Button onClick={() => { setCourse({ ...course, status: "draft" }); handlePublish(); }} className='bg-secondary gap-2 items-center hover:bg-secondary'><RiDraftFill /> Draft</Button>
-                    <Button onClick={() => { setCourse({ ...course, status: "published" }); handlePublish(); }} className='ml-3 bg-primary gap-2 items-center hover:bg-primary'><MdPublish /> Publish</Button>
+                    <Button onClick={() => { handleUpdate() }} className='bg-secondary gap-2 items-center hover:bg-secondary'><RiDraftFill /> Update</Button>
                 </div>
             </div>
             <div className='bg-background p-5 rounded-lg mt-5 flex items-start w-full'>
@@ -96,7 +90,7 @@ export default function UpdateClient({ _id }: { _id: string }) {
                         <TabsTrigger onClick={() => setTab("")} value={tab || "course-content"}>Course Content</TabsTrigger>
                     </TabsList>
                     <TabsContent value='course-details'><CourseDetails course={course} setCourse={setCourse} /></TabsContent>
-                    <TabsContent value='course-content'><CourseContent course={course} setCourse={setCourse} /></TabsContent>
+                    <TabsContent value='course-content'><CourseContent course={course} setCourse={setCourse} _id={_id} /></TabsContent>
                 </Tabs>
             </div>
         </div>

@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({
         message: "Single Course fetched",
         status: "200",
-        data: course
+        data: course,
       });
     }
 
@@ -72,13 +72,42 @@ export async function PATCH(req: NextRequest) {
     if (!kindeId || !courseId)
       return NextResponse.json({ message: "Valid id is required" });
     const body = await req.json();
-    const { title, price, thumbnail, description, status } = body;
+    const {
+      title,
+      price,
+      thumbnail,
+      description,
+      status,
+      category,
+      level,
+      language,
+      chapter,
+    } = body;
     const updatedData: any = {};
     if (title) updatedData.title = title;
     if (price) updatedData.price = price;
     if (thumbnail) updatedData.thumbnail = thumbnail;
     if (description) updatedData.description = description;
     if (status) updatedData.status = status;
+    if (category) updatedData.category = category;
+    if (level) updatedData.level = level;
+    if (language) updatedData.language = language;
+
+    // only chapter add
+    if (chapter) {
+      console.log("chapter", chapter);
+      const course = await Course.findOne({
+        _id: courseId,
+        "instructor.kindeId": kindeId,
+      });
+      if (!course) return NextResponse.json({ message: "KindeId required" });
+      console.log("course", course);
+      course?.chapters.push(chapter);
+      await course.save();
+      return NextResponse.json({ message: "Chapter added", status: 201 });
+    }
+
+    // rest of the fields updated
     const course = await Course.findOneAndUpdate(
       { _id: courseId, "instructor.kindeId": kindeId },
       updatedData,

@@ -12,7 +12,7 @@ const CourseSchema = new Schema(
     description: String,
     instructor: { type: {}, required: true },
     category: String,
-    chapters: [{ type: {}, default: {} }],
+    chapters: [{ type: {}, default: {} }], 
     studentsEnrolled: [{ type: Schema.Types.ObjectId, ref: "User" }],
     reviews: [{ type: {}, default: {} }],
     progress: [{ type: {}, default: {} }],
@@ -23,6 +23,17 @@ const CourseSchema = new Schema(
 export default models.Course || model("Course", CourseSchema);
 
 
+
+// chapters
+// -title
+// -lessons
+// -quiz
+
+// lessons
+// -title
+// -content
+// -videoUrl
+// -resources
 
 // {
 //     "_id": 1,

@@ -11,7 +11,7 @@ export default function useGetCoursesByInstructor() {
     refetch,
     isLoading,
   } = useQuery({
-    queryKey: ["my-courses", dbUser?.fullName],
+    queryKey: ["my-courses", dbUser?.kindeId],
     queryFn: async () => {
       const res = await axiosPublic.get(
         `/api/course?kindeId=${dbUser?.kindeId}&courseId=${""}`
