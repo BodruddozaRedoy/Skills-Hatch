@@ -1,6 +1,6 @@
-import UpdateClient from "../component/UpdateClinet";
+import UpdateClient from "../component/UpdateClient";
 
-
-export default function UpdatePage({ params }: { params: { _id: string } }) {
-    return <UpdateClient _id={params._id} />;
+export default async function UpdatePage({ params }: { params: { _id: string } }) {
+    const { _id } = params;
+    return <UpdateClient _id={_id} />;
 }

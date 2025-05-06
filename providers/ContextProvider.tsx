@@ -42,8 +42,8 @@ export default function ContextProvider({ children }: any) {
                 <section className={`${pathname.includes("/dashboard") ? 'lg:mx-[300px]' : 'lg:ml-[300px]'} p-5 lg:p-10 w-full mt-[120px]`}>{children}</section>
                 {pathname.includes("/dashboard") && <aside className="hidden lg:flex w-[300px] h-screen fixed right-0 mt-[120px]"><RightSidebar /></aside>}
               </main>
-              <Toaster />
               <footer></footer>
+              <Toaster />
             </>
           ) : (
             <LoadingScreen />

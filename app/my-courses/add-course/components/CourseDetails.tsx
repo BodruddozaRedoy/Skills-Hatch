@@ -25,12 +25,12 @@ export default function CourseDetails({ course, setCourse }: any) {
                 {/* title  */}
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="title">Title</Label>
-                    <Input value={course?.title} onChange={(e: any) => setCourse({ ...course, [e.target.name]: e.target.value })} type="text" name='title' id="title" placeholder="Type here" />
+                    <Input value={course?.title || ""} onChange={(e: any) => setCourse({ ...course, [e.target.name]: e.target.value })} type="text" name='title' id="title" placeholder="Type here" />
                 </div>
                 {/* price  */}
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="price">Price</Label>
-                    <Input value={course?.price} onChange={(e: any) => setCourse({ ...course, [e.target.name]: parseInt(e.target.value) })} type="number" name='price' id="price" placeholder="Type here" />
+                    <Input value={course?.price || ""} onChange={(e: any) => setCourse({ ...course, [e.target.name]: parseInt(e.target.value) })} type="number" name='price' id="price" placeholder="Type here" />
                 </div>
                 {/* thumbnail  */}
                 <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -45,7 +45,7 @@ export default function CourseDetails({ course, setCourse }: any) {
                 {/* category  */}
                 <div>
                     <Label className='mb-2'>Category</Label>
-                    <Select value={course?.category} onValueChange={(value: any) => setCourse({ ...course, category: value })}>
+                    <Select value={course?.category || ""} onValueChange={(value: any) => setCourse({ ...course, category: value })}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue />
                         </SelectTrigger>
@@ -64,7 +64,7 @@ export default function CourseDetails({ course, setCourse }: any) {
                 {/* level  */}
                 <div>
                     <Label className='mb-2'>Level</Label>
-                    <Select value={course?.level} onValueChange={(value: any) => setCourse({ ...course, level: value })}>
+                    <Select value={course?.level || ""} onValueChange={(value: any) => setCourse({ ...course, level: value })}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue />
                         </SelectTrigger>
@@ -81,12 +81,12 @@ export default function CourseDetails({ course, setCourse }: any) {
                 {/* language  */}
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="language">Language</Label>
-                    <Input value={course?.language} onChange={(e: any) => setCourse({ ...course, [e.target.name]: e.target.value })} name='language' type="text" id="language" placeholder="Type here" />
+                    <Input value={course?.language || ""} onChange={(e: any) => setCourse({ ...course, [e.target.name]: e.target.value })} name='language' type="text" id="language" placeholder="Type here" />
                 </div>
                 {/* description  */}
                 <div className="grid w-full  max-w-sm items-center gap-1.5">
                     <Label htmlFor="description">Description</Label>
-                    <textarea value={course?.description} onChange={(e: any) => setCourse({ ...course, [e.target.name]: e.target.value })} name='description' id="description" className='border rounded-lg h-[200px] py-3 px-3' placeholder="Type here" />
+                    <textarea value={course?.description || ""} onChange={(e: any) => setCourse({ ...course, [e.target.name]: e.target.value })} name='description' id="description" className='border rounded-lg h-[200px] py-3 px-3' placeholder="Type here" />
                 </div>
             </div>
             {/* preview  */}
@@ -116,7 +116,7 @@ export default function CourseDetails({ course, setCourse }: any) {
                             <IoIosBookmarks />
                             <p>{course?.chapters?.length || 0}+ Content</p>
                         </div>
-                        <p className='text-muted-foreground font-semibold'>{(course?.level).charAt(0).toUpperCase() + course.level?.slice(1) || "Level"}</p>
+                        <p className='text-muted-foreground font-semibold'>{(course?.level)?.charAt(0).toUpperCase() + course.level?.slice(1) || "Level"}</p>
                     </div>
 
                 </div>

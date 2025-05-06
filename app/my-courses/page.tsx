@@ -4,7 +4,7 @@ import useDbUser from '@/hooks/useDbUser';
 import { axiosPublic } from '@/lib/axiosPublic';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoIosAddCircleOutline } from "react-icons/io";
 import MyCourseCard from './components/MyCourseCard';
 import {
@@ -23,12 +23,19 @@ import useGetCoursesByInstructor from '@/hooks/useGetCoursesByInstructor';
 
 export default function MyCourses() {
     const [searchedText, setSearchedText] = useState("")
-    const { coursesByInstructor, refetch } = useGetCoursesByInstructor()
+    const [filteredCourses, setFilteredCourses] = useState()
+    const { coursesByInstructor, refetch, isLoading } = useGetCoursesByInstructor()
     console.log(searchedText)
 
-    const filteredCourses = coursesByInstructor?.filter((course: any) =>
-        course.title.toLowerCase().includes(searchedText.toLowerCase())
-    );
+    useEffect(() => {
+        const filtered_Courses = coursesByInstructor?.filter((course: any) =>
+            course.title.toLowerCase().includes(searchedText.toLowerCase())
+        );
+        setFilteredCourses(filtered_Courses)
+    }, [])
+
+
+
     return (
         <div className=''>
             {/* add course  */}
@@ -58,10 +65,13 @@ export default function MyCourses() {
                 {/* courses cards  */}
                 <div className='mt-5 space-y-3 w-full'>
                     {
-                        !filteredCourses && !coursesByInstructor && <MyCourseCardSkeleton />
+                        !filteredCourses && !coursesByInstructor && < MyCourseCardSkeleton />
                     }
                     {
-                        (filteredCourses || coursesByInstructor)?.map((course: any, i: number) => (
+                        isLoading && <MyCourseCardSkeleton />
+                    }
+                    {
+                        (coursesByInstructor)?.map((course: any, i: number) => (
                             <MyCourseCard course={course} key={i} refetch={refetch} />
                         ))
                     }

@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
       const courses = await Course.find({ "instructor.kindeId": kindeId });
       if (!courses) return NextResponse.json({ message: "Courses not found" });
       return NextResponse.json({
-        message: "Course fetched",
+        message: "Courses fetched",
         data: courses,
       });
     }

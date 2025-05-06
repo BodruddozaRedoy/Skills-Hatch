@@ -19,6 +19,8 @@ import { MdPublish } from "react-icons/md";
 import { axiosPublic } from "@/lib/axiosPublic"
 import useDbUser from "@/hooks/useDbUser"
 import Link from "next/link"
+import toast from "react-hot-toast"
+import Swal from "sweetalert2"
 
 
 // {
@@ -73,6 +75,11 @@ export default function MyCourseCard({ course, refetch }: any) {
         const res = await axiosPublic.patch(`/api/course?kindeId=${dbUser?.kindeId}&courseId=${_id}`, { status: "draft" })
         if (res.data.status === 200) {
             refetch()
+            // toast.success("Status changed to Draft")
+            Swal.fire({
+                title: "Status updated to Draft",
+                icon: "success"
+            })
         }
         console.log(res.data)
     }
@@ -81,6 +88,11 @@ export default function MyCourseCard({ course, refetch }: any) {
         const res = await axiosPublic.patch(`/api/course?kindeId=${dbUser?.kindeId}&courseId=${_id}`, { status: "published" })
         if (res.data.status === 200) {
             refetch()
+            // toast.success("Status changed to Published")
+            Swal.fire({
+                title: "Status updated to Published",
+                icon: "success"
+            })
         }
         console.log(res.data)
     }
@@ -89,7 +101,7 @@ export default function MyCourseCard({ course, refetch }: any) {
             {/* 1st flex  */}
             <div className=" col-span-6 flex items-center gap-10 border-r">
                 {/* image  */}
-                <div className='w-60 rounded-lg overflow-hidden'>
+                <div className='w-80 rounded-lg overflow-hidden'>
                     <img className='w-full object-contain h-full' src={thumbnail} alt="" />
                 </div>
                 {/* details  */}
@@ -112,16 +124,16 @@ export default function MyCourseCard({ course, refetch }: any) {
             <div className="space-y-3 col-span-1 flex flex-col items-end justify-between w-full pl-5">
                 <div className="">
                     {/* status  */}
-                    <div className={`${status === "draft" ? 'bg-secondary' : 'bg-primary'} inline-flex rounded-2xl py-1 px-4 text-sm font-semibold text-background items-center`}> {status === "draft" ? "Draft" : "Published"}</div>
+                    <div className={`${status === "draft" ? 'bg-secondary' : 'bg-primary'} inline-flex rounded-2xl py-1 px-4 text-xs font-semibold text-background items-center`}> {status === "draft" ? "Draft" : "Published"}</div>
                     {/* edit  */}
                 </div>
                 {/* status change  */}
                 <Link href={`/my-courses/update-course/${_id}?tab=course-details`} className="w-full"><Button className="w-full"><FiEdit /> Edit</Button></Link>
                 {/* add content  */}
                 <Link className="w-full" href={`/my-courses/update-course/${_id}?tab=course-content`}><Button className="w-full"><MdAddCircle /> Add Content</Button></Link>
-                <div className="flex items-center gap-3 w-full">
-                    <button onClick={handleDraft} className="bg-secondary py-2 px-3.5 cursor-pointer text-sm rounded-lg text-background  font-semibold flex items-center gap-2"><RiDraftFill />Draft</button>
-                    <button onClick={handlePublish} className="bg-primary py-2 px-3.5 cursor-pointer text-sm rounded-lg text-background  font-semibold flex items-center gap-2"><MdPublish /> Publish</button>
+                <div className="flex flex-col items-center gap-3 w-full">
+                    <button onClick={handleDraft} disabled={status === "draft"} className="disabled:bg-muted-foreground bg-secondary py-2 px-3.5 cursor-pointer text-sm rounded-lg text-background  font-semibold flex items-center gap-2 w-full text-center justify-center"><RiDraftFill />Draft</button>
+                    <button onClick={handlePublish} disabled={status === "published"} className="bg-primary py-2 px-3.5 cursor-pointer text-sm rounded-lg text-background  font-semibold flex items-center gap-2 w-full text-center justify-center disabled:bg-muted-foreground"><MdPublish /> Publish</button>
                 </div>
 
             </div>
