@@ -18,27 +18,48 @@ export async function POST(req: NextRequest) {
   }
 }
 
+// get courses by instructor and course id
+
 export async function GET(req: NextRequest) {
   await connectToDatabase();
   // const body = await req.json();
   const url = new URL(req.url);
   const kindeId = url.searchParams.get("kindeId");
+  const courseId = url.searchParams.get("courseId");
+  console.log(kindeId, courseId);
   try {
     if (!kindeId)
       return NextResponse.json(
         { error: "kindId is required" },
         { status: 400 }
       );
-    const courses = await Course.find({ "instructor.kindeId": kindeId });
-    if (!courses) return NextResponse.json({ message: "Courses not found" });
-    return NextResponse.json({
-      message: "Course fetched",
-      data: courses,
-    });
+    if (kindeId && courseId) {
+      const course = await Course.findOne({
+        _id: courseId,
+        "instructor.kindeId": kindeId,
+      });
+      if (!course) return NextResponse.json({ message: "Courses not found" });
+      return NextResponse.json({
+        message: "Single Course fetched",
+        status: "200",
+        data: course
+      });
+    }
+
+    if (kindeId) {
+      const courses = await Course.find({ "instructor.kindeId": kindeId });
+      if (!courses) return NextResponse.json({ message: "Courses not found" });
+      return NextResponse.json({
+        message: "Course fetched",
+        data: courses,
+      });
+    }
   } catch (error) {
     console.log("Error at get course", error);
   }
 }
+
+// update course data
 
 export async function PATCH(req: NextRequest) {
   await connectToDatabase();

@@ -19,22 +19,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import MyCourseCardSkeleton from './components/MyCourseCardSkeleton';
+import useGetCoursesByInstructor from '@/hooks/useGetCoursesByInstructor';
 
 export default function MyCourses() {
-    const { dbUser } = useDbUser()
     const [searchedText, setSearchedText] = useState("")
-    const { data: courses, refetch } = useQuery({
-        queryKey: ["my-courses"],
-        queryFn: async () => {
-            const res = await axiosPublic.get(`/api/course?kindeId=${dbUser?.kindeId}`)
-            console.log(res.data)
-            return res.data.data
-        },
-        enabled: !!dbUser
-    })
+    const { coursesByInstructor, refetch } = useGetCoursesByInstructor()
     console.log(searchedText)
 
-    const filteredCourses = courses?.filter((course: any) =>
+    const filteredCourses = coursesByInstructor?.filter((course: any) =>
         course.title.toLowerCase().includes(searchedText.toLowerCase())
     );
     return (
@@ -66,10 +58,10 @@ export default function MyCourses() {
                 {/* courses cards  */}
                 <div className='mt-5 space-y-3 w-full'>
                     {
-                        !filteredCourses && !courses && <MyCourseCardSkeleton />
+                        !filteredCourses && !coursesByInstructor && <MyCourseCardSkeleton />
                     }
                     {
-                        (filteredCourses || courses)?.map((course: any, i: number) => (
+                        (filteredCourses || coursesByInstructor)?.map((course: any, i: number) => (
                             <MyCourseCard course={course} key={i} refetch={refetch} />
                         ))
                     }

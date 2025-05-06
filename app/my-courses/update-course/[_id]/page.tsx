@@ -1,13 +1,6 @@
-"use client"
-import { useSearchParams } from 'next/navigation'
-import React from 'react'
+import UpdateClient from "../component/UpdateClinet";
 
-export default function UpdatePage({ params }: any) {
-    const searchParams = useSearchParams()
-    const tab = searchParams.get("tab")
-    console.log("tab", tab)
-    console.log("params", params._id)
-    return (
-        <div>UpdatePage</div>
-    )
+
+export default function UpdatePage({ params }: { params: { _id: string } }) {
+    return <UpdateClient courseId={params._id} />;
 }

@@ -116,9 +116,9 @@ export default function MyCourseCard({ course, refetch }: any) {
                     {/* edit  */}
                 </div>
                 {/* status change  */}
-                <Link href={`/my-courses/update-course/${_id}?tab=courseDetails`} className="w-full"><Button className="w-full"><FiEdit /> Edit</Button></Link>
+                <Link href={`/my-courses/update-course/${_id}?tab=course-details`} className="w-full"><Button className="w-full"><FiEdit /> Edit</Button></Link>
                 {/* add content  */}
-                <Button className="w-full"><MdAddCircle /> Add Content</Button>
+                <Link className="w-full" href={`/my-courses/update-course/${_id}?tab=course-content`}><Button className="w-full"><MdAddCircle /> Add Content</Button></Link>
                 <div className="flex items-center gap-3 w-full">
                     <button onClick={handleDraft} className="bg-secondary py-2 px-3.5 cursor-pointer text-sm rounded-lg text-background  font-semibold flex items-center gap-2"><RiDraftFill />Draft</button>
                     <button onClick={handlePublish} className="bg-primary py-2 px-3.5 cursor-pointer text-sm rounded-lg text-background  font-semibold flex items-center gap-2"><MdPublish /> Publish</button>

@@ -3,7 +3,7 @@ import LeftSidebar from '@/components/layouts/LeftSidebar/LeftSidebar'
 import RightSidebar from '@/components/layouts/RightSidebar/RightSidebar'
 import SidebarButton from '@/components/shared/SidebarButton'
 import { GeneralContext, Provider } from '@/context/useContext'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React, { useContext, useState } from 'react'
 import {
   QueryClient,
@@ -19,15 +19,16 @@ import { useKindeUser } from '@/hooks/useKindeUser'
 const queryClient = new QueryClient()
 
 export default function ContextProvider({ children }: any) {
-  // const {sidebarOpen} = useContext<any>(GeneralContext)
-  const { user, isLoading } = useKindeUser()
+  const router = useRouter()
+  const { user, isLoading: kindeUserLoading } = useKindeUser()
+  const [pageLoading, setPageLoading] = useState(false)
   const pathname = usePathname()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   return (
     <Provider>
       <QueryClientProvider client={queryClient}>
         {
-          !isLoading ? (
+          !kindeUserLoading ? (
             <>
               <nav className="fixed w-full z-[99999]">
                 <Navbar />
