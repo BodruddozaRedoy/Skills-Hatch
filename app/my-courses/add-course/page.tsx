@@ -37,55 +37,49 @@ export default function AddCourse() {
 
     useEffect(() => {
         setCourse({ ...course, instructor: dbUser })
-    }, [])
+    }, [dbUser])
 
     // handle publish 
-    const handlePublish = async () => {
-        try {
-            const res = await axiosPublic.post("/api/course", course)
-            console.log(res.data)
-            if (res.data.status === 201) {
-                Swal.fire({
-                    title: "Do you want to save the changes?",
-                    // showDenyButton: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Go to courses",
-                    denyButtonText: `Don't save`
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        router.push("/my-courses/add-course")
-                    } else if (result.isDenied) {
-                        Swal.fire("Changes are not saved", "", "info");
-                    }
-                });
+    const handleDraft = async () => {
+        if (course.title && course.price && course.thumbnail && course.category && course.level && course.language && course.description && course.instructor) {
+            try {
+                const res = await axiosPublic.post("/api/course", course)
+                console.log(res.data)
+                if (res.data.status === 201) {
+                    Swal.fire({
+                        title: "Do you want to save the changes?",
+                        // showDenyButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: "Go to courses",
+                        denyButtonText: `Don't save`
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                            router.push("/my-courses/add-course")
+                        } else if (result.isDenied) {
+                            Swal.fire("Changes are not saved", "", "info");
+                        }
+                    });
+                }
+            } catch (error) {
+                console.log("Error at handlePublish", error)
             }
-        } catch (error) {
-            console.log("Error at handlePublish", error)
+        } else {
+            Swal.fire({
+                title: "Please fill all fields",
+                icon: "error"
+            })
         }
     }
     return (
         <div>
             <div className='flex items-center justify-between'>
             <Link href={"/my-courses"} className='font-semibold  gap-2 items-center inline-flex'><IoIosArrowBack /> Back</Link>
-                <Button onClick={() => { handlePublish(); setCourse({ ...course, status: "draft" }) }} className='bg-secondary gap-2 items-center hover:bg-secondary'><RiDraftFill /> Draft</Button>
+                <Button onClick={() => { handleDraft(); setCourse({ ...course, status: "draft" }) }} className='bg-secondary gap-2 items-center hover:bg-secondary'><RiDraftFill /> Draft</Button>
             </div>
             {/* content  */}
             <div className='bg-background p-5 rounded-lg mt-5 flex items-start w-full'>
-                {/* <Tabs defaultValue='course-details' className='w-full'>
-                    <TabsList>
-                        <TabsTrigger value='course-details'>Course Details</TabsTrigger>
-                        <TabsTrigger value='course-content'>Course Content</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value='course-details'><CourseDetails course={course} setCourse={setCourse} /></TabsContent>
-                    <TabsContent value='course-content'><CourseContent course={course} setCourse={setCourse} /></TabsContent>
-                </Tabs> */}
                 <CourseDetails course={course} setCourse={setCourse} />
-                {/* buttons  */}
-                {/* <div className='flex gap-3 items-center'>
-                    <Button onClick={() => { handlePublish(); setCourse({ ...course, status: "published", instructor: dbUser?._id }) }} className='flex gap-2 items-center'><MdPublish /> Publish</Button>
-
-                </div> */}
             </div>
         </div>
     )

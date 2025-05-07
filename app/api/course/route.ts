@@ -128,3 +128,41 @@ export async function PATCH(req: NextRequest) {
     console.log("Error at patch course", error);
   }
 }
+
+// remove course and chapter 
+export async function DELETE(req:NextRequest) {
+  await connectToDatabase()
+  const url = new URL(req.url);
+  const kindeId = url.searchParams.get("kindeId");
+  const courseId = url.searchParams.get("courseId");
+  const chapterIdParam = url.searchParams.get("chapterId");
+  const chapterId = chapterIdParam ? Number(chapterIdParam) : null;
+  try {
+    if(!kindeId && !courseId) return NextResponse.json({message: "KindeId and courseID required"})
+      // delete a course 
+    if(kindeId && courseId && !chapterId){
+      await Course.findOneAndDelete({_id:courseId, 'instructor.kindeId': kindeId})
+    return NextResponse.json({
+      message: "Course deleted",
+      status: 200
+    })
+    }
+
+    // delete a chapter 
+    if(chapterId){
+      const deleteChapter = await Course.findOneAndUpdate({_id:courseId, 'instructor.kindeId': kindeId,}, {$pull: {chapters:{chapterId:chapterId}}})
+      if(!deleteChapter){
+        return NextResponse.json({
+          message: "Chapter can't be deleted",
+        })
+      }
+      return NextResponse.json({
+        message: "Chapter deleted",
+        status: 200
+      })
+    }
+  } catch (error) {
+    console.log("Error at delete course", error);
+    
+  }
+}

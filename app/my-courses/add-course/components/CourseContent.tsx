@@ -27,6 +27,9 @@ import { Input } from '@/components/ui/input'
 import { axiosPublic } from '@/lib/axiosPublic'
 import useDbUser from '@/hooks/useDbUser'
 import Swal from 'sweetalert2'
+import { ImBin2 } from "react-icons/im";
+import useDeleteCourse from '@/hooks/useDeleteCourse'
+
 
 export default function CourseContent({ course, setCourse, _id, refetch }: any) {
     const { dbUser } = useDbUser()
@@ -63,31 +66,31 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
         }
     }
 
+    // delete a chapter 
+    const handleDeleteChapter = async (chapterId: any) => {
+        const res = await axiosPublic.delete(
+            `/api/course?kindeId=${dbUser?.kindeId}&courseId=${_id}&chapterId=${chapterId}`
+        );
+        if (res.data.status === 200) {
+            refetch()
+            Swal.fire({
+                title: "Chapter Deleted",
+                icon: "success"
+            })
+        }
+        console.log(res.data);
+    }
+
     return (
         <div className='w-full'>
-            {/* {
-                course?.chapters?.map((chapter: any, i: number) => (
-                    <Accordion key={i} type="single" collapsible className="w-full">
-                        <AccordionItem value="item-1" className='flex flex-col items-start mb-3 border p-3 rounded-lg shadow-md'>
-                            <AccordionTrigger>{chapter?.title}</AccordionTrigger>
-                            {!chapter?.lessons?.length && "No Lesson Added"}
-                            {
-                                chapter?.lessons?.map((lesson: any, i: number) => (
-                                    <AccordionContent itemID={`item-${i + 1}`} key={i} className=''>
-                                        Lesson 1: How to difference == and ===?
-                                    </AccordionContent>
-                                ))
-                            }
-                            <Button size={"sm"} className='mt-2'>Add Lesson</Button>
-                        </AccordionItem>
-                    </Accordion>
-                ))
-            } */}
             {!course?.chapters?.length && <p className='font-semibold text-center'>No Chapter Added</p>}
             {
                 course?.chapters?.map((chapter: any, i: number) => (
                     <div key={i} className='bg-muted p-4 rounded-lg font-semibold mb-4 select-none' onClick={() => setAccordion(!accordion)}>
-                        <h1 className=''>{`Chapter ${chapter.chapterId}: ${chapter.title}`}</h1>
+                        <div className='flex justify-between items-center'>
+                            <h1 className=''>{`Chapter ${chapter.chapterId}: ${chapter.title}`}</h1>
+                            <ImBin2 onClick={() => handleDeleteChapter(chapter?.chapterId)} className='text-red-500 cursor-pointer z-10' />
+                        </div>
                         {
                             accordion && (<div className='mt-3 bg-background p-3 rounded-lg select-none'>
                                 <h1>Lesson</h1>
