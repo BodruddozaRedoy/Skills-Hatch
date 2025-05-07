@@ -16,9 +16,9 @@ import { useQuery } from '@tanstack/react-query'
 
 export default function UpdateCourse({ _id }: { _id: string }) {
     const searchParams = useSearchParams()
-    const router = useRouter()
     const { dbUser } = useDbUser()
     const tab_ = searchParams.get("tab")
+    // const [showTab, setShowTab] = useState('course-details')
     const [tab, setTab] = useState(tab_)
 
     const [course, setCourse] = useState({
@@ -37,7 +37,7 @@ export default function UpdateCourse({ _id }: { _id: string }) {
         progress: [],
         studentsEnrolled: []
     })
-
+    // fetching single course 
     const { data: singleCourse, refetch } = useQuery({
         queryKey: ["my-courses", dbUser?.fullName],
         queryFn: async () => {
@@ -77,21 +77,24 @@ export default function UpdateCourse({ _id }: { _id: string }) {
 
     return (
         <div>
-            <div className='flex items-center justify-between'>
+            <div className=''>
                 <Link href={"/my-courses"} className='font-semibold  gap-2 items-center inline-flex'><IoIosArrowBack /> Back</Link>
-                <div>
+                <div className='flex items-center justify-between mt-5'>
+                    <div className='flex items-center gap-3'>
+                        <div className={`${tab === "course-details" ? 'bg-primary text-white' : 'bg-background'} rounded-lg  py-2 px-5 font-bold border-primary border text-sm cursor-pointer select-none`} onClick={() => setTab("course-details")}> Course Details</div>
+                        <div className={`${tab === "course-content" ? 'bg-primary text-white' : 'bg-background'} rounded-lg  py-2 px-5 font-bold border-primary border text-sm cursor-pointer select-none`} onClick={() => setTab("course-content")}> Course Content</div>
+                    </div>
                     <Button onClick={() => { handleUpdate() }} className='bg-secondary gap-2 items-center hover:bg-secondary'><RiDraftFill /> Update</Button>
                 </div>
             </div>
             <div className='bg-background p-5 rounded-lg mt-5 flex items-start w-full'>
-                <Tabs defaultValue='course-details' className='w-full'>
-                    <TabsList>
-                        <TabsTrigger onClick={() => setTab("")} value={tab || "course-details"}>Course Details</TabsTrigger>
-                        <TabsTrigger onClick={() => setTab("")} value={tab || "course-content"}>Course Content</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value='course-details'><CourseDetails course={course} setCourse={setCourse} /></TabsContent>
-                    <TabsContent value='course-content'><CourseContent course={course} setCourse={setCourse} _id={_id} /></TabsContent>
-                </Tabs>
+                {
+                    tab === 'course-details' ? (
+                        <CourseDetails course={course} setCourse={setCourse} />
+                    ) : (
+                        <CourseContent course={course} setCourse={setCourse} _id={_id} refetch={refetch}/>
+                    )
+                }
             </div>
         </div>
     )

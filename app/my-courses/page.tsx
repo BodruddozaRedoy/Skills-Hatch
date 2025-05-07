@@ -1,8 +1,5 @@
 "use client"
 import { Button } from '@/components/ui/button'
-import useDbUser from '@/hooks/useDbUser';
-import { axiosPublic } from '@/lib/axiosPublic';
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import { IoIosAddCircleOutline } from "react-icons/io";
@@ -17,7 +14,6 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
 import MyCourseCardSkeleton from './components/MyCourseCardSkeleton';
 import useGetCoursesByInstructor from '@/hooks/useGetCoursesByInstructor';
 
@@ -74,12 +70,11 @@ export default function MyCourses() {
                 <hr className='w-full my-3' />
                 {/* courses cards  */}
                 <div className='mt-5 space-y-3 w-full'>
-                    {
-                        !filteredCourses && !coursesByInstructor && < MyCourseCardSkeleton />
-                    }
+                    
                     {
                         isLoading && <MyCourseCardSkeleton />
                     }
+                    {!coursesByInstructor.length && !isLoading && <p className='text-center font-bold text-xl'>No Courses Added</p>}
                     {
                         (filteredCourses || coursesByInstructor)?.map((course: any, i: number) => (
                             <MyCourseCard course={course} key={i} refetch={refetch} />
