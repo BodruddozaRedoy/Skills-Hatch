@@ -66,6 +66,7 @@ export async function PATCH(req: NextRequest) {
   const url = new URL(req.url);
   const kindeId = url.searchParams.get("kindeId");
   const courseId = url.searchParams.get("courseId");
+  const chapterId = url.searchParams.get("chapterId");
   console.log("kindeId", kindeId);
   console.log("courseId", courseId);
   try {
@@ -82,6 +83,7 @@ export async function PATCH(req: NextRequest) {
       level,
       language,
       chapter,
+      lesson,
     } = body;
     const updatedData: any = {};
     if (title) updatedData.title = title;
@@ -105,6 +107,22 @@ export async function PATCH(req: NextRequest) {
       course?.chapters.push(chapter);
       await course.save();
       return NextResponse.json({ message: "Chapter added", status: 201 });
+    }
+
+    // only lesson add
+    if (lesson && chapterId) {
+      console.log("lesson", lesson);
+      const course = await Course.findOne(
+        {
+          _id: courseId,
+          "instructor.kindeId": kindeId,
+          "chapters.chapterId": chapterId,
+        },
+        { $push: { "chapters.$.lessons": lesson } }
+      );
+      if (!course) return NextResponse.json({ message: "KindeId required" });
+      return NextResponse.json({ message: "Lesson added", status: 201 });
+      // course?.chapters?.
     }
 
     // rest of the fields updated

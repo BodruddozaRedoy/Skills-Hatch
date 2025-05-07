@@ -12,7 +12,13 @@ const CourseSchema = new Schema(
     description: String,
     instructor: { type: {}, required: true },
     category: String,
-    chapters: [{ type: {}, default: {} }], 
+    chapters: [
+      {
+        chapterId: Number,
+        title: String,
+        lessons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Lesson" }],
+      },
+    ],
     studentsEnrolled: [{ type: Schema.Types.ObjectId, ref: "User" }],
     reviews: [{ type: {}, default: {} }],
     progress: [{ type: {}, default: {} }],

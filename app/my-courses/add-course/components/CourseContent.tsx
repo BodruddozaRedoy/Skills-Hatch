@@ -3,12 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { SimpleEditor } from '@/components/tiptap-templates/simple/simple-editor'
 import "@/components/tiptap-node/list-node/list-node.scss"
 import "./style.css"
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion"
 import { Button } from '@/components/ui/button'
 import { RiAddCircleFill } from 'react-icons/ri'
 import {
@@ -28,25 +22,39 @@ import { axiosPublic } from '@/lib/axiosPublic'
 import useDbUser from '@/hooks/useDbUser'
 import Swal from 'sweetalert2'
 import { ImBin2 } from "react-icons/im";
-import useDeleteCourse from '@/hooks/useDeleteCourse'
+import { PlusCircleIcon } from 'lucide-react'
 
 
 export default function CourseContent({ course, setCourse, _id, refetch }: any) {
     const { dbUser } = useDbUser()
+    const [accordion, setAccordion] = useState()
+    const [lessonOpen, setLessonOpen] = useState()
+    const [addLessonSection, setAddLessonSection] = useState(false)
+    const [lessonType, setLessonType] = useState("")
+    const [videoUrl, setVideoUrl] = useState("");
     const [chapter, setChapter] = useState({
         chapterId: 0,
         title: "",
         quiz: [],
         lessons: []
     })
-    const [accordion, setAccordion] = useState(false)
-    console.log(chapter)
+    const [lesson, setLesson] = useState({
+        courseId: _id,
+        chapterId: 0,
+        title: "",
+        textContent: "",
+        videoContent: videoUrl,
+        resources: ""
+    })
+
+    console.log(lesson)
     useEffect(() => {
         localStorage.setItem("TextEditorContent", JSON.stringify("Write here..."))
     }, [])
     // console.log("Chapter length", course?.chapters?.length + 1)
     useEffect(() => {
         setChapter({ ...chapter, chapterId: course?.chapters?.length + 1 })
+        setLesson({ ...lesson, lessonId: course?.chapters?.length + 1 })
     }, [course])
 
     // handleAddChapter
@@ -81,27 +89,98 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
         console.log(res.data);
     }
 
+    // add a lesson 
+    const handleAddLesson = async (id: any) => {
+        const res = await axiosPublic.post(`/api/lesson?kindeId=${dbUser?.kindeId}&courseId=${_id}&chapterId=${id}`)
+        console.log(res.data)
+        if (res.data.status === 200) {
+            refetch()
+            Swal.fire({
+                title: "Lesson Added",
+                icon: "success"
+            })
+        }
+    }
+
+    // handle video upload 
+    const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("file", file);
+        const res = await axiosPublic.post('/api/upload', formData)
+
+        setVideoUrl(res.data.url); // URL of uploaded video
+        setLesson({ ...lesson, videoContent: res.data.url })
+    };
+
     return (
         <div className='w-full'>
+            {/* if no chapter added  */}
             {!course?.chapters?.length && <p className='font-semibold text-center'>No Chapter Added</p>}
+            {/* all chapter section  */}
             {
                 course?.chapters?.map((chapter: any, i: number) => (
-                    <div key={i} className='bg-muted p-4 rounded-lg font-semibold mb-4 select-none' onClick={() => setAccordion(!accordion)}>
+                    <div key={i} className='bg-muted p-4 rounded-lg font-semibold mb-4 select-none' >
                         <div className='flex justify-between items-center'>
-                            <h1 className=''>{`Chapter ${chapter.chapterId}: ${chapter.title}`}</h1>
+                            <h1 onClick={() => setAccordion(accordion == chapter?.chapterId ? null : chapter?.chapterId)} className='cursor-pointer hover:underline'>{`Chapter ${chapter.chapterId}: ${chapter.title}`}</h1>
                             <ImBin2 onClick={() => handleDeleteChapter(chapter?.chapterId)} className='text-red-500 cursor-pointer z-10' />
                         </div>
+                        {/* single chapter section  */}
                         {
-                            accordion && (<div className='mt-3 bg-background p-3 rounded-lg select-none'>
-                                <h1>Lesson</h1>
+                            accordion == chapter?.chapterId && (<div className='mt-3 bg-background p-3 rounded-lg select-none'>
+                                {/* all lesson section  */}
+                                {
+                                    chapter?.lessons?.map((lesson: any, i: number) => (
+                                        <div key={i} className='bg-muted p-4 rounded-lg font-semibold mb-4 select-none' onClick={() => setLessonOpen(lesson == lesson?.i ? null : lesson?.i)}>
+                                            <div className='flex justify-between items-center'>
+                                                <h1 className=''>lesson</h1>
+                                                <ImBin2 onClick={""} className='text-red-500 cursor-pointer z-10' />
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                                {/* add lesson btn  */}
+                                {
+                                    addLessonSection ? (<div>
+                                        <Button onClick={() => handleAddLesson(chapter?.chapterId)} size={"sm"}>Add</Button>
+                                        <Button size={"sm"} onClick={() => { setAddLessonSection(false); setLessonType("") }} className='bg-secondary hover:bg-secondary ml-3'>Cancel</Button>
+                                    </div>) : (
+                                        <Button onClick={() => { setAddLessonSection(true) }} size={"sm"} className='mt-3'><PlusCircleIcon /> Add Lesson</Button>
+
+                                    )
+                                }
+                                {/* add lesson section */}
+                                {
+                                    addLessonSection && (
+                                        <div className='border border-primary p-3 rounded-lg mt-2'>
+                                            <h1 className='text-center text-xl font-bold'>Add Lesson</h1>
+                                            <hr className='w-full my-2' />
+                                            <h3>Lesson type?</h3>
+                                            <div className='mt-2'>
+                                                <Button variant={"outline"} disabled={lessonType === "video"} onClick={() => setLessonType("text")} size={"sm"} className=' disabled:bg-muted-foreground'>Text</Button>
+                                                <Button variant={"outline"} disabled={lessonType === "text"} onClick={() => setLessonType("video")} size={"sm"} className=' ml-3 disabled:bg-muted-foreground'>Video</Button>
+                                            </div>
+                                            <div className='mt-3'>
+                                                {lessonType === "video" && <div>
+                                                    <Label className='mb-3'>Choose video file</Label>
+                                                    <Input placeholder='Choose video file' type='file' accept='video/*' onChange={handleVideoUpload} />
+                                                </div>}
+                                                {lessonType === "text" && <div>text</div>}
+                                            </div>
+                                        </div>
+                                    )
+                                }
                             </div>)
                         }
                     </div>
                 ))
             }
+            {/* add chapter  */}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <Button variant="outline">Add Chapter</Button>
+                    <Button variant="outline"><PlusCircleIcon />Add Chapter</Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>

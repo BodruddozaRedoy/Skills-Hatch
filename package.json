@@ -36,7 +36,10 @@
     "@tiptap/starter-kit": "^2.11.9",
     "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",
+    "cloudinary": "^2.6.1",
     "clsx": "^2.1.1",
+    "formidable": "^3.5.4",
+    "fs": "^0.0.1-security",
     "lucide-react": "^0.488.0",
     "mongoose": "^8.14.1",
     "next": "^15.3.1",
@@ -55,6 +58,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/formidable": "^3.4.5",
     "@types/node": "^20.17.32",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19",
