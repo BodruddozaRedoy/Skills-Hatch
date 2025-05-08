@@ -20,7 +20,7 @@ import useGetCoursesByInstructor from '@/hooks/useGetCoursesByInstructor';
 export default function MyCourses() {
     const [searchedText, setSearchedText] = useState("")
     const [filteredCourses, setFilteredCourses] = useState()
-    const { coursesByInstructor, refetch, isLoading } = useGetCoursesByInstructor()
+    const { coursesByInstructor, refetch, isLoading, isSuccess } = useGetCoursesByInstructor()
     console.log(searchedText)
 
     // useEffect(() => {
@@ -74,7 +74,10 @@ export default function MyCourses() {
                     {
                         isLoading && <MyCourseCardSkeleton />
                     }
-                    {!coursesByInstructor.length && !isLoading && <MyCourseCardSkeleton />}
+                    {
+                        isSuccess && !coursesByInstructor.length && <p className='text-xl font-bold text-center'>No courses added</p>
+                    }
+                    {/* {!coursesByInstructor.length && !isLoading && <MyCourseCardSkeleton />} */}
                     {
                         (filteredCourses || coursesByInstructor)?.map((course: any, i: number) => (
                             <MyCourseCard course={course} key={i} refetch={refetch} />

@@ -8,6 +8,7 @@ export default function useGetCoursesByInstructor() {
     data: coursesByInstructor = [],
     refetch,
     isLoading,
+    isSuccess,
   } = useQuery({
     queryKey: ["my-courses", dbUser?.kindeId],
     queryFn: async () => {
@@ -19,5 +20,6 @@ export default function useGetCoursesByInstructor() {
     },
     enabled: !!dbUser,
   });
-  return { coursesByInstructor, refetch, isLoading };
+  console.log(isLoading, isSuccess);
+  return { coursesByInstructor, refetch, isLoading, isSuccess };
 }

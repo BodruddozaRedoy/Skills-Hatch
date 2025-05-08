@@ -112,6 +112,23 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
         }
     }
 
+    // delete a lesson 
+    const handleDeleteLesson = async (lessonId: any) => {
+        try {
+            const res = await axiosPublic.delete(`/api/lesson?lessonId=${lessonId}`)
+            console.log(res.data)
+            if (res.data.status === 200) {
+                refetch()
+                Swal.fire({
+                    title: "Lesson Deleted",
+                    icon: "success"
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     // handle video upload 
     const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -146,7 +163,7 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
                                         <div key={i} className='bg-muted p-4 rounded-lg font-semibold mb-4 select-none' onClick={() => setLessonOpen(lesson == lesson?.i ? null : lesson?.i)}>
                                             <div className='flex justify-between items-center'>
                                                 <h1 className=''>{lesson?.title}</h1>
-                                                <ImBin2 onClick={""} className='text-red-500 cursor-pointer z-10' />
+                                                <ImBin2 onClick={() => { handleDeleteLesson(lesson?._id) }} className='text-red-500 cursor-pointer z-10' />
                                             </div>
                                         </div>
                                     ))

@@ -61,3 +61,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
+
+// delete a lesson
+export async function DELETE(req: NextRequest) {
+  const url = new URL(req.url);
+  const lessonId = url.searchParams.get("lessonId");
+  if (!lessonId) return NextResponse.json({ message: "Lesson id required" });
+  try {
+    const isDelete = await Lesson.findByIdAndDelete(lessonId);
+    if (!isDelete) return NextResponse.json({ message: "Lesson id required" });
+    return NextResponse.json({
+      message: "Lesson deleted",
+      status: 200,
+    });
+  } catch (error) {
+    console.error("Error deleting lesson:", error);
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
+  }
+}
