@@ -5,13 +5,18 @@ import { connectToDatabase } from "@/lib/mongoose";
 
 export async function POST(req: NextRequest) {
   await connectToDatabase();
-    const body = await req.json()
-    console.log(body)
-  const { courseId, chapterId, title, textContent, videoContent, resources } = await req.json();
+  // const body = await req.json()
+  // console.log(body)
+  const { courseId, chapterId, title, textContent, videoContent, resources } =
+    await req.json();
 
+  console.log("courseId", courseId, chapterId);
 
   if (!courseId || chapterId === undefined || !title) {
-    return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
+    return NextResponse.json(
+      { message: "Missing required fields" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -22,7 +27,7 @@ export async function POST(req: NextRequest) {
       title,
       textContent,
       videoContent,
-      resources
+      resources,
     });
 
     // 2. Push lesson._id into the correct chapter's lessons array
@@ -40,7 +45,10 @@ export async function POST(req: NextRequest) {
     );
 
     if (!updatedCourse) {
-      return NextResponse.json({ message: "Course or Chapter not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "Course or Chapter not found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({ message: "Lesson added", lesson: newLesson });

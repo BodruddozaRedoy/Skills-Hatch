@@ -54,8 +54,12 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
     // console.log("Chapter length", course?.chapters?.length + 1)
     useEffect(() => {
         setChapter({ ...chapter, chapterId: course?.chapters?.length + 1 })
-        setLesson({ ...lesson, lessonId: course?.chapters?.length + 1 })
+        // setLesson({ ...lesson, lessonId: course?.chapters?.length + 1 })
     }, [course])
+
+    // useEffect(() => {
+    //     setLesson({ ...lesson, chapterId: course?.chapters?.length + 1 })
+    // }, [])
 
     // handleAddChapter
     const handleAddChapter = async () => {
@@ -91,7 +95,8 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
 
     // add a lesson 
     const handleAddLesson = async (id: any) => {
-        const res = await axiosPublic.post(`/api/lesson?kindeId=${dbUser?.kindeId}&courseId=${_id}&chapterId=${id}`)
+        try {
+            const res = await axiosPublic.post(`/api/lesson`, lesson)
         console.log(res.data)
         if (res.data.status === 200) {
             refetch()
@@ -99,6 +104,9 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
                 title: "Lesson Added",
                 icon: "success"
             })
+        }
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -147,7 +155,7 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
                                         <Button onClick={() => handleAddLesson(chapter?.chapterId)} size={"sm"}>Add</Button>
                                         <Button size={"sm"} onClick={() => { setAddLessonSection(false); setLessonType("") }} className='bg-secondary hover:bg-secondary ml-3'>Cancel</Button>
                                     </div>) : (
-                                        <Button onClick={() => { setAddLessonSection(true) }} size={"sm"} className='mt-3'><PlusCircleIcon /> Add Lesson</Button>
+                                            <Button onClick={() => { setAddLessonSection(true); setLesson({ ...lesson, chapterId: chapter?.chapterId }) }} size={"sm"} className='mt-3'><PlusCircleIcon /> Add Lesson</Button>
 
                                     )
                                 }
@@ -163,11 +171,14 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
                                                 <Button variant={"outline"} disabled={lessonType === "text"} onClick={() => setLessonType("video")} size={"sm"} className=' ml-3 disabled:bg-muted-foreground'>Video</Button>
                                             </div>
                                             <div className='mt-3'>
+                                                {/* lesson title  */}
+                                                <Label>Lesson Title</Label>
+                                                <Input placeholder='Type here' onChange={(e: any) => setLesson({ ...lesson, title: e.target.value })} />
                                                 {lessonType === "video" && <div>
                                                     <Label className='mb-3'>Choose video file</Label>
                                                     <Input placeholder='Choose video file' type='file' accept='video/*' onChange={handleVideoUpload} />
                                                 </div>}
-                                                {lessonType === "text" && <div>text</div>}
+                                                {lessonType === "text" && <div><SimpleEditor lesson={lesson} setLesson={setLesson} /></div>}
                                             </div>
                                         </div>
                                     )

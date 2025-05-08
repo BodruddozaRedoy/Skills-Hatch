@@ -178,7 +178,7 @@ const MobileToolbarContent = ({
   </>
 )
 
-export function SimpleEditor() {
+export function SimpleEditor({ setLesson, lesson }: any) {
   const isMobile = useMobile()
   const windowSize = useWindowSize()
   const [mobileView, setMobileView] = React.useState<
@@ -215,9 +215,13 @@ export function SimpleEditor() {
   const savedContent = localStorage.getItem('TextEditorContent')
   const _html = savedContent && JSON.parse(savedContent)
   const html = _html === "<p></p>" ? "Write here..." : _html
-  console.log(html)
+  // console.log(html)
 
-  const   editor = useEditor({
+  React.useEffect(() => {
+    setLesson({ ...lesson, textContent: html })
+  }, [html])
+
+  const editor = useEditor({
     immediatelyRender: false,
     editorProps: {
       attributes: {

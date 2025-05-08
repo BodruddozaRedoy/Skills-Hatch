@@ -74,7 +74,7 @@ export default function MyCourses() {
                     {
                         isLoading && <MyCourseCardSkeleton />
                     }
-                    {!coursesByInstructor.length && !isLoading && <p className='text-center font-bold text-xl'>No Courses Added</p>}
+                    {!coursesByInstructor.length && !isLoading && <MyCourseCardSkeleton />}
                     {
                         (filteredCourses || coursesByInstructor)?.map((course: any, i: number) => (
                             <MyCourseCard course={course} key={i} refetch={refetch} />
