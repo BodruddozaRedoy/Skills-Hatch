@@ -15,9 +15,11 @@ import { IoIosBookmarks, IoIosStar } from 'react-icons/io'
 import { LuDot } from 'react-icons/lu'
 import { useKindeUser } from '@/hooks/useKindeUser'
 import useDbUser from '@/hooks/useDbUser'
+import { Button } from '@/components/ui/button'
 
 export default function CourseDetails({ course, setCourse }: any) {
     const { dbUser } = useDbUser()
+    const [thumbnail, setThumbnail] = useState("url")
     return (
         <div className='grid grid-cols-3 items-start w-full gap-5'>
             {/* details  */}
@@ -32,17 +34,36 @@ export default function CourseDetails({ course, setCourse }: any) {
                     <Label htmlFor="price">Price</Label>
                     <Input required value={course?.price || ""} onChange={(e: any) => setCourse({ ...course, [e.target.name]: parseInt(e.target.value) })} type="number" name='price' id="price" placeholder="Type here" />
                 </div>
-                {/* thumbnail  */}
-                <div className="grid w-full max-w-sm items-center gap-1.5">
-                    <Label htmlFor="thumbnail">Thumbnail</Label>
-                    <Input
-                        onChange={(e: any) => setCourse({ ...course, thumbnail: (URL.createObjectURL(e.target?.files?.[0])) })}
-                        required
-                        name='thumbnail'
-                        id="thumbnail"
-                        type="file"
-                    />
+                {/* toggle thumbnail  */}
+                <div>
+                    <h1 className='mb-3'>Choose Thumbnail Method</h1>
+                    <Button onClick={() => setThumbnail("url")} size={"sm"} variant={"outline"} className={`ml-3 ${thumbnail === "url" && 'bg-primary text-white'}`}>Thumbnail Url</Button>
+                    <Button onClick={() => setThumbnail("upload")} size={"sm"} variant={"outline"} className={`ml-3 ${thumbnail === "upload" && 'bg-primary text-white'}`}>Thumbnail Upload</Button>
                 </div>
+                {/* thumbnail url  */}
+                {
+                    thumbnail === "url" && (
+                        <div className="grid w-full max-w-sm items-center gap-1.5">
+                            <Label htmlFor="thumbnail">Thumbnail Url</Label>
+                            <Input required value={course?.thumbnail || ""} onChange={(e: any) => setCourse({ ...course, [e.target.name]: (e.target.value) })} type="text" name='thumbnail' id="thumbnail" placeholder="Type here" />
+                        </div>
+                    )
+                }
+                {/* thumbnail upload */}
+                {
+                    thumbnail === "upload" && (
+                        <div className="grid w-full max-w-sm items-center gap-1.5">
+                            <Label htmlFor="thumbnail">Thumbnail Upload</Label>
+                            <Input
+                                onChange={(e: any) => setCourse({ ...course, thumbnail: (URL.createObjectURL(e.target?.files?.[0])) })}
+                                required
+                                name='thumbnail'
+                                id="thumbnail"
+                                type="file"
+                            />
+                        </div>
+                    )
+                }
                 {/* category  */}
                 <div>
                     <Label className='mb-2'>Category</Label>
@@ -122,6 +143,6 @@ export default function CourseDetails({ course, setCourse }: any) {
 
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

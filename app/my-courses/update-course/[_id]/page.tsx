@@ -1,4 +1,4 @@
-import UpdateCourse from "../component/UpdateClient";
+import UpdateCourse from "../component/UpdateCourse";
 
 export default async function UpdatePage({ params }: { params: { _id: string } }) {
     const { _id } = params;

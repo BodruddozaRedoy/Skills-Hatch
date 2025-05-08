@@ -47,7 +47,8 @@ export default function AddCourse() {
                 console.log(res.data)
                 if (res.data.status === 201) {
                     Swal.fire({
-                        title: "Do you want to save the changes?",
+                        title: "Course Added",
+                        icon: "success",
                         // showDenyButton: true,
                         showCancelButton: true,
                         confirmButtonText: "Go to courses",
@@ -55,9 +56,9 @@ export default function AddCourse() {
                     }).then((result) => {
                         /* Read more about isConfirmed, isDenied below */
                         if (result.isConfirmed) {
-                            router.push("/my-courses/add-course")
+                            router.push("/my-courses")
                         } else if (result.isDenied) {
-                            Swal.fire("Changes are not saved", "", "info");
+                            Swal.fire("Add another course");
                         }
                     });
                 }

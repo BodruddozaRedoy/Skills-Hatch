@@ -12,13 +12,7 @@ const CourseSchema = new Schema(
     description: String,
     instructor: { type: {}, required: true },
     category: String,
-    chapters: [
-      {
-        chapterId: Number,
-        title: String,
-        lessons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Lesson" }],
-      },
-    ],
+    chapters: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chapter" }],
     studentsEnrolled: [{ type: Schema.Types.ObjectId, ref: "User" }],
     reviews: [{ type: {}, default: {} }],
     progress: [{ type: {}, default: {} }],
@@ -27,32 +21,3 @@ const CourseSchema = new Schema(
 );
 
 export default models.Course || model("Course", CourseSchema);
-
-
-
-// chapters
-// -title
-// -lessons
-// -quiz
-
-// lessons
-// -title
-// -content
-// -videoUrl
-// -resources
-
-// {
-//     "_id": 1,
-//     "title": "Web Development",
-//     "thumbnail": "./web-development.png",
-//     "ratings": 4.5,
-//     "price": 0,
-//     "contentCount": 10,
-//     "instructorId": 1,
-//     "instructor": "Bodruddoza Redoy",
-//     "category": "web-development",
-//     "level": "beginner",
-//     "language": "English",
-//     "status": "published",
-//     "review": 5
-//   }

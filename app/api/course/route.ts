@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     console.log("Error at post course", error);
   }
 }
-
+//! Get course
 export async function GET(req: NextRequest) {
   await connectToDatabase();
 
@@ -32,63 +32,60 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    // ✅ Case 1: Get single course with full data
+    // 🟢 Case 1: Fetch a single course by courseId with chapters and lessons
     if (courseId) {
       if (!mongoose.Types.ObjectId.isValid(courseId)) {
-        return NextResponse.json(
-          { error: "Invalid courseId format" },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: "Invalid courseId format" }, { status: 400 });
       }
 
-      const course = await Course.findOne({
-        _id: courseId,
-        "instructor.kindeId": kindeId,
-      }).lean();
+      const courseData = await Course.aggregate([
+        {
+          $match: {
+            _id: new mongoose.Types.ObjectId(courseId),
+            "instructor.kindeId": kindeId,
+          },
+        },
+        {
+          // 🔄 Lookup chapters with a nested pipeline
+          $lookup: {
+            from: "chapters", // Lookup the Chapter collection
+            localField: "chapters", // This is the `ObjectId` array in Course
+            foreignField: "_id", // This is the `_id` field in the Chapter model
+            as: "chapters", // This will store the resulting chapters
+            pipeline: [
+              {
+                $lookup: {
+                  from: "lessons", // Lookup the Lesson collection
+                  localField: "_id", // Match Chapter `_id`
+                  foreignField: "chapterId", // Match Lesson's `chapterId`
+                  as: "lessons", // Store lessons in each chapter
+                },
+              },
+            ], // This will be executed as part of the lookup to get lessons per chapter
+          },
+        },
+      ]);
 
-      if (!course) {
-        return NextResponse.json(
-          { message: "Course not found" },
-          { status: 404 }
-        );
+      if (!courseData || courseData.length === 0) {
+        return NextResponse.json({ message: "Course not found" }, { status: 404 });
       }
-
-      const enrichedChapters = await Promise.all(
-        course.chapters.map(async (chapter: any) => {
-          const lessons = await Lesson.find({
-            courseId,
-            chapterId: chapter.chapterId,
-          }).lean();
-
-          return {
-            ...chapter,
-            lessons,
-          };
-        })
-      );
 
       return NextResponse.json({
-        message: "Single course with full data fetched",
-        data: {
-          ...course,
-          chapters: enrichedChapters,
-        },
+        message: "Course with chapters and lessons fetched",
+        data: courseData[0], // The result is an array, but we only need the first element
       });
     }
 
-    // ✅ Case 2: Get all courses by instructor
+    // 🟢 Case 2: Return all courses for an instructor (basic list)
     const courses = await Course.find({ "instructor.kindeId": kindeId }).lean();
 
     return NextResponse.json({
-      message: "Courses fetched for instructor",
+      message: "All courses fetched for instructor",
       data: courses,
     });
   } catch (error) {
-    console.error("Error in fetching course(s):", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    console.error("Error fetching course(s):", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 

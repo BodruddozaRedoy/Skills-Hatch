@@ -33,7 +33,7 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
     const [lessonType, setLessonType] = useState("")
     const [videoUrl, setVideoUrl] = useState("");
     const [chapter, setChapter] = useState({
-        chapterId: 0,
+        courseId: _id,
         title: "",
         quiz: [],
         lessons: []
@@ -47,24 +47,16 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
         resources: ""
     })
 
-    // console.log(lesson)
+    console.log(course?.chapters)
     useEffect(() => {
         localStorage.setItem("TextEditorContent", JSON.stringify("Write here..."))
     }, [])
-    // console.log("Chapter length", course?.chapters?.length + 1)
-    useEffect(() => {
-        setChapter({ ...chapter, chapterId: course?.chapters?.length + 1 })
-        // setLesson({ ...lesson, lessonId: course?.chapters?.length + 1 })
-    }, [course])
 
-    // useEffect(() => {
-    //     setLesson({ ...lesson, chapterId: course?.chapters?.length + 1 })
-    // }, [])
 
-    // handleAddChapter
+    //! add a chapter
     const handleAddChapter = async () => {
         try {
-            const res = await axiosPublic.patch(`/api/course?kindeId=${dbUser?.kindeId}&courseId=${_id}`, { chapter: chapter })
+            const res = await axiosPublic.post(`/api/chapter?kindeId=${dbUser?.kindeId}`, chapter)
             console.log(res.data)
             if (res.data.status === 201) {
                 refetch()
@@ -78,10 +70,10 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
         }
     }
 
-    // delete a chapter 
+    //! delete a chapter 
     const handleDeleteChapter = async (chapterId: any) => {
         const res = await axiosPublic.delete(
-            `/api/course?kindeId=${dbUser?.kindeId}&courseId=${_id}&chapterId=${chapterId}`
+            `/api/chapter?kindeId=${dbUser?.kindeId}&courseId=${_id}&chapterId=${chapterId}`
         );
         if (res.data.status === 200) {
             refetch()
@@ -93,7 +85,7 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
         console.log(res.data);
     }
 
-    // add a lesson 
+    //! add a lesson 
     const handleAddLesson = async (id: any) => {
         try {
             const res = await axiosPublic.post(`/api/lesson`, lesson)
@@ -112,7 +104,7 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
         }
     }
 
-    // delete a lesson 
+    //! delete a lesson 
     const handleDeleteLesson = async (lessonId: any) => {
         try {
             const res = await axiosPublic.delete(`/api/lesson?lessonId=${lessonId}`)
@@ -129,7 +121,7 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
         }
     }
 
-    // handle video upload 
+    //! handle video upload 
     const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -148,15 +140,15 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
             {!course?.chapters?.length && <p className='font-semibold text-center'>No Chapter Added</p>}
             {/* all chapter section  */}
             {
-                course?.chapters?.map((chapter: any, i: number) => (
-                    <div key={i} className='bg-muted p-4 rounded-lg font-semibold mb-4 select-none' >
+                course?.chapters?.map((chapter: any, index: number) => (
+                    <div key={index} className='bg-muted p-4 rounded-lg font-semibold mb-4 select-none' >
                         <div className='flex justify-between items-center'>
-                            <h1 onClick={() => setAccordion(accordion == chapter?.chapterId ? null : chapter?.chapterId)} className='cursor-pointer hover:underline'>{`Chapter ${chapter.chapterId}: ${chapter.title}`}</h1>
+                            <h1 onClick={() => setAccordion(accordion == chapter?._id ? null : chapter?._id)} className='cursor-pointer hover:underline'>{`Chapter ${index + 1}: ${chapter.title}`}</h1>
                             <ImBin2 onClick={() => handleDeleteChapter(chapter?.chapterId)} className='text-red-500 cursor-pointer z-10' />
                         </div>
                         {/* single chapter section  */}
                         {
-                            accordion == chapter?.chapterId && (<div className='mt-3 bg-background p-3 rounded-lg select-none'>
+                            accordion == chapter?._id && (<div className='mt-3 bg-background p-3 rounded-lg select-none'>
                                 {/* all lesson section  */}
                                 {
                                     chapter?.lessons?.map((lesson: any, i: number) => (
