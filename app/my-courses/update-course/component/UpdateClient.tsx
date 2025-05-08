@@ -18,7 +18,6 @@ export default function UpdateCourse({ _id }: { _id: string }) {
     const searchParams = useSearchParams()
     const { dbUser } = useDbUser()
     const tab_ = searchParams.get("tab")
-    // const [showTab, setShowTab] = useState('course-details')
     const [tab, setTab] = useState(tab_)
 
     const [course, setCourse] = useState({
@@ -37,6 +36,7 @@ export default function UpdateCourse({ _id }: { _id: string }) {
         progress: [],
         studentsEnrolled: []
     })
+    console.log(course)
     // fetching single course 
     const { data: singleCourse, refetch } = useQuery({
         queryKey: ["my-courses", dbUser?.fullName],

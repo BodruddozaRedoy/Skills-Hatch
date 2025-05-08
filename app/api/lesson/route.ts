@@ -51,7 +51,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json({ message: "Lesson added", lesson: newLesson });
+    return NextResponse.json({
+      message: "Lesson added",
+      lesson: newLesson,
+      status: 201,
+    });
   } catch (error) {
     console.error("Error adding lesson:", error);
     return NextResponse.json({ message: "Server error" }, { status: 500 });

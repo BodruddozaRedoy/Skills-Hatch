@@ -1,14 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+
 import { Dot } from "lucide-react"
 import React from 'react'
 import { IoIosBookmarks, IoIosStar } from "react-icons/io"

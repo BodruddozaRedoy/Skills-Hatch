@@ -47,7 +47,7 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
         resources: ""
     })
 
-    console.log(lesson)
+    // console.log(lesson)
     useEffect(() => {
         localStorage.setItem("TextEditorContent", JSON.stringify("Write here..."))
     }, [])
@@ -97,14 +97,16 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
     const handleAddLesson = async (id: any) => {
         try {
             const res = await axiosPublic.post(`/api/lesson`, lesson)
-        console.log(res.data)
-        if (res.data.status === 200) {
-            refetch()
-            Swal.fire({
-                title: "Lesson Added",
-                icon: "success"
-            })
-        }
+            console.log(res.data)
+            if (res.data.status === 201) {
+                setLessonType("")
+                setAddLessonSection(false)
+                refetch()
+                Swal.fire({
+                    title: "Lesson Added",
+                    icon: "success"
+                })
+            }
         } catch (error) {
             console.log(error)
         }
@@ -143,7 +145,7 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
                                     chapter?.lessons?.map((lesson: any, i: number) => (
                                         <div key={i} className='bg-muted p-4 rounded-lg font-semibold mb-4 select-none' onClick={() => setLessonOpen(lesson == lesson?.i ? null : lesson?.i)}>
                                             <div className='flex justify-between items-center'>
-                                                <h1 className=''>lesson</h1>
+                                                <h1 className=''>{lesson?.title}</h1>
                                                 <ImBin2 onClick={""} className='text-red-500 cursor-pointer z-10' />
                                             </div>
                                         </div>
@@ -172,8 +174,10 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
                                             </div>
                                             <div className='mt-3'>
                                                 {/* lesson title  */}
-                                                <Label>Lesson Title</Label>
-                                                <Input placeholder='Type here' onChange={(e: any) => setLesson({ ...lesson, title: e.target.value })} />
+                                                <div className='my-3 space-y-2'>
+                                                    <Label>Lesson Title</Label>
+                                                    <Input placeholder='Type here' onChange={(e: any) => setLesson({ ...lesson, title: e.target.value })} />
+                                                </div>
                                                 {lessonType === "video" && <div>
                                                     <Label className='mb-3'>Choose video file</Label>
                                                     <Input placeholder='Choose video file' type='file' accept='video/*' onChange={handleVideoUpload} />

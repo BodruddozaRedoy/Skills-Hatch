@@ -1,5 +1,7 @@
 import { connectToDatabase } from "@/lib/mongoose";
 import Course from "@/models/Course";
+import Lesson from "@/models/Lesson";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -18,46 +20,78 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// get courses by instructor and course id
-
 export async function GET(req: NextRequest) {
   await connectToDatabase();
-  // const body = await req.json();
+
   const url = new URL(req.url);
   const kindeId = url.searchParams.get("kindeId");
   const courseId = url.searchParams.get("courseId");
-  console.log(kindeId, courseId);
+
+  if (!kindeId) {
+    return NextResponse.json({ error: "kindeId is required" }, { status: 400 });
+  }
+
   try {
-    if (!kindeId)
-      return NextResponse.json(
-        { error: "kindId is required" },
-        { status: 400 }
-      );
-    if (kindeId && courseId) {
+    // ✅ Case 1: Get single course with full data
+    if (courseId) {
+      if (!mongoose.Types.ObjectId.isValid(courseId)) {
+        return NextResponse.json(
+          { error: "Invalid courseId format" },
+          { status: 400 }
+        );
+      }
+
       const course = await Course.findOne({
         _id: courseId,
         "instructor.kindeId": kindeId,
-      });
-      if (!course) return NextResponse.json({ message: "Courses not found" });
+      }).lean();
+
+      if (!course) {
+        return NextResponse.json(
+          { message: "Course not found" },
+          { status: 404 }
+        );
+      }
+
+      const enrichedChapters = await Promise.all(
+        course.chapters.map(async (chapter: any) => {
+          const lessons = await Lesson.find({
+            courseId,
+            chapterId: chapter.chapterId,
+          }).lean();
+
+          return {
+            ...chapter,
+            lessons,
+          };
+        })
+      );
+
       return NextResponse.json({
-        message: "Single Course fetched",
-        status: "200",
-        data: course,
+        message: "Single course with full data fetched",
+        data: {
+          ...course,
+          chapters: enrichedChapters,
+        },
       });
     }
 
-    if (kindeId) {
-      const courses = await Course.find({ "instructor.kindeId": kindeId });
-      if (!courses) return NextResponse.json({ message: "Courses not found" });
-      return NextResponse.json({
-        message: "Courses fetched",
-        data: courses,
-      });
-    }
+    // ✅ Case 2: Get all courses by instructor
+    const courses = await Course.find({ "instructor.kindeId": kindeId }).lean();
+
+    return NextResponse.json({
+      message: "Courses fetched for instructor",
+      data: courses,
+    });
   } catch (error) {
-    console.log("Error at get course", error);
+    console.error("Error in fetching course(s):", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
+
 
 // update course data
 
