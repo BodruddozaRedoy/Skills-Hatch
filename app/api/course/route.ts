@@ -35,7 +35,10 @@ export async function GET(req: NextRequest) {
     // 🟢 Case 1: Fetch a single course by courseId with chapters and lessons
     if (courseId) {
       if (!mongoose.Types.ObjectId.isValid(courseId)) {
-        return NextResponse.json({ error: "Invalid courseId format" }, { status: 400 });
+        return NextResponse.json(
+          { error: "Invalid courseId format" },
+          { status: 400 }
+        );
       }
 
       const courseData = await Course.aggregate([
@@ -67,7 +70,10 @@ export async function GET(req: NextRequest) {
       ]);
 
       if (!courseData || courseData.length === 0) {
-        return NextResponse.json({ message: "Course not found" }, { status: 404 });
+        return NextResponse.json(
+          { message: "Course not found" },
+          { status: 404 }
+        );
       }
 
       return NextResponse.json({
@@ -76,8 +82,47 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    // 🟢 Case 2: Return all courses for an instructor (basic list)
-    const courses = await Course.find({ "instructor.kindeId": kindeId }).lean();
+    // Case 2: Fetch all courses with chapters and lessons
+    const courses = await Course.aggregate([
+      {
+        $match: { "instructor.kindeId": kindeId },
+      },
+      {
+        $lookup: {
+          from: "chapters",
+          localField: "chapters",
+          foreignField: "_id",
+          as: "chapters",
+          pipeline: [
+            {
+              $lookup: {
+                from: "lessons",
+                localField: "_id",
+                foreignField: "chapterId",
+                as: "lessons",
+              },
+            },
+          ],
+        },
+      },
+      {
+        $addFields: {
+          content: {
+            $reduce: {
+              input: {
+                $map: {
+                  input: "$chapters",
+                  as: "ch",
+                  in: { $ifNull: ["$$ch.lessons", []] },
+                },
+              },
+              initialValue: [],
+              in: { $concatArrays: ["$$value", "$$this"] },
+            },
+          },
+        },
+      },
+    ]);
 
     return NextResponse.json({
       message: "All courses fetched for instructor",
@@ -85,10 +130,12 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("Error fetching course(s):", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
-
 
 // update course data
 
@@ -178,40 +225,46 @@ export async function PATCH(req: NextRequest) {
   }
 }
 
-// remove course and chapter 
-export async function DELETE(req:NextRequest) {
-  await connectToDatabase()
+// remove course and chapter
+export async function DELETE(req: NextRequest) {
+  await connectToDatabase();
   const url = new URL(req.url);
   const kindeId = url.searchParams.get("kindeId");
   const courseId = url.searchParams.get("courseId");
   const chapterIdParam = url.searchParams.get("chapterId");
   const chapterId = chapterIdParam ? Number(chapterIdParam) : null;
   try {
-    if(!kindeId && !courseId) return NextResponse.json({message: "KindeId and courseID required"})
-      // delete a course 
-    if(kindeId && courseId && !chapterId){
-      await Course.findOneAndDelete({_id:courseId, 'instructor.kindeId': kindeId})
-    return NextResponse.json({
-      message: "Course deleted",
-      status: 200
-    })
+    if (!kindeId && !courseId)
+      return NextResponse.json({ message: "KindeId and courseID required" });
+    // delete a course
+    if (kindeId && courseId && !chapterId) {
+      await Course.findOneAndDelete({
+        _id: courseId,
+        "instructor.kindeId": kindeId,
+      });
+      return NextResponse.json({
+        message: "Course deleted",
+        status: 200,
+      });
     }
 
-    // delete a chapter 
-    if(chapterId){
-      const deleteChapter = await Course.findOneAndUpdate({_id:courseId, 'instructor.kindeId': kindeId,}, {$pull: {chapters:{chapterId:chapterId}}})
-      if(!deleteChapter){
+    // delete a chapter
+    if (chapterId) {
+      const deleteChapter = await Course.findOneAndUpdate(
+        { _id: courseId, "instructor.kindeId": kindeId },
+        { $pull: { chapters: { chapterId: chapterId } } }
+      );
+      if (!deleteChapter) {
         return NextResponse.json({
           message: "Chapter can't be deleted",
-        })
+        });
       }
       return NextResponse.json({
         message: "Chapter deleted",
-        status: 200
-      })
+        status: 200,
+      });
     }
   } catch (error) {
     console.log("Error at delete course", error);
-    
   }
 }

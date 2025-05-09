@@ -25,7 +25,7 @@ import { ImBin2 } from "react-icons/im";
 import { PlusCircleIcon } from 'lucide-react'
 
 
-export default function CourseContent({ course, setCourse, _id, refetch }: any) {
+export default function CourseContent({ course, setCourse, _id: courseId, refetch }: any) {
     const { dbUser } = useDbUser()
     const [accordion, setAccordion] = useState()
     const [lessonOpen, setLessonOpen] = useState()
@@ -33,13 +33,13 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
     const [lessonType, setLessonType] = useState("")
     const [videoUrl, setVideoUrl] = useState("");
     const [chapter, setChapter] = useState({
-        courseId: _id,
+        courseId: courseId,
         title: "",
         quiz: [],
         lessons: []
     })
     const [lesson, setLesson] = useState({
-        courseId: _id,
+        courseId: courseId,
         chapterId: 0,
         title: "",
         textContent: "",
@@ -73,7 +73,7 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
     //! delete a chapter 
     const handleDeleteChapter = async (chapterId: any) => {
         const res = await axiosPublic.delete(
-            `/api/chapter?chapterId=${chapterId}`
+            `/api/chapter?chapterId=${chapterId}&courseId=${courseId}`
         );
         if (res.status === 200) {
             refetch()

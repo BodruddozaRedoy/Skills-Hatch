@@ -4,6 +4,10 @@ import "./globals.css";
 import Navbar from "@/components/layouts/Navbar/Navbar";
 import ContextProvider from "@/providers/ContextProvider";
 import KindeProviders from "@/providers/KindeProviders";
+import GlobalRouteLoader from "@/components/GlobalRouteLoader";
+import { Suspense } from "react";
+import LoadingScreen from "@/components/LoadingScreen";
+import GlobalPageLoader from "@/components/GlobalRouteLoader";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -32,9 +36,11 @@ export default function RootLayout({
         className={`${poppins.variable} ${geistMono.variable} antialiased bg-muted`}
       >
         <KindeProviders>
-        <ContextProvider>
-
-          {children}
+          <ContextProvider>
+            <GlobalPageLoader />
+            <Suspense fallback={<LoadingScreen />}>
+              {children}
+            </Suspense>
           </ContextProvider>
         </KindeProviders>
       </body>

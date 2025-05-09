@@ -42,9 +42,10 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   const url = new URL(req.url);
   const chapterId = url.searchParams.get("chapterId");
-  if (!chapterId)
+  const courseId = url.searchParams.get("courseId");
+  if (!chapterId || !courseId)
     return NextResponse.json(
-      { message: "Chapter id is required" },
+      { message: "Chapter and course id is required" },
       { status: 404 }
     );
   try {
@@ -60,6 +61,9 @@ export async function DELETE(req: NextRequest) {
         { message: "Error at deletion the chapter" },
         { status: 404 }
       );
+    const deleteChapterRef = await Course.findByIdAndUpdate(courseId, {
+      $pull: { chapters: chapterId },
+    });
     return NextResponse.json(
       {
         message: "Chapter Deleted",

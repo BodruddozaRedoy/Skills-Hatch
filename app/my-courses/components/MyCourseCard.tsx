@@ -15,53 +15,14 @@ import toast from "react-hot-toast"
 import Swal from "sweetalert2"
 
 
-// {
-//     "_id": "6818720e4657ca13f692218c",
-//     "title": "Quisquam doloribus c",
-//     "thumbnail": "blob:http://localhost:3000/ec6f6f53-2bd3-42ba-8424-28eeddcfe997",
-//     "ratings": 0,
-//     "price": 720,
-//     "level": "beginner",
-//     "language": "Occaecat iure ullamc",
-//     "status": "draft",
-//     "description": "Accusantium quos max",
-//     "instructor": {
-//         "_id": "6815d419968eebfa5bd74cc3",
-//         "fullName": "Bodruddoza Redoy",
-//         "kindeId": "kp_e85b5f2eeae44a37b3a51357d7da94e1",
-//         "email": "bodruddozaredoy@gmail.com",
-//         "picture": "https://lh3.googleusercontent.com/a/ACg8ocJJAOflmuwpma5Mv2Z0VGKyF1yZEY-jPA2ZOCSvAtU5n6VJFmLF=s96-c",
-//         "role": "student",
-//         "bio": "I am a full stack web developer. This is my LMS project to showcase my resume.",
-//         "socialLinks": [],
-//         "points": 3000,
-//         "achievements": 0,
-//         "badges": [],
-//         "completedCourses": [],
-//         "currentCourses": [],
-//         "comments": [],
-//         "progress": [],
-//         "quizResults": [],
-//         "assignments": [],
-//         "notifications": [],
-//         "activityLog": [],
-//         "createdAt": "2025-05-03T08:30:17.695Z",
-//         "updatedAt": "2025-05-03T15:15:15.201Z",
-//         "__v": 0
-//     },
-//     "category": "web-design",
-//     "chapters": [],
-//     "studentsEnrolled": [],
-//     "reviews": [],
-//     "progress": [],
-//     "createdAt": "2025-05-05T08:08:46.225Z",
-//     "updatedAt": "2025-05-05T08:08:46.225Z",
-//     "__v": 0
-// }
+
 
 export default function MyCourseCard({ course, refetch }: any) {
-    const { thumbnail, status, title, price, category, ratings, chapters, _id } = course
+    const { thumbnail, status, title, price, category, ratings, chapters, _id, content } = course
     const { dbUser } = useDbUser()
+    // console.log(contentCount)
+
+    console.log("course from card", course)
 
     const handleDraft = async () => {
         const res = await axiosPublic.patch(`/api/course?kindeId=${dbUser?.kindeId}&courseId=${_id}`, { status: "draft" })
@@ -104,7 +65,7 @@ export default function MyCourseCard({ course, refetch }: any) {
                     <p className="font-semibold text-muted-foreground flex items-center gap-2">{ratings} <IoIosStar className="text-secondary" /></p>
                     <div className='flex gap-2 text-gray-400 font-semibold text-sm items-center'>
                         <IoIosBookmarks />
-                        <p>{chapters.length} Content</p>
+                        <p>{content?.length} Content</p>
                     </div>
                 </div>
 
