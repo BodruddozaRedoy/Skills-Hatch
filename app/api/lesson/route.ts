@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Lesson from "@/models/Lesson";
 import Course from "@/models/Course";
 import { connectToDatabase } from "@/lib/mongoose";
+import Chapter from "@/models/Chapter";
 
 export async function POST(req: NextRequest) {
   await connectToDatabase();
@@ -12,7 +13,7 @@ export async function POST(req: NextRequest) {
 
   console.log("courseId", courseId, chapterId);
 
-  if (!courseId || chapterId === undefined || !title) {
+  if (!courseId || !chapterId || !title) {
     return NextResponse.json(
       { message: "Missing required fields" },
       { status: 400 }
@@ -31,14 +32,13 @@ export async function POST(req: NextRequest) {
     });
 
     // 2. Push lesson._id into the correct chapter's lessons array
-    const updatedCourse = await Course.findOneAndUpdate(
+    const updatedCourse = await Chapter.findOneAndUpdate(
       {
-        _id: courseId,
-        "chapters.chapterId": chapterId,
+        _id: chapterId,
       },
       {
         $push: {
-          "chapters.$.lessons": newLesson._id,
+          lessons: newLesson._id,
         },
       },
       { new: true }
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// delete a lesson
+//! delete a lesson
 export async function DELETE(req: NextRequest) {
   const url = new URL(req.url);
   const lessonId = url.searchParams.get("lessonId");

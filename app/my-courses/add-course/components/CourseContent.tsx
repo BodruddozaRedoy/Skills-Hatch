@@ -47,7 +47,7 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
         resources: ""
     })
 
-    console.log(course?.chapters)
+    console.log(lesson)
     useEffect(() => {
         localStorage.setItem("TextEditorContent", JSON.stringify("Write here..."))
     }, [])
@@ -73,9 +73,9 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
     //! delete a chapter 
     const handleDeleteChapter = async (chapterId: any) => {
         const res = await axiosPublic.delete(
-            `/api/chapter?kindeId=${dbUser?.kindeId}&courseId=${_id}&chapterId=${chapterId}`
+            `/api/chapter?chapterId=${chapterId}`
         );
-        if (res.data.status === 200) {
+        if (res.status === 200) {
             refetch()
             Swal.fire({
                 title: "Chapter Deleted",
@@ -86,7 +86,8 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
     }
 
     //! add a lesson 
-    const handleAddLesson = async (id: any) => {
+    const handleAddLesson = async (chapterId: any) => {
+    // setLesson({ ...lesson, chapterId: chapterId })
         try {
             const res = await axiosPublic.post(`/api/lesson`, lesson)
             console.log(res.data)
@@ -144,7 +145,7 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
                     <div key={index} className='bg-muted p-4 rounded-lg font-semibold mb-4 select-none' >
                         <div className='flex justify-between items-center'>
                             <h1 onClick={() => setAccordion(accordion == chapter?._id ? null : chapter?._id)} className='cursor-pointer hover:underline'>{`Chapter ${index + 1}: ${chapter.title}`}</h1>
-                            <ImBin2 onClick={() => handleDeleteChapter(chapter?.chapterId)} className='text-red-500 cursor-pointer z-10' />
+                            <ImBin2 onClick={() => handleDeleteChapter(chapter?._id)} className='text-red-500 cursor-pointer z-10' />
                         </div>
                         {/* single chapter section  */}
                         {
@@ -154,7 +155,7 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
                                     chapter?.lessons?.map((lesson: any, i: number) => (
                                         <div key={i} className='bg-muted p-4 rounded-lg font-semibold mb-4 select-none' onClick={() => setLessonOpen(lesson == lesson?.i ? null : lesson?.i)}>
                                             <div className='flex justify-between items-center'>
-                                                <h1 className=''>{lesson?.title}</h1>
+                                                <h1 className=''>{`Lesson ${i + 1}: `}{lesson?.title}</h1>
                                                 <ImBin2 onClick={() => { handleDeleteLesson(lesson?._id) }} className='text-red-500 cursor-pointer z-10' />
                                             </div>
                                         </div>
@@ -163,10 +164,10 @@ export default function CourseContent({ course, setCourse, _id, refetch }: any) 
                                 {/* add lesson btn  */}
                                 {
                                     addLessonSection ? (<div>
-                                        <Button onClick={() => handleAddLesson(chapter?.chapterId)} size={"sm"}>Add</Button>
+                                        <Button onClick={() => handleAddLesson(chapter?._id)} size={"sm"}>Add</Button>
                                         <Button size={"sm"} onClick={() => { setAddLessonSection(false); setLessonType("") }} className='bg-secondary hover:bg-secondary ml-3'>Cancel</Button>
                                     </div>) : (
-                                            <Button onClick={() => { setAddLessonSection(true); setLesson({ ...lesson, chapterId: chapter?.chapterId }) }} size={"sm"} className='mt-3'><PlusCircleIcon /> Add Lesson</Button>
+                                            <Button onClick={() => { setAddLessonSection(true); setLesson({ ...lesson, chapterId: chapter?._id }) }} size={"sm"} className='mt-3'><PlusCircleIcon /> Add Lesson</Button>
 
                                     )
                                 }

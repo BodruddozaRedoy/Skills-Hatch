@@ -1,8 +1,8 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models, mongo } from "mongoose";
 
 const LessonSchema = new Schema(
   {
-    chapterId: Number,
+    chapterId: mongoose.Schema.Types.ObjectId,
     courseId: mongoose.Schema.Types.ObjectId,
     title: { type: String, required: true },
     textContent: String,
