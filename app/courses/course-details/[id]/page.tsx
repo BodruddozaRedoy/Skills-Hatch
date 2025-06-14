@@ -28,12 +28,12 @@ export default function CourseDetails() {
   const added = false
   return (
     <div>
-        <Link href={"/courses"} className='flex items-center gap-3 font-semibold'><IoIosArrowBack />
+        <Link href={"/courses"} className='flex items-center gap-3 font-semibold mb-5'><IoIosArrowBack />
         Back</Link>
         <div className='grid grid-cols-7 gap-5'>
           {/* text container  */}
             <div className='bg-background col-span-4 rounded-lg p-5'>
-              <h1 className='font-semibold text-2xl'>{course?.title}</h1>
+              <h1 className='font-bold text-3xl'>{course?.title}</h1>
               <p className='text-muted-foreground font-semibold py-5'>{course?.description}</p>
               <div className='flex gap-1 items-center font-semibold text-muted-foreground'>
                 {/* <p>{course?.instructor?.fullName} | </p> */}
@@ -69,8 +69,18 @@ export default function CourseDetails() {
                   <FaHeart className='text-2xl text-red-500 cursor-pointer'/>
                   <p className='font-semibold text-red-500'>Added</p>
                 </div>}
-                
               </div>
+                {/* learn  */}
+                <div className='mt-5'>
+                  <h1 className='font-semibold'>What will you learn:</h1>
+                </div>
+
+                {/* buttons  */}
+                <div>
+                  <button className='bg-primary rounded-lg py-3 px-5 text-white font-semibold w-full mt-5 cursor-pointer select-none hover:bg-transparent hover:text-black transition-all border-2 border-primary'>Buy Now</button>
+                  <button className='bg-primary rounded-lg py-3 px-5 text-white font-semibold w-full mt-5 cursor-pointer select-none hover:bg-transparent hover:text-black transition-all border-2 border-primary'>Start</button>
+                  
+                </div>
             </div>
         </div>
     </div>
