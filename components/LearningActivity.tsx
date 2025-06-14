@@ -50,12 +50,12 @@ const data = [
 ];
 
 // ✅ Component
-export default function LearningActivity() {
+export default function LearningActivity({ title }: any) {
   return (
     <div className="bg-background rounded-lg h-[300px] sm:h-[400px] lg:h-[500px] p-4 sm:p-5 lg:p-10 w-full col-span-4">
       {/* Top Section */}
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 items-center justify-between mb-5 text-center sm:text-left">
-        <h1 className="text-lg sm:text-xl lg:text-2xl font-extrabold">Learning Activity</h1>
+        <h1 className="text-lg sm:text-xl lg:text-2xl font-extrabold">{title}</h1>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2">
             <RiStopCircleFill className="text-secondary" />

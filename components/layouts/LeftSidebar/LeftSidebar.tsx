@@ -8,6 +8,9 @@ import { IoBookSharp } from "react-icons/io5";
 import { useParams, usePathname } from 'next/navigation';
 import { IoIosArrowBack } from "react-icons/io";
 import { GeneralContext } from '@/context/useContext';
+import { FiUser } from "react-icons/fi";
+import { IoIosAddCircleOutline } from "react-icons/io";
+
 
 
 
@@ -22,6 +25,17 @@ const sidebarLinks = [
         icon: IoBookSharp,
         link: "/courses"
     },
+    {
+        title: "Profile",
+        icon: FiUser,
+        link: "/profile"
+    },
+    {
+        title: "My Courses",
+        icon: IoBookSharp,
+        link: "/my-courses"
+    },
+
 
 ]
 
@@ -30,13 +44,13 @@ export default function LeftSidebar() {
     
 
     return (
-        <div className=' flex flex-col gap-5 relative'>
+        <div className=' flex flex-col gap-5 relative w-full'>
             <div className='flex flex-col gap-5 relative flex-1'>
             {
                 sidebarLinks?.map((link, index) => (
                     <Link key={index} href={link.link}>
                         <div className={`flex items-center gap-4  px-5 py-4 rounded-lg font-semibold text-lg ${pathname === link.link && 'bg-primary text-white'}`}>
-                            <link.icon />
+                            <link.icon className='text-2xl'/>
                             <p>{link.title}</p>
                         </div>
                     </Link>

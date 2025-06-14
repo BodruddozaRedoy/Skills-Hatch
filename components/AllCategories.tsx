@@ -37,7 +37,7 @@ export default function AllCategories() {
             <div className='grid grid-cols-2 lg:grid-cols-4 items-start justify-between gap-5'>
                 {
                     categories?.map((cat, i) => (
-                        <div className='flex lg:flex-row flex-col items-center bg-background rounded-lg py-3 px-5 w-full justify-between cursor-pointer select-none'>
+                        <div key={i} className='flex lg:flex-row flex-col items-center bg-background rounded-lg py-3 px-5 w-full justify-between cursor-pointer select-none'>
                             <div className='flex lg:flex-row flex-col items-center gap-4'>
                             <img className='w-18' src={cat.icon} alt="" />
                             <div>

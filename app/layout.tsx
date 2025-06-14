@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layouts/Navbar/Navbar";
-import Sidebar from "@/components/layouts/LeftSidebar/LeftSidebar";
-import LeftSidebar from "@/components/layouts/LeftSidebar/LeftSidebar";
-import RightSidebar from "@/components/layouts/RightSidebar/RightSidebar";
 import ContextProvider from "@/providers/ContextProvider";
+import KindeProviders from "@/providers/KindeProviders";
+import GlobalRouteLoader from "@/components/GlobalRouteLoader";
+import { Suspense } from "react";
+import LoadingScreen from "@/components/LoadingScreen";
+import GlobalPageLoader from "@/components/GlobalRouteLoader";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -33,13 +35,14 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${geistMono.variable} antialiased bg-muted`}
       >
-        <nav className="fixed w-full z-[99999]">
-          <Navbar />
-        </nav>
-        <ContextProvider>
-          {children}
-        </ContextProvider>
-        <footer></footer>
+        <KindeProviders>
+          <ContextProvider>
+            <GlobalPageLoader />
+            <Suspense fallback={<LoadingScreen />}>
+              {children}
+            </Suspense>
+          </ContextProvider>
+        </KindeProviders>
       </body>
     </html>
   );

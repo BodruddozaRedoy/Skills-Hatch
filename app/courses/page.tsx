@@ -1,5 +1,5 @@
 import AllCategories from '@/components/AllCategories'
-import AllCourses from '@/components/AllCourses/AllCourses'
+import AllCourses from '@/components/Courses/AllCourses'
 import React from 'react'
 
 export default function Courses() {

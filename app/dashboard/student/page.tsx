@@ -18,7 +18,7 @@ export default function Student() {
       {/* learning activity  */}
       <section className='grid grid-cols-1 lg:grid-cols-6  gap-10 w-full'>
         <div className='lg:col-span-4 w-full'>
-        <LearningActivity />
+          <LearningActivity title={"Learning Activity"} />
         </div>
         <div className='w-full lg:col-span-2 '>
         <ProgressSection />

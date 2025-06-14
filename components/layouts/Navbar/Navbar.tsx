@@ -15,14 +15,58 @@ import { RiSettings5Fill } from "react-icons/ri";
 import { HiUserCircle } from "react-icons/hi2";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { ImCross } from "react-icons/im";
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import RightSidebar from '../RightSidebar/RightSidebar';
-
-
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from '@/components/ui/button';
+import { RegisterLink, useKindeAuth, useKindeBrowserClient, LogoutLink } from '@kinde-oss/kinde-auth-nextjs';
+import { useKindeUser } from '@/hooks/useKindeUser';
+import { axiosPublic } from '@/lib/axiosPublic';
+import toast from 'react-hot-toast';
 
 
 export default function Navbar() {
   const [menu, setMenu] = useState(false)
+  const [searchContent, setSearchContent] = useState(false)
+  const wrapperRef = useRef(null)
+  const { user } = useKindeUser()
+  // conditionally user created or fatched at db
+  useEffect(() => {
+    const isUserFetched = localStorage.getItem("user-status")
+    if (!isUserFetched) {
+      if (user) {
+        const fetchUser = async () => {
+          const res = await axiosPublic.post("/api/user", user)
+          if (res.data) {
+            toast.success("Logged In")
+            localStorage.setItem("user-status", "fetched")
+          }
+          console.log("User fetched", res.data)
+        }
+        fetchUser()
+      }
+    }
+  }, [user])
+
+  // search outside click close 
+  useEffect(() => {
+    const handleClickOutside = (e: any) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setSearchContent(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
   return (
     <div className='flex items-center justify-between px-5 lg:px-10 py-7 bg-background w-full relative'>
       {/* Logo  */}
@@ -30,8 +74,12 @@ export default function Navbar() {
 
       {/* search bar  */}
       <div className='relative hidden lg:flex'>
-        <input className='bg-muted py-3 rounded-lg px-5 pl-12 w-[450px]' type="text" name="" id="" placeholder='Search here...' />
+        <input onClick={() => setSearchContent(true)} className={`bg-muted py-3 ${searchContent ? 'rounded-t-lg border border-primary' : 'rounded-lg'} px-5 pl-12 w-[450px] focus:outline-none`} type="text" name="" id="" placeholder='Search here...' />
         <Search className='text-primary absolute top-1/2 -translate-y-1/2 left-4' />
+        {/* search content  */}
+        {
+          searchContent && <div ref={wrapperRef} className={`w-[450px] rounded-b-lg bg-muted h-[400px] absolute top-12 border-b border-x border-primary`}></div>
+        }
       </div>
       {/* navbar end  */}
       <div className='flex items-center gap-6 z-40'>
@@ -41,7 +89,7 @@ export default function Navbar() {
             <SelectTrigger className="w-[130px]">
               <SelectValue placeholder="Eng (US)" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='z-[99999] p-3'>
               <SelectItem value="Eng(US)"><img className='w-8 h-8 object-cover z-30' src="./us.png" alt="" /> Eng(US)</SelectItem>
               <SelectItem value="Bengali">Bengali</SelectItem>
             </SelectContent>
@@ -56,17 +104,26 @@ export default function Navbar() {
         </div>
 
         {/* avatar  */}
-        <div className='w-12 h-12 lg:w-16 lg:h-16 rounded-full border-3 flex items-center justify-center border-primary'>
-          <img src="" alt="" />
-          <HiUserCircle className='text-6xl text-gray-400 w-full' />
-        </div>
-
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className='w-12 h-12 lg:w-16 lg:h-16 rounded-full overflow-hidden border-3 flex items-center justify-center border-primary cursor-pointer'>
+              {
+                user ? <img src={user?.picture || ""} alt="" /> : <HiUserCircle className='text-6xl text-gray-400 w-full' />
+              }
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56 z-[999999] p-5">
+            <DropdownMenuLabel>{user?.given_name || "No"} {user?.family_name || "User"}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {
+              !user ? (<Button className='w-full mt-5'><RegisterLink>Register</RegisterLink></Button>) : (<Button onClick={() => { localStorage.removeItem("user-status") }} className='w-full mt-5'><LogoutLink>Log Out</LogoutLink></Button>)
+            }
+          </DropdownMenuContent>
+        </DropdownMenu>
         <div onClick={() => setMenu(!menu)} className='flex lg:hidden'>
           <FaBarsStaggered className='text-gray-400 text-2xl' />
         </div>
       </div>
-
-
 
       {/* mobile menu  */}
       {
