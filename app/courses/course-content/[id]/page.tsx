@@ -98,26 +98,36 @@ export default function CourseContent() {
                     </div>
                 </div>
                 {/* content  */}
-                <div className='p-5 rounded-lg bg-white mt-5'>
-                    {/* chapter title  */}
-                    <div className='flex items-center justify-between'>
-                        <p className='font-bold text-xl'>chapter title</p>
-                        <div className='flex items-center gap-2'>
-                            <p className='font-semibold'>(5/10)</p>
-                            <div onClick={() => setArrowToggle(!arrowToggle)} className='p-1 text-xl bg-primary inline-flex rounded-full text-white cursor-pointer select-none'>
-                                {arrowToggle ? <IoIosArrowDown /> : <IoIosArrowUp />}
+                {
+                    chapters?.map((chapter: any, index: number) => (
+                        <div className='p-5 rounded-lg bg-white mt-5'>
+                            {/* chapter title  */}
+                            <div className='flex items-center justify-between'>
+                                <p className='font-bold text-xl'>{chapter?.title}</p>
+                                <div className='flex items-center gap-2'>
+                                    <p className='font-semibold'>(0/{chapter?.lessons?.length})</p>
+                                    <div  className='p-1 text-xl bg-primary inline-flex rounded-full text-white cursor-pointer select-none'>
+                                        {arrowToggle === chapter?.title ? <IoIosArrowDown onClick={() => setArrowToggle(chapter?.title)} /> : <IoIosArrowUp onClick={() => setArrowToggle("")} />}
+                                    </div>
+                                </div>
                             </div>
+                            {
+                                arrowToggle === chapter?.title && <>
+                                    {
+                                        chapter?.lessons?.map((lesson: any, index: number) => (
+                                            <div className='p-3 rounded-lg bg-primary text-white font-semibold mt-4'>
+                                                <div className='flex items-center gap-2'>
+                                                    <div className='bg-white w-7 h-7 flex items-center justify-center rounded-full'><FaPlay className='text-primary text-sm' /></div>
+                                                    <p>{lesson?.title}</p>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </>
+                            }
                         </div>
-                    </div>
-                    {
-                        arrowToggle && <div className='p-3 rounded-lg bg-primary text-white font-semibold mt-4'>
-                        <div className='flex items-center gap-2'>
-                            <div className='bg-white w-7 h-7 flex items-center justify-center rounded-full'><FaPlay className='text-primary text-sm'/></div>
-                            <p>lesson 1</p>
-                        </div>
-                    </div>
-                    }
-                </div>
+                    ))
+                }
             </div>
         </div>
     )
