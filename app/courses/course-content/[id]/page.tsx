@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ArrowUp } from 'lucide-react'
 import { useParams, useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaPlay } from "react-icons/fa";
@@ -13,7 +13,8 @@ import { FaPlay } from "react-icons/fa";
 
 export default function CourseContent() {
     const [toggleSection, settoggleSection] = useState<string>("resources");
-    const [arrowToggle, setArrowToggle] = useState<number | null>(null)
+    const [arrowToggle, setArrowToggle] = useState<number | null>(0)
+    const [chapterTitle, setChapterTitle] = useState()
     // const searchParams = useSearchParams()
     // console.log(searchParams)
     const params = useParams()
@@ -28,13 +29,26 @@ export default function CourseContent() {
         enabled: !!user
     })
     const chapters = course?.chapters
+    useEffect(() => {
+        if (chapters && chapters.length > 0) {
+            setArrowToggle(0); // Open first chapter by default
+        }
+    }, [chapters]);
+
+    useEffect(() => {
+        if (chapters && chapters.length > 0) {
+            setChapterTitle(chapters[0]?.lessons[0]?.title);
+        }
+    }, [chapters]);
+
+
     console.log(chapters)
     return (
         <div className='grid grid-cols-6'>
             {/* 1st grid  */}
             <div className='col-span-4'>
                 <div>
-                    <h1 className='font-bold text-3xl'>{course?.title}</h1>
+                    <h1 className='font-bold text-3xl'>{chapterTitle}</h1>
                     <div className='flex gap-1 items-center font-semibold text-muted-foreground mt-3'>
                         {/* <p>{course?.instructor?.fullName} | </p> */}
                         <p>⭐{course?.ratings} | </p>
@@ -43,6 +57,14 @@ export default function CourseContent() {
                     </div>
                 </div>
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBapHLSeMxbTNSyA3L5s1MZyR3jwQW3PBTwg&s" className='w-full h-[550px] object-contain border-2 border-primary p-2 shadow-md my-3 rounded-lg' alt="" />
+                {/* buttons  */}
+                <div className='flex items-center justify-between'>
+                    <div></div>
+                    <div>
+                        <button onClick={() => setChapterTitle(chapters[0]?.lessons[0]?.title)} className='py-2 px-5 rounded-lg bg-white text-primary border border-primary font-semibold cursor-pointer select-none'>Previous</button>
+                        <button onClick={() => setChapterTitle(chapters[0]?.lessons[0+1]?.title)} className='py-2 px-5 rounded-lg bg-primary text-white ml-3 border border-primary font-semibold cursor-pointer select-none'>Next</button>
+                    </div>
+                </div>
                 {/* resources and discussion section  */}
                 <div className='pt-5'>
                     {/* header  */}
@@ -51,6 +73,7 @@ export default function CourseContent() {
                         <p onClick={() => settoggleSection("discussion")} className={`${toggleSection === "discussion" && 'text-primary'} cursor-pointer select-none`}>Discussion</p>
                         <div className={`${toggleSection === "resources" ? 'left-0' : 'left-[90px]'} w-20 h-0.5 rounded-lg absolute -bottom-0.5  bg-primary`}></div>
                     </div>
+
                     {/* content  */}
                     <div className='mt-5'>
                         {/* resources  */}
@@ -115,7 +138,7 @@ export default function CourseContent() {
                                 arrowToggle === index && <>
                                     {
                                         chapter?.lessons?.map((lesson: any, index: number) => (
-                                            <div className='p-3 rounded-lg bg-primary text-white font-semibold mt-4'>
+                                            <div className='p-3 rounded-lg bg-primary text-white font-semibold mt-4 cursor-pointer select-none'>
                                                 <div className='flex items-center gap-2'>
                                                     <div className='bg-white w-7 h-7 flex items-center justify-center rounded-full'><FaPlay className='text-primary text-sm' /></div>
                                                     <p>{lesson?.title}</p>
