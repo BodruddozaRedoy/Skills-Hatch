@@ -98,9 +98,9 @@ export default function Navbar() {
 
         {/* icons  */}
         <div className='lg:flex items-center gap-4 hidden'>
-          <BiSolidMessageSquareDots className='text-2xl lg:text-4xl text-gray-400' />
-          <MdNotificationsActive className='text-2xl lg:text-4xl text-gray-400' />
-          <RiSettings5Fill className='text-2xl lg:text-4xl text-gray-400' />
+          <BiSolidMessageSquareDots className='text-2xl lg:text-4xl text-gray-400 cursor-pointer select-none' />
+          <MdNotificationsActive className='text-2xl lg:text-4xl text-gray-400 cursor-pointer select-none' />
+          <RiSettings5Fill className='text-2xl lg:text-4xl text-gray-400 cursor-pointer select-none' />
         </div>
 
         {/* avatar  */}
