@@ -4,6 +4,12 @@ Skill Hatch is a modern web-based e-learning platform supporting both free and p
 
 ---
 
+## 🌏 Live Link
+
+[Click Here](https://skills-hatch.vercel.app/dashboard/student)
+
+---
+
 ## 📚 Table of Contents
 
 - [Features](#features)
@@ -72,7 +78,7 @@ Skill Hatch is a modern web-based e-learning platform supporting both free and p
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/skill-hatch.git
+git clone https://github.com/BodruddozaRedoy/Skills-Hatch.git
 cd skill-hatch
 
 # Install dependencies
