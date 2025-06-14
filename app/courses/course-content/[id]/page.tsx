@@ -12,8 +12,8 @@ import { FaPlay } from "react-icons/fa";
 
 
 export default function CourseContent() {
-    const [toggleSection, settoggleSection] = useState("resources");
-    const [arrowToggle, setArrowToggle] = useState(true)
+    const [toggleSection, settoggleSection] = useState<string>("resources");
+    const [arrowToggle, setArrowToggle] = useState<number | null>(null)
     // const searchParams = useSearchParams()
     // console.log(searchParams)
     const params = useParams()
@@ -106,13 +106,13 @@ export default function CourseContent() {
                                 <p className='font-bold text-xl'>{chapter?.title}</p>
                                 <div className='flex items-center gap-2'>
                                     <p className='font-semibold'>(0/{chapter?.lessons?.length})</p>
-                                    <div  className='p-1 text-xl bg-primary inline-flex rounded-full text-white cursor-pointer select-none'>
-                                        {arrowToggle === chapter?.title ? <IoIosArrowDown onClick={() => setArrowToggle(chapter?.title)} /> : <IoIosArrowUp onClick={() => setArrowToggle("")} />}
+                                    <div className='p-1 text-xl bg-primary inline-flex rounded-full text-white cursor-pointer select-none'>
+                                        {arrowToggle !== index ? <IoIosArrowDown onClick={() => setArrowToggle(index)} /> : <IoIosArrowUp onClick={() => setArrowToggle(null)} />}
                                     </div>
                                 </div>
                             </div>
                             {
-                                arrowToggle === chapter?.title && <>
+                                arrowToggle === index && <>
                                     {
                                         chapter?.lessons?.map((lesson: any, index: number) => (
                                             <div className='p-3 rounded-lg bg-primary text-white font-semibold mt-4'>
