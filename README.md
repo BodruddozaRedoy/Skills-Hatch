@@ -10,12 +10,6 @@ Skill Hatch is a modern web-based e-learning platform supporting both free and p
 - [Roles and Responsibilities](#roles-and-responsibilities)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [Examples](#examples)
-- [Troubleshooting](#troubleshooting)
-- [Contributors](#contributors)
-- [License](#license)
 
 ---
 
