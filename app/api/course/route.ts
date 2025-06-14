@@ -4,6 +4,7 @@ import Lesson from "@/models/Lesson";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
+//! Post a course
 export async function POST(req: NextRequest) {
   await connectToDatabase();
   const body = await req.json();
@@ -19,6 +20,7 @@ export async function POST(req: NextRequest) {
     console.log("Error at post course", error);
   }
 }
+
 //! Get course
 export async function GET(req: NextRequest) {
   await connectToDatabase();
@@ -225,7 +227,7 @@ export async function PATCH(req: NextRequest) {
   }
 }
 
-// remove course and chapter
+//! remove course and chapter
 export async function DELETE(req: NextRequest) {
   await connectToDatabase();
   const url = new URL(req.url);

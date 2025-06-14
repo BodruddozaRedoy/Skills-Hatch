@@ -2,7 +2,7 @@
 import React from 'react'
 import { IoIosArrowForward } from 'react-icons/io'
 import CourseCard from './CourseCard'
-import useUser from '@/hooks/useKindeUser'
+// import useUser from '@/hooks/useKindeUser'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -20,6 +20,8 @@ export default function AllCourses() {
 
 
 const {courses} = useAllCourses()
+const publishedCourses = courses?.filter((prev:any) => prev.status === "published")
+console.log(publishedCourses)
     return (
         <div>
             <div className='flex items-center justify-between mb-5'>
@@ -32,7 +34,7 @@ const {courses} = useAllCourses()
 
             <div className='grid grid-cols-1 lg:grid-cols-3 justify-between gap-5'>
                 {
-                    courses?.map((course:any, i:number) => (
+                    publishedCourses?.map((course:any, i:number) => (
                         <CourseCard key={i} course={course}/>
                     ))
                 }
