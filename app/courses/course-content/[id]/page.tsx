@@ -15,6 +15,9 @@ export default function CourseContent() {
     const [toggleSection, settoggleSection] = useState<string>("resources");
     const [arrowToggle, setArrowToggle] = useState<number | null>(0)
     const [chapterTitle, setChapterTitle] = useState()
+    const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
+    const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
+
     // const searchParams = useSearchParams()
     // console.log(searchParams)
     const params = useParams()
@@ -40,6 +43,40 @@ export default function CourseContent() {
             setChapterTitle(chapters[0]?.lessons[0]?.title);
         }
     }, [chapters]);
+    useEffect(() => {
+        if (chapters?.length > 0) {
+            const currentLesson = chapters[currentChapterIndex]?.lessons?.[currentLessonIndex];
+            setChapterTitle(currentLesson?.title);
+        }
+    }, [chapters, currentChapterIndex, currentLessonIndex]);
+    const handleNext = () => {
+        const currentChapter = chapters[currentChapterIndex];
+        if (!currentChapter) return;
+
+        if (currentLessonIndex < currentChapter.lessons.length - 1) {
+            // Go to next lesson in current chapter
+            setCurrentLessonIndex(prev => prev + 1);
+        } else if (currentChapterIndex < chapters.length - 1) {
+            // Go to first lesson of next chapter
+            setCurrentChapterIndex(prev => prev + 1);
+            setCurrentLessonIndex(0);
+        }
+    };
+
+    const handlePrevious = () => {
+        if (currentLessonIndex > 0) {
+            // Go to previous lesson in current chapter
+            setCurrentLessonIndex(prev => prev - 1);
+        } else if (currentChapterIndex > 0) {
+            // Go to last lesson of previous chapter
+            const prevChapter = chapters[currentChapterIndex - 1];
+            if (prevChapter) {
+                setCurrentChapterIndex(prev => prev - 1);
+                setCurrentLessonIndex(prevChapter.lessons.length - 1);
+            }
+        }
+    };
+
 
 
     console.log(chapters)
@@ -61,8 +98,17 @@ export default function CourseContent() {
                 <div className='flex items-center justify-between'>
                     <div></div>
                     <div>
-                        <button onClick={() => setChapterTitle(chapters[0]?.lessons[0]?.title)} className='py-2 px-5 rounded-lg bg-white text-primary border border-primary font-semibold cursor-pointer select-none'>Previous</button>
-                        <button onClick={() => setChapterTitle(chapters[0]?.lessons[0+1]?.title)} className='py-2 px-5 rounded-lg bg-primary text-white ml-3 border border-primary font-semibold cursor-pointer select-none'>Next</button>
+                        <button
+                            onClick={handlePrevious}
+                            className='py-2 px-5 rounded-lg bg-white text-primary border border-primary font-semibold cursor-pointer select-none'>
+                            Previous
+                        </button>
+
+                        <button
+                            onClick={handleNext}
+                            className='py-2 px-5 rounded-lg bg-primary text-white ml-3 border border-primary font-semibold cursor-pointer select-none'>
+                            Next
+                        </button>
                     </div>
                 </div>
                 {/* resources and discussion section  */}
