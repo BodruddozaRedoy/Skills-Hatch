@@ -78,8 +78,7 @@ export default function CourseDetails() {
                 {/* buttons  */}
                 <div>
                   <button className='bg-primary rounded-lg py-3 px-5 text-white font-semibold w-full mt-5 cursor-pointer select-none hover:bg-transparent hover:text-black transition-all border-2 border-primary'>Buy Now</button>
-                  <button className='bg-primary rounded-lg py-3 px-5 text-white font-semibold w-full mt-5 cursor-pointer select-none hover:bg-transparent hover:text-black transition-all border-2 border-primary'>Start</button>
-                  
+                  <Link href={{pathname: `/courses/course-content/${course?._id}`}}><button className='bg-primary rounded-lg py-3 px-5 text-white font-semibold w-full mt-5 cursor-pointer select-none hover:bg-transparent hover:text-black transition-all border-2 border-primary'>Start</button></Link>
                 </div>
             </div>
         </div>
