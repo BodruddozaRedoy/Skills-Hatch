@@ -31,7 +31,9 @@ export default function CourseContent() {
         },
         enabled: !!user
     })
+
     const chapters = course?.chapters
+
     useEffect(() => {
         if (chapters && chapters.length > 0) {
             setArrowToggle(0); // Open first chapter by default
@@ -76,6 +78,10 @@ export default function CourseContent() {
             }
         }
     };
+    const totalLessons = chapters?.reduce((acc: number, chapter: any) => {
+        return acc + (chapter.lessons?.length || 0);
+    }, 0) || 0;
+
 
 
 
@@ -163,7 +169,7 @@ export default function CourseContent() {
                     </div>
                     <div className='mt-3 font-semibold flex justify-between items-center text-muted-foreground'>
                         <p className=' text-black'>Chapter 1</p>
-                        <p>5/10</p>
+                        <p>0/{totalLessons}</p>
                     </div>
                 </div>
                 {/* content  */}
