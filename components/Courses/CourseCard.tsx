@@ -28,7 +28,7 @@ export default function CourseCard({ course }: any) {
             <div className='flex items-center justify-between mt-5'>
                 <div className='flex gap-2 text-gray-400 font-semibold text-sm items-center'>
                     <IoIosBookmarks />
-                    <p>{course.contentCount - 1}+ Content</p>
+                    <p>{course?.chapters?.length}+ Content</p>
                 </div>
                 <Link href={`/courses/course-details/${course._id}`}><p className='text-xs font-semibold text-primary cursor-pointer select-none'>View Details</p></Link>
             </div>
