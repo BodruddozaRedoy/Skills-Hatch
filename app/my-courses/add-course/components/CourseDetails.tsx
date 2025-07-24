@@ -21,7 +21,7 @@ export default function CourseDetails({ course, setCourse }: any) {
     const { dbUser } = useDbUser()
     const [thumbnail, setThumbnail] = useState("url")
     return (
-        <div className='grid grid-cols-3 items-start w-full gap-5'>
+        <div className='grid grid-cols-1 lg:grid-cols-3 items-start w-full gap-5'>
             {/* details  */}
             <div className='space-y-4 col-span-2 w-full'>
                 {/* title  */}
@@ -112,9 +112,9 @@ export default function CourseDetails({ course, setCourse }: any) {
                 </div>
             </div>
             {/* preview  */}
-            <div className='w-full col-span-1'>
+            <div className='w-full lg:col-span-1'>
                 <h1 className='font-bold text-xl mb-3'>Preview</h1>
-                <div className='w-[450px] shadow-md bg-background p-5 rounded-lg '>
+                <div className='w-full lg:w-[450px] shadow-md bg-background p-5 rounded-lg '>
                     <div className='h-[250px]  object-center w-full rounded-lg overflow-hidden mb-5'>
                         <img src={course?.thumbnail || "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"} className='w-full h-full object-cover' alt="" />
                     </div>
