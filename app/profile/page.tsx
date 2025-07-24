@@ -89,9 +89,9 @@ export default function page() {
 
 
   return (
-    <div className="grid items-center grid-cols-6 gap-10">
+    <div className="lg:grid items-center grid-cols-1 md:grid-cols-6 gap-10 space-y-10">
       {/* Profile Section */}
-      <div className="col-span-2 bg-background p-10 rounded-lg flex items-center justify-center flex-col gap-5 w-full">
+      <div className="md:col-span-2 bg-background p-10 rounded-lg flex items-center justify-center flex-col gap-5 w-full">
         <div className="w-50 h-50 rounded-full border-4 overflow-hidden object-cover object-center border-primary">
           <img
             className="w-full"
@@ -120,7 +120,7 @@ export default function page() {
         </div>
         <div className="space-y-5 flex flex-col items-start w-full">
           <h1 className="text-2xl font-black">Achievements</h1>
-          <div className="w-full flex justify-between gap-3">
+          <div className="w-full grid grid-cols-2 lg:grid-cols-4 justify-between gap-3">
             <div className={` flex flex-col items-center shadow-md p-2 rounded-lg ${dbUser?.points >= 0 ? "" : "bg-muted opacity-50"}`}>
               <div className="w-18 h-18 object-cover ">
                 <img className="w-full" src="https://img.icons8.com/?size=100&id=Yt084riMRP1m&format=png&color=000000" alt="" />
@@ -230,8 +230,9 @@ export default function page() {
       {/* Statistics Section */}
       <div className="col-span-4">
         <div className="flex gap-10 w-full">
-          <div className="flex items-center justify-between bg-background rounded-lg p-5 w-full">
-            <div className="flex items-center">
+          {/* Courses Completed */}
+          <div className="flex flex-col md:flex-row gap-5 md:gap-0 items-center justify-between bg-background rounded-lg p-5 w-full">
+            <div className="flex flex-col md:flex-row items-center">
               <img
                 className="w-24 h-24"
                 src="https://img.icons8.com/?size=100&id=zMwxb5uHonjU&format=png&color=000000"
@@ -246,9 +247,9 @@ export default function page() {
             </div>
             <IoIosArrowForward className="text-primary text-3xl" />
           </div>
-
-          <div className="flex items-center justify-between bg-background rounded-lg p-5 w-full">
-            <div className="flex items-center">
+          {/* Courses In Progress */}
+          <div className="flex flex-col md:flex-row items-center justify-between bg-background rounded-lg p-5 w-full">
+            <div className="flex flex-col md:flex-row items-center">
               <img
                 className="w-24 h-24"
                 src="https://img.icons8.com/?size=100&id=106265&format=png&color=000000"
@@ -277,7 +278,7 @@ export default function page() {
             </Link>
           </div>
 
-          <div className="flex items-center w-full gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 items-center w-full gap-10">
             {/* Progress Card 1 */}
             <div className="bg-background w-full flex items-center gap-5 rounded-lg p-5">
               <div className="w-[160px] h-[160px] flex items-center justify-center relative">

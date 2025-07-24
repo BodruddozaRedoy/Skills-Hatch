@@ -5,8 +5,9 @@ import React from 'react'
 export default function Courses() {
   return (
     <div className='space-y-5'>
-      <AllCategories/>
-      <AllCourses/>
+      <AllCategories />
+      <AllCourses />
+
     </div>
   )
 }

@@ -23,36 +23,18 @@ export default function MyCourses() {
     const { coursesByInstructor, refetch, isLoading, isSuccess } = useGetCoursesByInstructor()
     console.log(searchedText)
 
-    // useEffect(() => {
-    //     if (!coursesByInstructor) return;
-
-    //     if (searchedText === "") {
-    //         setFilteredCourses(coursesByInstructor);
-    //         return;
-    //     }
-
-    //     const filtered_Courses = coursesByInstructor.filter((course: any) =>
-    //         course.title.toLowerCase().includes(searchedText.toLowerCase())
-    //     );
-    //     setFilteredCourses(filtered_Courses);
-    // }, [searchedText, coursesByInstructor]); // ✅ include coursesByInstructor
-
-
-
-
-
-
     return (
         <div className=''>
             {/* add course  */}
             <Link href={"/my-courses/add-course"}><Button className=''><IoIosAddCircleOutline /> Add Course</Button></Link>
             <div className='bg-background p-5 rounded-lg mt-5'>
-                <div className='flex justify-between items-center'>
-                    <h1 className='text-xl font-black'>All Courses</h1>
-                    <Input onChange={(e: any) => setSearchedText(e.target.value)} className='w-1/3' placeholder='Search here...' />
+                <div className='flex justify-between gap-5 md:gap-0 md:items-center flex-col md:flex-row'>
+                    <h1 className='text-xl font-black text-start'>All Courses</h1>
+                    <div className='flex gap-5 md:gap-10'>
+                        <Input onChange={(e: any) => setSearchedText(e.target.value)} className='w-full' placeholder='Search here...' />
                     <div>
                         <Select>
-                            <SelectTrigger className="w-[180px]">
+                            <SelectTrigger className="w-[150px]">
                                 <SelectValue placeholder="Sort By" />
                             </SelectTrigger>
                             <SelectContent>
@@ -65,6 +47,7 @@ export default function MyCourses() {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
+                    </div>
                     </div>
                 </div>
                 <hr className='w-full my-3' />
