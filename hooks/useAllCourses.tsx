@@ -1,6 +1,5 @@
 import { axiosPublic } from "@/lib/axiosPublic"
 import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
 import useDbUser from "./useDbUser";
 import { useKindeUser } from "./useKindeUser";
 
