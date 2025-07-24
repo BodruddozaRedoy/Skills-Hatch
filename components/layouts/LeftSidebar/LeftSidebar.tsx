@@ -45,7 +45,8 @@ export default function LeftSidebar() {
     const pathname = usePathname()
     const sidebarNav = useRef(null)
     useGSAP(() => {
-        gsap.from(".side-nav", {
+        const tl = gsap.timeline()
+        tl.from(".side-nav", {
             y: 300,
             opacity: 0,
             duration: 0.5,

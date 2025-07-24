@@ -28,13 +28,18 @@ export default function ContextProvider({ children }: any) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const sidebar = useRef(null)
+  const rightSidebar = useRef(null)
+
   useGSAP(() => {
-    gsap.to(sidebar.current, {
-      x: 1000,
+    const tl = gsap.timeline()
+    tl.from(sidebar.current, {
+      x: "-300px",
       duration: 1,
-      delay: 1
+      ease: "bounce.out"
     })
   }, {scope: sidebar, dependencies: [kindeUserLoading]})
+
+  
 
   return (
     <Provider>
@@ -48,7 +53,7 @@ export default function ContextProvider({ children }: any) {
                 {/* <div ref={sidebar} className='w-40 h-40 bg-red-500'></div> */}
               <main className="flex relative">
 
-                <aside className='relative mt-[120px]'>
+                <aside ref={sidebar} className='relative mt-[120px]'>
                   {/* for mobile  */}
                   <div className={`h-full bg-background left-0 z-[999] p-10 top-20 lg:hidden fixed ${!sidebarOpen ? 'hidden' : 'w-[300px]'}`}><LeftSidebar /></div>
                   {/* for large device  */}
@@ -57,7 +62,7 @@ export default function ContextProvider({ children }: any) {
                   <div className='flex lg:hidden z-[999] sidebar-btn' onClick={() => setSidebarOpen(!sidebarOpen)}><SidebarButton sidebarOpen={sidebarOpen} /></div>
                 </aside>
                 <section className={`${pathname.includes("/dashboard") ? 'lg:mx-[300px]' : 'lg:ml-[300px]'} p-5 lg:p-10 w-full mt-[120px]`}>{children}</section>
-                {pathname.includes("/dashboard") && <aside className="hidden lg:flex w-[300px] h-screen fixed right-0 mt-[120px]"><RightSidebar /></aside>}
+                {pathname.includes("/dashboard") && <aside ref={rightSidebar} className="right-sidebar hidden lg:flex w-[300px] h-screen fixed right-0 mt-[120px]"><RightSidebar /></aside>}
               </main>
               <footer></footer>
               <Toaster />
