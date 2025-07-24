@@ -30,7 +30,7 @@ export default function CourseDetails() {
     <div>
         <Link href={"/courses"} className='flex items-center gap-3 font-semibold mb-5'><IoIosArrowBack />
         Back</Link>
-        <div className='grid grid-cols-7 gap-5'>
+        <div className='grid grid-cols-1 lg:grid-cols-7 gap-5'>
           {/* text container  */}
             <div className='bg-background col-span-4 rounded-lg p-5'>
               <h1 className='font-bold text-3xl'>{course?.title}</h1>

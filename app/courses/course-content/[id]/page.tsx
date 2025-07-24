@@ -87,7 +87,7 @@ export default function CourseContent() {
 
     console.log(chapters)
     return (
-        <div className='grid grid-cols-6'>
+        <div className='grid grid-cols-1 lg:grid-cols-6'>
             {/* 1st grid  */}
             <div className='col-span-4'>
                 <div>
@@ -99,7 +99,7 @@ export default function CourseContent() {
                         <p>{course?.studentsEnrolled?.length} Students</p>
                     </div>
                 </div>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBapHLSeMxbTNSyA3L5s1MZyR3jwQW3PBTwg&s" className='w-full h-[550px] object-contain border-2 border-primary p-2 shadow-md my-3 rounded-lg' alt="" />
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBapHLSeMxbTNSyA3L5s1MZyR3jwQW3PBTwg&s" className='w-full lg:h-[550px] object-contain border-2 border-primary p-2 shadow-md my-3 rounded-lg' alt="" />
                 {/* buttons  */}
                 <div className='flex items-center justify-between'>
                     <div></div>
@@ -159,9 +159,9 @@ export default function CourseContent() {
                 </div>
             </div>
             {/* 2nd grid  */}
-            <div className='col-span-2 pl-10'>
+            <div className='col-span-2 py-5 lg:py-0 lg:pl-10'>
                 {/* progress bar  */}
-                <div className=' bg-white rounded-lg p-5'>
+                <div className=' bg-white rounded-lg p-5 border-2 border-primary'>
                     <h1 className='font-bold text-xl'>Progress</h1>
                     <div className='relative mt-3'>
                         <div className='h-5 w-full bg-muted rounded-lg'></div>
