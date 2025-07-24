@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default function CourseCard({ course }: any) {
     const num = 10
-    
+
     return (
         <div className='w-full bg-background p-5 rounded-lg '>
             <div className='h-[250px] w-full rounded-lg overflow-hidden mb-5'>
@@ -18,8 +18,8 @@ export default function CourseCard({ course }: any) {
                 <div>
                     <h1 className='text-xl font-extrabold'>{course.title}</h1>
                     <div className='flex text-gray-400 text-xs items-center'>
-                    <p className='mr-1 font-semibold'>{course.instructor?.fullName}</p>
-                    <p className='flex items-center font-semibold'><LuDot className='text-xl mr-1'/> {(course.review)?.toFixed(1)}<IoIosStar className='text-orange-300'/></p>
+                        <p className='mr-1 font-semibold'>{course.instructor?.fullName}</p>
+                        <p className='flex items-center font-semibold'><LuDot className='text-xl mr-1' /> {(course.review)?.toFixed(1)}<IoIosStar className='text-orange-300' /></p>
                     </div>
                 </div>
                 <p className='font-extrabold text-xl'>{course.price == 0 ? "Free" : <><span className='text-primary'>$</span>{course.price}</>}</p>

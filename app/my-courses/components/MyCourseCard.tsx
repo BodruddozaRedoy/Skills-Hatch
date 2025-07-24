@@ -50,11 +50,11 @@ export default function MyCourseCard({ course, refetch }: any) {
         console.log(res.data)
     }
     return (
-        <div style={{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.15)' }} className='rounded-lg  p-5 grid grid-cols-7 items-center w-full'>
+        <div style={{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.15)' }} className='rounded-lg  p-5 grid grid-cols-1 lg:grid-cols-7 items-center w-full'>
             {/* 1st flex  */}
-            <div className=" col-span-6 flex items-center gap-10 border-r">
+            <div className=" col-span-6 flex flex-col lg:flex-row items-center gap-10 lg:border-r">
                 {/* image  */}
-                <div className='w-80 rounded-lg overflow-hidden'>
+                <div className='w-full lg:w-80 rounded-lg overflow-hidden'>
                     <img className='w-full object-contain h-full' src={thumbnail} alt="" />
                 </div>
                 {/* details  */}
@@ -70,21 +70,21 @@ export default function MyCourseCard({ course, refetch }: any) {
                 </div>
 
                 {/* divider  */}
-                <hr className="h-full w-2 text-black" />
+                <hr className="lg:h-full lg:w-2 w-full text-black" />
             </div>
 
             {/* 2nd flex  */}
             <div className="space-y-3 col-span-1 flex flex-col items-end justify-between w-full pl-5">
                 <div className="">
                     {/* status  */}
-                    <div className={`${status === "draft" ? 'bg-secondary' : 'bg-primary'} inline-flex rounded-2xl py-1 px-4 text-xs font-semibold text-background items-center`}> {status === "draft" ? "Draft" : "Published"}</div>
+                    <div className={`${status === "draft" ? 'bg-secondary' : 'bg-primary'} inline-flex rounded-2xl py-1 px-4 text-xs font-semibold text-background items-center mt-5 lg:mt-0`}> {status === "draft" ? "Draft" : "Published"}</div>
                     {/* edit  */}
                 </div>
                 {/* status change  */}
                 <Link href={`/my-courses/update-course/${_id}?tab=course-details`} className="w-full"><Button className="w-full"><FiEdit /> Edit</Button></Link>
                 {/* add content  */}
                 <Link className="w-full" href={`/my-courses/update-course/${_id}?tab=course-content`}><Button className="w-full"><MdAddCircle /> Add Content</Button></Link>
-                <div className="flex flex-col items-center gap-3 w-full">
+                <div className="flex lg:flex-col items-center gap-3 w-full">
                     <button onClick={handleDraft} disabled={status === "draft"} className="disabled:bg-muted-foreground bg-secondary py-2 px-3.5 cursor-pointer text-sm rounded-lg text-background  font-semibold flex items-center gap-2 w-full text-center justify-center"><RiDraftFill />Draft</button>
                     <button onClick={handlePublish} disabled={status === "published"} className="bg-primary py-2 px-3.5 cursor-pointer text-sm rounded-lg text-background  font-semibold flex items-center gap-2 w-full text-center justify-center disabled:bg-muted-foreground"><MdPublish /> Publish</button>
                 </div>
