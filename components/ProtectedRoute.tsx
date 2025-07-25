@@ -2,6 +2,7 @@
 import { useKindeUser } from "@/hooks/useKindeUser";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import LoadingScreen from "./LoadingScreen";
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useKindeUser();
@@ -14,7 +15,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   }, [isAuthenticated, isLoading, router]);
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <LoadingScreen/>
   }
 
   return <>{children}</>;

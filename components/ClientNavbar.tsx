@@ -5,5 +5,5 @@ import { usePathname } from "next/navigation";
 export default function ClientNavbar() {
   const pathname = usePathname();
   if (pathname === "/login") return null;
-  return <Navbar />;
+  return "";
 } 
