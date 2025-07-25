@@ -3,9 +3,6 @@ import React from 'react'
 import { IoIosArrowForward } from 'react-icons/io'
 import CourseCard from './CourseCard'
 // import useUser from '@/hooks/useKindeUser'
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
-import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
 import { useAllCourses } from '@/hooks/useAllCourses'
 
 
@@ -17,6 +14,7 @@ export default function AllCourses() {
 // const user = await getUser()
 // const token = await getAccessToken()
 // console.log(token)
+
 
 
 const {courses} = useAllCourses()
