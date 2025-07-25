@@ -21,7 +21,7 @@ export default function MyCourses() {
     const [searchedText, setSearchedText] = useState("")
     const [filteredCourses, setFilteredCourses] = useState()
     const { coursesByInstructor, refetch, isLoading, isSuccess } = useGetCoursesByInstructor()
-    console.log(searchedText)
+    // console.log(searchedText)
 
     return (
         <div className=''>

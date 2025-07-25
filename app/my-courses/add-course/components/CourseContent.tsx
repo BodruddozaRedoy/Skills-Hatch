@@ -47,7 +47,7 @@ export default function CourseContent({ course, setCourse, _id: courseId, refetc
         resources: ""
     })
 
-    console.log(lesson)
+    // console.log(lesson)
     useEffect(() => {
         localStorage.setItem("TextEditorContent", JSON.stringify("Write here..."))
     }, [])
@@ -57,7 +57,7 @@ export default function CourseContent({ course, setCourse, _id: courseId, refetc
     const handleAddChapter = async () => {
         try {
             const res = await axiosPublic.post(`/api/chapter?kindeId=${dbUser?.kindeId}`, chapter)
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.status === 201) {
                 refetch()
                 Swal.fire({
@@ -82,7 +82,7 @@ export default function CourseContent({ course, setCourse, _id: courseId, refetc
                 icon: "success"
             })
         }
-        console.log(res.data);
+        // console.log(res.data);
     }
 
     //! add a lesson 
@@ -90,7 +90,7 @@ export default function CourseContent({ course, setCourse, _id: courseId, refetc
     // setLesson({ ...lesson, chapterId: chapterId })
         try {
             const res = await axiosPublic.post(`/api/lesson`, lesson)
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.status === 201) {
                 setLessonType("")
                 setAddLessonSection(false)
@@ -109,7 +109,7 @@ export default function CourseContent({ course, setCourse, _id: courseId, refetc
     const handleDeleteLesson = async (lessonId: any) => {
         try {
             const res = await axiosPublic.delete(`/api/lesson?lessonId=${lessonId}`)
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.status === 200) {
                 refetch()
                 Swal.fire({

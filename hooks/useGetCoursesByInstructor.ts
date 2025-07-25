@@ -15,11 +15,11 @@ export default function useGetCoursesByInstructor() {
       const res = await axiosPublic.get(
         `/api/course?kindeId=${dbUser?.kindeId}&courseId=${""}`
       );
-      console.log(res.data);
+      // console.log(res.data);
       return res.data.data;
     },
     enabled: !!dbUser,
   });
-  console.log(isLoading, isSuccess);
+  // console.log(isLoading, isSuccess);
   return { coursesByInstructor, refetch, isLoading, isSuccess };
 }

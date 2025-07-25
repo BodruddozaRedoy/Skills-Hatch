@@ -38,7 +38,7 @@ export default function ContextProvider({ children }: any) {
   //     ease: "bounce.out"
   //   })
   // }, {scope: sidebar, dependencies: [kindeUserLoading]})
-
+  console.log(user)
   
 
   return (

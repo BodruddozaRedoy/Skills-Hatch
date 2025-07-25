@@ -19,7 +19,7 @@ export default function AllCourses() {
 
 const {courses} = useAllCourses()
 const publishedCourses = courses?.filter((prev:any) => prev.status === "published")
-console.log(publishedCourses)
+// console.log(publishedCourses)
     return (
         <div>
             <div className='flex items-center justify-between mb-5'>

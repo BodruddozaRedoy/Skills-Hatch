@@ -36,7 +36,7 @@ export default function UpdateCourse({ _id }: { _id: string }) {
         progress: [],
         studentsEnrolled: []
     })
-    console.log(course)
+    // console.log(course)
     // fetching single course 
     const { data: singleCourse, refetch } = useQuery({
         queryKey: ["my-courses", dbUser?.fullName],
@@ -69,7 +69,7 @@ export default function UpdateCourse({ _id }: { _id: string }) {
                 })
                 refetch()
             }
-            console.log(res.data)
+            // console.log(res.data)
         } catch (error) {
             console.log("Error at handlePublish", error)
         }

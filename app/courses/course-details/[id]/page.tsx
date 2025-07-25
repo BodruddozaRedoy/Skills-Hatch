@@ -24,7 +24,7 @@ export default function CourseDetails() {
     },
     enabled: !!user
   })
-  console.log("single course", course)
+  // console.log("single course", course)
   const added = false
   return (
     <div>

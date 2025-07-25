@@ -22,7 +22,7 @@ export default function MyCourseCard({ course, refetch }: any) {
     const { dbUser } = useDbUser()
     // console.log(contentCount)
 
-    console.log("course from card", course)
+    // console.log("course from card", course)
 
     const handleDraft = async () => {
         const res = await axiosPublic.patch(`/api/course?kindeId=${dbUser?.kindeId}&courseId=${_id}`, { status: "draft" })
@@ -34,7 +34,7 @@ export default function MyCourseCard({ course, refetch }: any) {
                 icon: "success"
             })
         }
-        console.log(res.data)
+        // console.log(res.data)
     }
 
     const handlePublish = async (id: any) => {
@@ -47,7 +47,7 @@ export default function MyCourseCard({ course, refetch }: any) {
                 icon: "success"
             })
         }
-        console.log(res.data)
+        // console.log(res.data)
     }
     return (
         <div style={{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.15)' }} className='rounded-lg  p-5 grid grid-cols-1 lg:grid-cols-7 items-center w-full'>

@@ -53,7 +53,7 @@ export default function page() {
         refetch()
         setBioLoading(false)
       }
-      console.log(res.data)
+      // console.log(res.data)
     } catch (error) {
       console.log(error)
     } finally {
@@ -72,7 +72,7 @@ export default function page() {
         setSocialLoading("")
         setInputDisable("")
       }
-      console.log(res.data)
+      // console.log(res.data)
     } catch (error) {
       console.log(error)
     } finally {

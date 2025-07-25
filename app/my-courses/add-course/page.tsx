@@ -33,7 +33,7 @@ export default function AddCourse() {
         progress: [],
         studentsEnrolled: []
     })
-    console.log(course)
+    // console.log(course)
 
     useEffect(() => {
         setCourse({ ...course, instructor: dbUser })
@@ -44,7 +44,7 @@ export default function AddCourse() {
         if (course.title && course.price && course.thumbnail && course.category && course.level && course.language && course.description && course.instructor) {
             try {
                 const res = await axiosPublic.post("/api/course", course)
-                console.log(res.data)
+                // console.log(res.data)
                 if (res.data.status === 201) {
                     Swal.fire({
                         title: "Course Added",
@@ -63,7 +63,7 @@ export default function AddCourse() {
                     });
                 }
             } catch (error) {
-                console.log("Error at handlePublish", error)
+                console.error("Error at handlePublish", error)
             }
         } else {
             Swal.fire({

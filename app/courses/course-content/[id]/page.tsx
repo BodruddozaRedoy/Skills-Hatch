@@ -85,7 +85,7 @@ export default function CourseContent() {
 
 
 
-    console.log(chapters)
+    // console.log(chapters)
     return (
         <div className='grid grid-cols-1 lg:grid-cols-6'>
             {/* 1st grid  */}

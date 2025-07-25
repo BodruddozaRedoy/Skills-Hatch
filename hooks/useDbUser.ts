@@ -17,7 +17,7 @@ export default function useDbUser() {
     queryKey: ["dbUser"],
     queryFn: async () => {
       const res = await axiosPublic.get(`/api/user?id=${user?.id}`);
-      console.log("Db User", res.data.user);
+      // console.log("Db User", res.data.user);
       return res.data.user;
     },
   });

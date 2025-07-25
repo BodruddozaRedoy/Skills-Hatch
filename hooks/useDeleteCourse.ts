@@ -11,7 +11,7 @@ export default function useDeleteCourse() {
     const res = await axiosPublic.delete(
       `/api/course?kindeId=${dbUser?.kindeId}&courseId=${deleteCourse?.courseId}`
     );
-    console.log(res.data);
+    // console.log(res.data);
   };
   deleteAction();
   return { setDeleteCourse };
