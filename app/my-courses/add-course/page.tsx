@@ -12,6 +12,7 @@ import useDbUser from '@/hooks/useDbUser';
 import { axiosPublic } from '@/lib/axiosPublic';
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/navigation';
+import ProtectedRoute from '@/components/ProtectedRoute'
 
 
 export default function AddCourse() {
@@ -73,15 +74,17 @@ export default function AddCourse() {
         }
     }
     return (
-        <div>
-            <div className='flex items-center justify-between'>
-            <Link href={"/my-courses"} className='font-semibold  gap-2 items-center inline-flex'><IoIosArrowBack /> Back</Link>
-                <Button onClick={() => { handleDraft(); setCourse({ ...course, status: "draft" }) }} className='bg-secondary gap-2 items-center hover:bg-secondary'><RiDraftFill /> Draft</Button>
+        <ProtectedRoute>
+            <div>
+                <div className='flex items-center justify-between'>
+                    <Link href={"/my-courses"} className='font-semibold  gap-2 items-center inline-flex'><IoIosArrowBack /> Back</Link>
+                    <Button onClick={() => { handleDraft(); setCourse({ ...course, status: "draft" }) }} className='bg-secondary gap-2 items-center hover:bg-secondary'><RiDraftFill /> Draft</Button>
+                </div>
+                {/* content  */}
+                <div className='bg-background p-5 rounded-lg mt-5 flex items-start w-full'>
+                    <CourseDetails course={course} setCourse={setCourse} />
+                </div>
             </div>
-            {/* content  */}
-            <div className='bg-background p-5 rounded-lg mt-5 flex items-start w-full'>
-                <CourseDetails course={course} setCourse={setCourse} />
-            </div>
-        </div>
+        </ProtectedRoute>
     )
 }

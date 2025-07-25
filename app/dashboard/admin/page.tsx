@@ -1,7 +1,10 @@
 import React from 'react'
+import ProtectedRoute from '@/components/ProtectedRoute'
 
 export default function Admin() {
   return (
-    <div>Admin</div>
+    <ProtectedRoute>
+      <div>Admin</div>
+    </ProtectedRoute>
   )
 }

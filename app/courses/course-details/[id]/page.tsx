@@ -9,6 +9,7 @@ import React, { useState } from 'react'
 import { IoIosArrowBack } from 'react-icons/io'
 import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
+import ProtectedRoute from '@/components/ProtectedRoute'
 
 
 export default function CourseDetails() {
@@ -27,7 +28,8 @@ export default function CourseDetails() {
   // console.log("single course", course)
   const added = false
   return (
-    <div>
+    <ProtectedRoute>
+      <div>
         <Link href={"/courses"} className='flex items-center gap-3 font-semibold mb-5'><IoIosArrowBack />
         Back</Link>
         <div className='grid grid-cols-1 lg:grid-cols-7 gap-5'>
@@ -82,6 +84,7 @@ export default function CourseDetails() {
                 </div>
             </div>
         </div>
-    </div>
+      </div>
+    </ProtectedRoute>
   )
 }

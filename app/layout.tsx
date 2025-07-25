@@ -1,7 +1,8 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layouts/Navbar/Navbar";
+import ClientNavbar from '@/components/ClientNavbar';
 import ContextProvider from "@/providers/ContextProvider";
 import KindeProviders from "@/providers/KindeProviders";
 import GlobalRouteLoader from "@/components/GlobalRouteLoader";
@@ -39,6 +40,7 @@ export default function RootLayout({
           <ContextProvider>
             <GlobalPageLoader />
             <Suspense fallback={<LoadingScreen />}>
+              <ClientNavbar />
               {children}
             </Suspense>
           </ContextProvider>
